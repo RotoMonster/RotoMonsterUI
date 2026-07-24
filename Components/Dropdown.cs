@@ -13,6 +13,7 @@ namespace RotoMonsterUI
         private string _name;
         private bool _showLabel;
         private bool _autoPostBack = true;
+        private bool _wide;
 
         public Dropdown(string label, BootstrapVersion version = BootstrapVersion.V4)
         {
@@ -30,6 +31,12 @@ namespace RotoMonsterUI
         public Dropdown WithId(string id)
         {
             _id = id;
+            return this;
+        }
+
+        public Dropdown Wide()
+        {
+            _wide = true;
             return this;
         }
 
@@ -72,6 +79,7 @@ namespace RotoMonsterUI
             }
 
             var wrapper = new HtmlTag("div").AddClass("bm-custom-select");
+            if (_wide) wrapper.AddClass("bm-custom-select--wide");
 
             if (!string.IsNullOrEmpty(_id))
                 wrapper.Attr("id", _id);

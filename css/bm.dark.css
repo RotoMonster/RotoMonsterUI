@@ -697,6 +697,7 @@ footer a:hover { color: var(--brand-primary-light); text-shadow: 0 0 10px var(--
    CUSTOM DROPDOWN - DARK MODE
    ============================================ */
 .bm-custom-select { position: relative; width: 100%; min-width: 200px; }
+.bm-custom-select--wide { min-width: 300px; }
 .bm-custom-select-trigger {
     background: rgba(15,23,42,0.9); color: #e2e8f0; border: 2px solid rgba(100,116,139,0.4);
     border-radius: 10px; padding: 0.5rem 2.5rem 0.5rem 0.85rem; font-size: 0.85rem; font-weight: 600;
@@ -729,7 +730,7 @@ footer a:hover { color: var(--brand-primary-light); text-shadow: 0 0 10px var(--
 }
 .bm-custom-select.open .bm-custom-select-options { opacity: 1; visibility: visible; transform: translateY(0); }
 .bm-custom-select-option {
-    padding: 0.85rem 1rem; cursor: pointer; transition: all 0.15s ease;
+    padding: 0.25rem 1rem; cursor: pointer; transition: all 0.15s ease;
     font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; color: #e2e8f0;
 }
 .bm-custom-select-option:first-child { border-radius: 8px 8px 0 0; }
