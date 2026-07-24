@@ -316,83 +316,31 @@ namespace RotoMonsterUI
 
         private HtmlTag RenderEditForm()
         {
-            var form = new HtmlTag("div").AddClass("news-card-edit-form");
-
             var currentStatusRow = new HtmlTag("div").AddClass("news-card-field-row");
             currentStatusRow.Append(new HtmlTag("span").AddClass("news-card-field-label").Text("Current Status"));
             currentStatusRow.Append(RenderStatusBadge("edit"));
-            form.Append(currentStatusRow);
 
-            var statusDropdown = new Dropdown("Status").WithName($"status_{_input.NewsId}").WithoutPostBack();
-            foreach (var opt in _input.StatusTypeOptions)
-                statusDropdown.AddItem(opt, opt);
-            statusDropdown.WithSelectedValue(_input.StatusTypeText);
-            form.AppendHtml($"<div class='news-card-field-row'><label>Status</label>{statusDropdown.Render()}</div>");
-
-            var tagDropdown = new Dropdown("Tag").WithName($"tag_{_input.NewsId}").WithoutPostBack();
-            foreach (var opt in _input.StatusTypeTagOptions)
-                tagDropdown.AddItem(opt, opt);
-            tagDropdown.WithSelectedValue(_input.StatusTypeTag);
-            var tagRow = new HtmlTag("div").AddClass("news-card-field-row");
-            tagRow.AppendHtml($"<label>Tag</label>{tagDropdown.Render()}");
-            var setBtn = new Button("Set").WithStyle(ButtonStyle.Secondary).WithName($"settag_{_input.NewsId}").Render();
-            tagRow.AppendHtml(setBtn);
-            form.Append(tagRow);
-
-            var titleBox = new TextBox()
-                .WithName($"newstitle_{_input.NewsId}")
-                .WithValue(_input.NewsTitle)
-                .Render();
-            var titleLabel = string.IsNullOrEmpty(_input.StatusTypeTag) ? "Title" : _input.StatusTypeTag;
-            form.AppendHtml($"<div class='news-card-field-row'><label>{titleLabel}</label>{titleBox}</div>");
-
-            var sourceBox = new TextBox()
-                .WithName($"source_{_input.NewsId}")
-                .WithValue(_input.SourceURL)
-                .Render();
-            form.AppendHtml($"<div class='news-card-field-row'><label>Source</label>{sourceBox}</div>");
-
-            var levelGroup = new RadioGroup($"level_{_input.NewsId}");
-            levelGroup.AddOption("L", "Low", _input.NewsLevel == NewsLevel.Low);
-            levelGroup.AddOption("M", "Medium", _input.NewsLevel == NewsLevel.Medium);
-            levelGroup.AddOption("H", "High", _input.NewsLevel == NewsLevel.High);
-            levelGroup.AddOption("Monster", "Monster", _input.NewsLevel == NewsLevel.Monster);
-            form.AppendHtml(levelGroup.Render());
-
-            var saveRow = new HtmlTag("div").AddClass("news-card-field-row");
-            saveRow.AppendHtml(new Button("Save").WithStyle(ButtonStyle.Primary).WithName($"savenews_{_input.NewsId}").Render());
-            saveRow.AppendHtml(new Button("Cancel").WithStyle(ButtonStyle.Secondary).WithName($"cancelnews_{_input.NewsId}").Render());
-            var unofficialCheckbox = new Checkbox()
-                .WithLabel("Unofficial")
-                .WithName($"unofficial_{_input.NewsId}")
-                .WithChecked(_input.IsUnofficial)
-                .Render();
-            saveRow.AppendHtml(unofficialCheckbox);
-            form.Append(saveRow);
-
-            var detailsTextArea = new TextArea(new TextAreaInput
+            return new NewsEditForm(new NewsEditFormInput
             {
-                Id = $"newsdetails_{_input.NewsId}",
-                Name = $"newsdetails_{_input.NewsId}",
-                Placeholder = "More details",
-                InitialValue = _input.NewsDetails ?? ""
-            }).Render();
-            form.AppendHtml(detailsTextArea);
-
-            var appliedIds = new HashSet<int>(_input.NewsTags != null ? _input.NewsTags.Select(t => t.Id) : System.Array.Empty<int>());
-            var checkGrid = new HtmlTag("div").AddClass("news-card-tag-checkbox-grid");
-            foreach (var opt in _input.AvailableNewsTags)
-            {
-                var cb = new Checkbox()
-                    .WithLabel(opt.Name)
-                    .WithName($"newstag_{_input.NewsId}_{opt.Id}")
-                    .WithChecked(appliedIds.Contains(opt.Id))
-                    .Render();
-                checkGrid.AppendHtml(cb);
-            }
-            form.Append(checkGrid);
-
-            return form;
+                KeyId = _input.NewsId.ToString(),
+                LeadingHtml = currentStatusRow.ToString(),
+                Buttons = new List<NewsEditFormButton>
+                {
+                    new NewsEditFormButton { Text = "Save",   Style = ButtonStyle.Primary,   Name = $"savenews_{_input.NewsId}" },
+                    new NewsEditFormButton { Text = "Cancel", Style = ButtonStyle.Secondary, Name = $"cancelnews_{_input.NewsId}" }
+                },
+                StatusTypeText = _input.StatusTypeText,
+                StatusTypeTag = _input.StatusTypeTag,
+                NewsTitle = _input.NewsTitle,
+                SourceURL = _input.SourceURL,
+                NewsDetails = _input.NewsDetails,
+                IsUnofficial = _input.IsUnofficial,
+                NewsLevel = _input.NewsLevel,
+                StatusTypeOptions = _input.StatusTypeOptions,
+                StatusTypeTagOptions = _input.StatusTypeTagOptions,
+                AvailableNewsTags = _input.AvailableNewsTags,
+                NewsTags = _input.NewsTags
+            }).RenderTag();
         }
 
         public string RenderTest()

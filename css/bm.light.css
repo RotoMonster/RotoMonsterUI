@@ -148,6 +148,11 @@
     --season-progress-divider: rgba(0, 0, 0, 0.15);
 
     --season-progress-pending-border: var(--brand-primary);
+
+    --tweet-card-bg: #fdfce8;
+    --tweet-card-border: rgba(202, 199, 138, 0.5);
+    --tweet-card-posting-border: rgba(220, 38, 38, 0.35);
+    --tweet-card-media-bg: #e2e8f0;
 }
 
 /* GLOBAL STYLES */
@@ -4307,3 +4312,286 @@ a.modern-filter-btn:hover {
 
 .bm-tooltip-content { display: none; }
 .bm-tooltip-content.bm-tooltip-visible { display: block; }
+
+
+.tweet-card {
+    background: var(--tweet-card-bg);
+    border: 2px solid var(--tweet-card-border);
+    border-radius: 10px;
+    padding: 0.6rem 0.75rem;
+    margin-bottom: 0.5rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+ 
+.tweet-card:hover {
+    border-color: rgba(var(--brand-primary-rgb), 0.4);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+}
+ 
+/* Card with a player picked and the posting form open. */
+.tweet-card--posting {
+    border-color: var(--tweet-card-posting-border);
+    padding: 0.75rem;
+}
+ 
+/* ---- Top row ---- */
+ 
+.tweet-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+}
+ 
+.tweet-card-user {
+    color: var(--brand-primary);
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.88rem;
+}
+ 
+.tweet-card-user:hover {
+    text-decoration: underline;
+}
+ 
+.tweet-card-followers {
+    color: var(--color-text-tertiary);
+    font-weight: 600;
+    font-size: 0.72rem;
+}
+ 
+.tweet-card-source {
+    color: var(--brand-primary);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.72rem;
+}
+ 
+.tweet-card-source:hover {
+    text-decoration: underline;
+}
+ 
+.tweet-card-header .time-since {
+    color: var(--color-text-tertiary);
+    font-size: 0.72rem;
+}
+ 
+.tweet-card-header-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+ 
+.tweet-card-count {
+    color: var(--color-text-tertiary);
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+ 
+.tweet-card-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+    object-fit: cover;
+    display: block;
+}
+ 
+.tweet-card-verified {
+    color: var(--status-info);
+    display: inline-flex;
+    align-items: center;
+}
+ 
+/* ---- Tweet text ---- */
+ 
+.tweet-card-text {
+    margin-top: 0.25rem;
+    font-size: 0.86rem;
+    line-height: 1.35;
+    color: var(--color-text-primary);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+ 
+/* ---- Media ---- */
+ 
+.tweet-card-media {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+}
+ 
+.tweet-card-media-item {
+    position: relative;
+    display: block;
+    width: 96px;
+    height: 128px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--tweet-card-media-bg);
+    border: 1px solid var(--color-border);
+}
+ 
+.tweet-card-media-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+ 
+.tweet-card-media-item:hover {
+    border-color: rgba(var(--brand-primary-rgb), 0.6);
+}
+ 
+/* Play glyph over a video thumbnail. */
+.tweet-card-media-badge {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border-radius: 999px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+ 
+.tweet-card-media-duration {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 0.62rem;
+    font-weight: 600;
+    padding: 1px 5px;
+    border-radius: 4px;
+    pointer-events: none;
+}
+ 
+/* ---- Team filter ---- */
+ 
+.tweet-card-teams {
+    margin-top: 0.5rem;
+}
+ 
+.tweet-card-teams .bm-segmented {
+    align-self: flex-start;
+}
+ 
+/* ---- Player list ---- */
+ 
+.tweet-card-players {
+    margin-top: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+ 
+.tweet-card-player-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.15rem 0.2rem;
+    border-radius: 6px;
+}
+ 
+.tweet-card-player-row:hover {
+    background: rgba(var(--brand-primary-rgb), 0.06);
+}
+ 
+.tweet-card-player-row input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    min-width: 15px;
+    border: 2px solid var(--color-text-light);
+    border-radius: 3px;
+    background: var(--color-bg-secondary);
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+}
+ 
+.tweet-card-player-row input[type="radio"]:checked {
+    background: var(--status-info);
+    border-color: var(--status-info);
+}
+ 
+.tweet-card-player-row input[type="radio"]:checked::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0px;
+    width: 4px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+ 
+.tweet-card-player-row label {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    cursor: pointer;
+    flex: 1;
+    font-size: 0.86rem;
+}
+ 
+.tweet-card-player-team {
+    color: var(--color-text-tertiary);
+    font-size: 0.68rem;
+    font-weight: 600;
+    min-width: 26px;
+}
+ 
+.tweet-card-player-pct {
+    color: var(--color-text-tertiary);
+    font-size: 0.7rem;
+    margin-left: auto;
+}
+ 
+/* Match confidence, shown only when the consuming page passes one. */
+.tweet-card-player-confidence {
+    color: var(--color-text-light);
+    font-size: 0.65rem;
+    font-variant-numeric: tabular-nums;
+}
+ 
+.tweet-card-players .display-player-name { font-size: 0.86rem; }
+.tweet-card-players .display-player-team { font-size: 0.7rem; }
+.tweet-card-players .display-player-pos  { font-size: 0.7rem; }
+ 
+/* ---- Posting form ---- */
+/* Structure comes from .news-card-edit-form; this only insets it under
+   the selected player so it reads as belonging to that row. */
+ 
+.tweet-card-post-form {
+    margin: 0.3rem 0 0.5rem 1.2rem;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--status-info);
+    border-radius: 8px;
+    background: var(--color-bg-card);
+}
+ 
+.tweet-card-post-form .news-card-edit-form {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+ 
+.tweet-card-post-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+ 
