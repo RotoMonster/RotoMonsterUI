@@ -25,6 +25,7 @@ namespace RotoMonsterUI
             {
                 var leagueDd = new Dropdown(_input.LeagueDropdownLabel)
                     .WithName(PageTitleRowService.LeagueDropdownName)
+                    .Wide()
                     .WithSelectedValue(_input.SelectedLeagueValue);
 
                 foreach (var league in _input.Leagues)
