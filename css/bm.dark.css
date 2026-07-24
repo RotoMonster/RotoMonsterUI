@@ -4344,3 +4344,7 @@ a.modern-filter-btn:hover {
 
 .bm-tooltip-content { display: none; }
 .bm-tooltip-content.bm-tooltip-visible { display: block; }
+
+.text-force-black, .text-force-black * {
+    color: #000 !important;
+}
