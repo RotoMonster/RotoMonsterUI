@@ -880,20 +880,41 @@ document.addEventListener('click', function (e) {
             var val = cs.getPropertyValue(name).trim();
             return val || fallback;
         }
+
+        // Series colors come from CSS so the sport files and light/dark can
+        // retheme them. Looked up by index, so defining more in CSS just works.
+        // The fallbacks only kick in past whatever CSS defines.
+        var seriesFallbacks = ['#e66000', '#ff8c42', '#378add', '#1d9e75', '#d4537e', '#ba7517'];
+        function seriesColor(i) {
+            var fromCss = v('--chart-series-' + (i + 1), '');
+            return fromCss || seriesFallbacks[i % seriesFallbacks.length];
+        }
+
         return {
             text: v('--color-text-primary', '#1e293b'),
             grid: v('--color-border', '#e2e8f0'),
             brand: v('--brand-primary', '#e66000'),
-            accent: v('--brand-accent', '#ff8c42')
+            accent: v('--brand-accent', '#ff8c42'),
+            seriesColor: seriesColor
         };
     }
 
+    // A colorCSS can be a var() reference. Google Charts only takes real
+    // values, so resolve it here. Returns null when the variable doesn't
+    // exist, so the caller falls back to the palette instead of drawing blank.
+    function resolveColor(c) {
+        if (!c) return null;
+        var m = /^var\(\s*(--[\w-]+)\s*\)$/.exec(c);
+        if (!m) return c;
+        var val = getComputedStyle(document.documentElement)
+            .getPropertyValue(m[1]).trim();
+        return val || null;
+    }
+
     function seriesColors(theme, series) {
-        var palette = [theme.brand, theme.accent, '#378add', '#1d9e75', '#d4537e', '#ba7517'];
         var out = [];
         for (var i = 0; i < series.length; i++) {
-            var c = series[i] && series[i].color;
-            out.push(c ? c : palette[i % palette.length]);
+            out.push(resolveColor(series[i] && series[i].colorCSS) || theme.seriesColor(i));
         }
         return out;
     }

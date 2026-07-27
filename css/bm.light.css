@@ -153,6 +153,10 @@
     --tweet-card-border: rgba(202, 199, 138, 0.5);
     --tweet-card-posting-border: rgba(220, 38, 38, 0.35);
     --tweet-card-media-bg: #e2e8f0;
+
+    --chart-series-1: var(--brand-primary);
+    --chart-series-2: #378add;
+    --chart-series-3: #1d9e75;
 }
 
 /* GLOBAL STYLES */
@@ -4274,6 +4278,10 @@ a.modern-filter-btn:hover {
 .season-highlow-table .shl-ctx {
     display: block; font-size: 0.72rem; color: var(--color-text-secondary); margin-top: 1px;
 }
+
+/* High is the bad number (turnovers, fouls) - emphasis moves to the low. */
+.season-highlow-table tr.shl-flip .shl-high .shl-val { color: var(--color-text-secondary); }
+.season-highlow-table tr.shl-flip .shl-low .shl-val { color: var(--brand-primary); }
 
 /* Match the add/remove toggle size to the favorite pills */
 .favorites-toolbar-current-btn {

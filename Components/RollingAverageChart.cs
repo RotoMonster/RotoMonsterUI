@@ -25,6 +25,13 @@ namespace RotoMonsterUI
             return d.ToString(CultureInfo.InvariantCulture);
         }
 
+        private string NormalizeColor(string color)
+        {
+            if (string.IsNullOrEmpty(color)) return color;
+            if (color.StartsWith("var(") || color.StartsWith("#")) return color;
+            return "#" + color;
+        }
+
         private string SerializeSpecJson()
         {
             var sb = new StringBuilder("{");
@@ -33,6 +40,7 @@ namespace RotoMonsterUI
             sb.Append($"\"xAxisLabel\":\"{EscapeJson(_input.XAxisLabel)}\",");
             sb.Append($"\"yAxisLabel\":\"{EscapeJson(_input.YAxisLabel)}\",");
 
+            // Only emitted when set, so the JS can treat "absent" as "auto".
             if (_input.YAxisMin.HasValue)
                 sb.Append($"\"yAxisMin\":{Num(_input.YAxisMin.Value)},");
             if (_input.YAxisMax.HasValue)
@@ -47,8 +55,8 @@ namespace RotoMonsterUI
                 if (i > 0) sb.Append(",");
                 sb.Append("{");
                 sb.Append($"\"name\":\"{EscapeJson(s.Name)}\",");
-                if (!string.IsNullOrEmpty(s.Color))
-                    sb.Append($"\"color\":\"{EscapeJson(s.Color)}\",");
+                if (!string.IsNullOrEmpty(s.ColorCSS))
+                    sb.Append($"\"colorCSS\":\"{EscapeJson(NormalizeColor(s.ColorCSS))}\",");
                 sb.Append("\"points\":[");
 
                 var pts = s.Points ?? new List<ChartPoint>();
