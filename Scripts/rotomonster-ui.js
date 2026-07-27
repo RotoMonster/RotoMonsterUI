@@ -204,7 +204,12 @@ document.addEventListener('click', function(e) {
     // Auto-submit the form so the games list refreshes without needing a manual Refresh click
     if (wrapper) {
         var form = wrapper.closest('form');
-        if (form) form.submit();
+        if (form) {
+            // requestSubmit fires the form's onsubmit, which is what ASP.NET
+            // AJAX hooks. submit() skips it and forces a full page refresh.
+            if (form.requestSubmit) form.requestSubmit();
+            else form.submit();
+        }
     }
 });
 
@@ -709,29 +714,31 @@ function DeleteChat(btn) {
     __doPostBack('deletechat_' + messageId, 'delete', btn.closest('form'));
 }
 
-function __doPostBack(eventTarget, eventArgument, form) {
-    form = form || document.forms[0];
-    if (!form) return;
+if (typeof window.__doPostBack !== 'function') {
+    window.__doPostBack = function (eventTarget, eventArgument, form) {
+        form = form || document.forms[0];
+        if (!form) return;
 
-    var et = form.querySelector('input[name="__EVENTTARGET"]');
-    if (!et) {
-        et = document.createElement('input');
-        et.type = 'hidden';
-        et.name = '__EVENTTARGET';
-        form.appendChild(et);
-    }
-    et.value = eventTarget;
+        var et = form.querySelector('input[name="__EVENTTARGET"]');
+        if (!et) {
+            et = document.createElement('input');
+            et.type = 'hidden';
+            et.name = '__EVENTTARGET';
+            form.appendChild(et);
+        }
+        et.value = eventTarget;
 
-    var ea = form.querySelector('input[name="__EVENTARGUMENT"]');
-    if (!ea) {
-        ea = document.createElement('input');
-        ea.type = 'hidden';
-        ea.name = '__EVENTARGUMENT';
-        form.appendChild(ea);
-    }
-    ea.value = eventArgument || '';
+        var ea = form.querySelector('input[name="__EVENTARGUMENT"]');
+        if (!ea) {
+            ea = document.createElement('input');
+            ea.type = 'hidden';
+            ea.name = '__EVENTARGUMENT';
+            form.appendChild(ea);
+        }
+        ea.value = eventArgument || '';
 
-    form.submit();
+        form.submit();
+    };
 }
 
 // Poll player picker - client-side search/filter against the embedded AvailablePlayers list
