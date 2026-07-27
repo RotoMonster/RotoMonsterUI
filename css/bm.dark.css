@@ -4829,3 +4829,57 @@ a.modern-filter-btn:hover {
    }
    .pricing-plan-highlight-title { font-size: 0.72rem; font-weight: 600; color: var(--status-success); margin-bottom: 0.2rem; }
    .pricing-plan-highlight-body { font-size: 0.72rem; line-height: 1.5; color: var(--status-success); }
+
+   .rotating-panel {
+    display: flex; flex-direction: column;
+    height: 100%;
+    border-radius: 12px; padding: 1.1rem 1.2rem;
+}
+
+.rotating-panel-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+.rotating-panel-header svg { flex-shrink: 0; }
+.rotating-panel-heading { font-size: 1rem; font-weight: 600; color: #fff; }
+
+.rotating-panel-body { display: flex; align-items: center; gap: 0.6rem; flex: 1 1 auto; }
+
+.rotating-panel-arrow {
+    background: rgba(255,255,255,0.12); border: none; cursor: pointer;
+    padding: 0.3rem; line-height: 0; flex-shrink: 0;
+    border-radius: 50%;
+    transition: background 0.15s ease;
+}
+.rotating-panel-arrow:hover { background: rgba(255,255,255,0.25); }
+
+.rotating-panel-slides { flex: 1 1 auto; min-width: 0; overflow: hidden; }
+.rotating-panel-track { display: flex; transition: transform 0.45s ease; }
+.rotating-panel-slide { flex: 0 0 100%; min-width: 0; }
+
+.rotating-panel-slide-title { font-size: 0.85rem; font-weight: 600; color: #fff; margin-bottom: 0.5rem; }
+.rotating-panel-slide-body { font-size: 0.78rem; line-height: 1.6; color: rgba(255,255,255,0.78); }
+.rotating-panel-slide-body--quote {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 0.82rem; color: #fff; margin-bottom: 0.7rem;
+}
+.rotating-panel-slide-attribution { font-size: 0.75rem; color: rgba(255,255,255,0.78); }
+
+.rotating-panel-dots { display: flex; gap: 5px; justify-content: center; margin-top: auto; padding-top: 0.9rem; }
+.rotating-panel-dot {
+    position: relative; overflow: hidden;
+    width: 16px; height: 3px; border-radius: 2px;
+    background: rgba(255,255,255,0.35);
+}
+.rotating-panel-dot--active::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: #fff;
+    transform-origin: left;
+    animation: rp-dot-fill 8s linear forwards;
+}
+
+@keyframes rp-dot-fill {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .rotating-panel-dot--active::after { animation: none; transform: scaleX(1); }
+}
