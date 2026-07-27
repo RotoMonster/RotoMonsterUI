@@ -32,6 +32,12 @@ namespace RotoMonsterUI
             sb.Append($"\"title\":\"{EscapeJson(_input.Title)}\",");
             sb.Append($"\"xAxisLabel\":\"{EscapeJson(_input.XAxisLabel)}\",");
             sb.Append($"\"yAxisLabel\":\"{EscapeJson(_input.YAxisLabel)}\",");
+
+            if (_input.YAxisMin.HasValue)
+                sb.Append($"\"yAxisMin\":{Num(_input.YAxisMin.Value)},");
+            if (_input.YAxisMax.HasValue)
+                sb.Append($"\"yAxisMax\":{Num(_input.YAxisMax.Value)},");
+
             sb.Append("\"series\":[");
 
             var series = _input.Series ?? new List<ChartSeries>();
@@ -41,6 +47,8 @@ namespace RotoMonsterUI
                 if (i > 0) sb.Append(",");
                 sb.Append("{");
                 sb.Append($"\"name\":\"{EscapeJson(s.Name)}\",");
+                if (!string.IsNullOrEmpty(s.Color))
+                    sb.Append($"\"color\":\"{EscapeJson(s.Color)}\",");
                 sb.Append("\"points\":[");
 
                 var pts = s.Points ?? new List<ChartPoint>();
@@ -57,8 +65,6 @@ namespace RotoMonsterUI
 
         public string Render()
         {
-            // The chart draws into .bm-chart; the JSON sits as a sibling so
-            // Google Charts rendering into the div doesn't wipe it out.
             var wrap = new HtmlTag("div").AddClass("bm-chart-wrap");
 
             var chartDiv = new HtmlTag("div")

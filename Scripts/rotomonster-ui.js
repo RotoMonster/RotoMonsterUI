@@ -888,10 +888,13 @@ document.addEventListener('click', function (e) {
         };
     }
 
-    function seriesColors(theme, n) {
+    function seriesColors(theme, series) {
         var palette = [theme.brand, theme.accent, '#378add', '#1d9e75', '#d4537e', '#ba7517'];
         var out = [];
-        for (var i = 0; i < n; i++) out.push(palette[i % palette.length]);
+        for (var i = 0; i < series.length; i++) {
+            var c = series[i] && series[i].color;
+            out.push(c ? c : palette[i % palette.length]);
+        }
         return out;
     }
 
@@ -928,7 +931,7 @@ document.addEventListener('click', function (e) {
             title: spec.title || '',
             titleTextStyle: { color: theme.text },
             backgroundColor: 'transparent',
-            colors: seriesColors(theme, spec.series.length),
+            colors: seriesColors(theme, spec.series),
             legend: spec.series.length > 1 ? { position: 'top', textStyle: { color: theme.text } } : 'none',
             chartArea: { width: '85%', height: '70%' },
             hAxis: {
@@ -946,6 +949,16 @@ document.addEventListener('click', function (e) {
                 baselineColor: theme.grid
             }
         };
+        
+        // Optional hard Y bounds. viewWindow clamps; minValue/maxValue only
+        // extend, so viewWindow is what actually honors Ken's low/high.
+        var hasMin = spec.yAxisMin !== undefined && spec.yAxisMin !== null;
+        var hasMax = spec.yAxisMax !== undefined && spec.yAxisMax !== null;
+        if (hasMin || hasMax) {
+            options.vAxis.viewWindow = {};
+            if (hasMin) options.vAxis.viewWindow.min = spec.yAxisMin;
+            if (hasMax) options.vAxis.viewWindow.max = spec.yAxisMax;
+        }
 
         var chart;
         if (spec.type === 'bar') {

@@ -32,6 +32,13 @@ namespace RotoMonsterUI
             sb.Append($"\"title\":\"{EscapeJson(_input.Title)}\",");
             sb.Append($"\"xAxisLabel\":\"{EscapeJson(_input.XAxisLabel)}\",");
             sb.Append($"\"yAxisLabel\":\"{EscapeJson(_input.YAxisLabel)}\",");
+
+            // Only emitted when set, so the JS can treat "absent" as "auto".
+            if (_input.YAxisMin.HasValue)
+                sb.Append($"\"yAxisMin\":{Num(_input.YAxisMin.Value)},");
+            if (_input.YAxisMax.HasValue)
+                sb.Append($"\"yAxisMax\":{Num(_input.YAxisMax.Value)},");
+                
             sb.Append("\"series\":[");
 
             var series = _input.Series ?? new List<ChartSeries>();
