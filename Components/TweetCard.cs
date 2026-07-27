@@ -231,10 +231,22 @@ namespace RotoMonsterUI
             return wrap;
         }
 
-        private HtmlTag RenderPlayers()
+private HtmlTag RenderPlayers()
         {
             var list = new HtmlTag("div").AddClass("tweet-card-players");
             var groupName = Key("tweetplayer");
+            var hiddenId = groupName + "-value";
+
+            // The checkboxes are UI only and post nothing - this hidden field is
+            // what actually submits. That's what lets a second click clear the
+            // selection; a radio fires no event when you click it while checked.
+            list.Append(new HtmlTag("input")
+                .Attr("type", "hidden")
+                .Attr("name", groupName)
+                .Attr("id", hiddenId)
+                .Attr("value", _input.SelectedPlayerId.HasValue
+                    ? _input.SelectedPlayerId.Value.ToString()
+                    : ""));
 
             foreach (var player in VisiblePlayers())
             {
@@ -254,18 +266,18 @@ namespace RotoMonsterUI
                 var row = new HtmlTag("div").AddClass("tweet-card-player-row");
                 var inputId = groupName + "-" + display.PlayerId;
 
-                var radio = new HtmlTag("input")
-                    .Attr("type", "radio")
-                    .Attr("name", groupName)
+                var check = new HtmlTag("input")
+                    .Attr("type", "checkbox")
+                    .AddClass("tweet-card-player-check")
                     .Attr("id", inputId)
-                    .Attr("value", display.PlayerId.ToString())
-                    .Attr("onchange", "__doPostBack('" + groupName + "','',this.form)")
-                    .Attr("language", "javascript");
+                    .Attr("data-target", hiddenId)
+                    .Attr("data-playerid", display.PlayerId.ToString())
+                    .Attr("data-postback", groupName);
 
                 if (isSelected)
-                    radio.Attr("checked", "checked");
+                    check.Attr("checked", "checked");
 
-                row.Append(radio);
+                row.Append(check);
 
                 var label = new HtmlTag("label").Attr("for", inputId);
 
@@ -312,7 +324,8 @@ namespace RotoMonsterUI
                 KeyId = _input.TweetId.ToString(),
                 Buttons = new List<NewsEditFormButton>
                 {
-                    new NewsEditFormButton { Text = "Post", Style = ButtonStyle.Primary, Name = Key("tweetpost") }
+                    new NewsEditFormButton { Text = "Post", Style = ButtonStyle.Primary, Name = Key("tweetpost") },
+                    new NewsEditFormButton { Text = "Cancel", Style = ButtonStyle.Secondary, Name = Key("tweetcancel") }
                 },
                 StatusTypeText = _input.StatusTypeText,
                 StatusTypeTag = _input.StatusTypeTag,

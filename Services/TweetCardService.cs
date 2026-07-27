@@ -8,7 +8,7 @@ namespace RotoMonsterUI
 
         private static readonly string[] ActionPrefixes =
         {
-            "tweetpost_", "tweetsettag_"
+            "tweetpost_", "tweetsettag_", "tweetcancel_"
         };
 
 
@@ -84,6 +84,10 @@ namespace RotoMonsterUI
             if (params_.ContainsKey(setTagKey) || eventTarget == setTagKey)
                 result.SetTagPressed = true;
 
+            var cancelKey = "tweetcancel_" + tweetId;
+            if (params_.ContainsKey(cancelKey) || eventTarget == cancelKey)
+                result.CancelPressed = true;
+
             // Player selection. Empty value means the user cleared it, which is still a change.
             string selectedPlayer;
             if (params_.TryGetValue("tweetplayer_" + tweetId, out selectedPlayer))
@@ -92,6 +96,12 @@ namespace RotoMonsterUI
                 int playerId;
                 if (int.TryParse(selectedPlayer, out playerId))
                     result.SelectedPlayerId = playerId;
+            }
+
+            if (result.CancelPressed)
+            {
+                result.PlayerSelectionChanged = true;
+                result.SelectedPlayerId = null;
             }
 
             string selectedTeam;

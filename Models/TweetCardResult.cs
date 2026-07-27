@@ -14,6 +14,8 @@ namespace RotoMonsterUI
         public string SelectedTeamCode { get; set; }
 
         public bool PostPressed { get; set; }
+        
+        public bool CancelPressed { get; set; }
 
         public bool SetTagPressed { get; set; }
 

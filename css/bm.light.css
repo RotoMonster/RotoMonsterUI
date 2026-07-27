@@ -4514,7 +4514,7 @@ a.modern-filter-btn:hover {
     background: rgba(var(--brand-primary-rgb), 0.06);
 }
  
-.tweet-card-player-row input[type="radio"] {
+.tweet-card-player-row input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
     width: 15px;
@@ -4528,12 +4528,12 @@ a.modern-filter-btn:hover {
     margin: 0;
 }
  
-.tweet-card-player-row input[type="radio"]:checked {
+.tweet-card-player-row input[type="checkbox"]:checked {
     background: var(--status-info);
     border-color: var(--status-info);
 }
  
-.tweet-card-player-row input[type="radio"]:checked::after {
+.tweet-card-player-row input[type="checkbox"]:checked::after {
     content: "";
     position: absolute;
     left: 4px;

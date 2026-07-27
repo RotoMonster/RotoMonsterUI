@@ -1122,3 +1122,25 @@ document.addEventListener('click', function (e) {
         }
     }
 })();
+
+document.addEventListener('change', function (e) {
+    var check = e.target.closest('.tweet-card-player-check');
+    if (!check) return;
+
+    var list = check.closest('.tweet-card-players');
+    if (!list) return;
+
+    if (check.checked) {
+        list.querySelectorAll('.tweet-card-player-check').forEach(function (other) {
+            if (other !== check) other.checked = false;
+        });
+    }
+
+    var hidden = document.getElementById(check.getAttribute('data-target'));
+    if (hidden) hidden.value = check.checked ? check.getAttribute('data-playerid') : '';
+
+    if (typeof __doPostBack === 'function') {
+        __doPostBack(check.getAttribute('data-postback'), '',
+                     check.form || check.closest('form'));
+    }
+});
