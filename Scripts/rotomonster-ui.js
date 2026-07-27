@@ -1144,3 +1144,26 @@ document.addEventListener('change', function (e) {
                      check.form || check.closest('form'));
     }
 });
+
+// Membership promo tabs. Client-side on purpose - a postback to read the next
+// tab would feel broken on a marketing panel. Delegated, so several promos can
+// sit on one page.
+document.addEventListener('click', function (e) {
+    var tab = e.target.closest('.membership-promo-tab');
+    if (!tab) return;
+
+    var promo = tab.closest('.membership-promo');
+    if (!promo) return;
+
+    e.preventDefault();
+
+    promo.querySelectorAll('.membership-promo-tab').forEach(function (t) {
+        t.classList.remove('membership-promo-tab--active');
+    });
+    tab.classList.add('membership-promo-tab--active');
+
+    var targetId = tab.getAttribute('data-promo-target');
+    promo.querySelectorAll('.membership-promo-panel').forEach(function (p) {
+        p.style.display = (p.id === targetId) ? '' : 'none';
+    });
+});

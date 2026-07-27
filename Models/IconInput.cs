@@ -80,7 +80,8 @@ namespace RotoMonsterUI
         Gemini,
         Favorite,
         FavoriteOutline, 
-        DragHandle
+        DragHandle, 
+        Basketball
     }
 
     public class IconInput
