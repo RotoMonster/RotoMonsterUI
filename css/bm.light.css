@@ -4500,8 +4500,8 @@ a.modern-filter-btn:hover {
  
 .tweet-card-teams .bm-segmented {
     align-self: flex-start;
+    max-width: 100%;
 }
- 
 /* ---- Player list ---- */
  
 .tweet-card-players {

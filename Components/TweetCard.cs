@@ -100,7 +100,7 @@ namespace RotoMonsterUI
             return card.ToString();
         }
 
-        private HtmlTag RenderHeader()
+private HtmlTag RenderHeader()
         {
             var header = new HtmlTag("div").AddClass("tweet-card-header");
 
@@ -114,16 +114,6 @@ namespace RotoMonsterUI
                     .Text(_input.ScreenName);
                 header.Append(user);
             }
-
-            if (_input.Followers.HasValue)
-            {
-                header.Append(new HtmlTag("span")
-                    .AddClass("tweet-card-followers")
-                    .Text(FormatFollowers(_input.Followers.Value)));
-            }
-
-            if (_input.TimeSinceCreated.HasValue)
-                header.AppendHtml(new TimeSinceBadge(_input.TimeSinceCreated.Value).Render());
 
             if (!string.IsNullOrEmpty(_input.TweetUrl))
             {
@@ -141,7 +131,17 @@ namespace RotoMonsterUI
                 header.Append(source);
             }
 
+            if (_input.Followers.HasValue)
+            {
+                header.Append(new HtmlTag("span")
+                    .AddClass("tweet-card-followers")
+                    .Text(FormatFollowers(_input.Followers.Value)));
+            }
+
             var right = new HtmlTag("div").AddClass("tweet-card-header-right");
+
+            if (_input.TimeSinceCreated.HasValue)
+                right.AppendHtml(new TimeSinceBadge(_input.TimeSinceCreated.Value).Render());
 
             if (!string.IsNullOrEmpty(_input.ProfileImageUrl))
             {
