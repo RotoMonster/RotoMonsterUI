@@ -115,6 +115,9 @@ namespace RotoMonsterUI
                     .Text(FormatFollowers(_input.Followers.Value)));
             }
 
+            if (_input.TimeSinceCreated.HasValue)
+                header.AppendHtml(new TimeSinceBadge(_input.TimeSinceCreated.Value).Render());
+
             if (!string.IsNullOrEmpty(_input.TweetUrl))
             {
                 var source = new HtmlTag("a")
@@ -122,12 +125,14 @@ namespace RotoMonsterUI
                     .Attr("href", _input.TweetUrl)
                     .Attr("target", "_blank")
                     .Attr("rel", "noopener noreferrer")
-                    .Text("open");
+                    .Attr("title", "Open the tweet on X");
+                source.AppendHtml(new Icon(new IconInput
+                {
+                    Type = IconType.ExternalLink,
+                    Size = 14
+                }).Render());
                 header.Append(source);
             }
-
-            if (_input.TimeSinceCreated.HasValue)
-                header.AppendHtml(new TimeSinceBadge(_input.TimeSinceCreated.Value).Render());
 
             var right = new HtmlTag("div").AddClass("tweet-card-header-right");
 
