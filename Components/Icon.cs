@@ -226,6 +226,8 @@
                     return WrapSvg(@"<circle cx=""12"" cy=""5"" r=""1.5""/><circle cx=""12"" cy=""12"" r=""1.5""/><circle cx=""12"" cy=""19"" r=""1.5""/>");
 case IconType.Basketball:
                     return WrapSvg(@"<circle cx=""12"" cy=""12"" r=""10""/><line x1=""12"" y1=""2"" x2=""12"" y2=""22""/><line x1=""2"" y1=""12"" x2=""22"" y2=""12""/><path d=""M4.93 4.93C8.5 8 8.5 16 4.93 19.07""/><path d=""M19.07 4.93C15.5 8 15.5 16 19.07 19.07""/>");
+case IconType.PersonMinus:
+    return WrapSvg(@"<path d=""M14 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2""/><circle cx=""8.5"" cy=""7"" r=""4""/><line x1=""17"" y1=""11"" x2=""23"" y2=""11""/>");
 case IconType.Baseball:
     return WrapSvg(@"<circle cx=""12"" cy=""12"" r=""10""/><path d=""M6.3 4.5C8.5 7 8.5 17 6.3 19.5""/><path d=""M17.7 4.5C15.5 7 15.5 17 17.7 19.5""/>");
                 case IconType.Football:

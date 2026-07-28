@@ -92,7 +92,9 @@
         Newspaper,
         Baseball,
         Football,
-        HockeyPuck
+        HockeyPuck,
+        PersonMinus
+
 
 
     }
