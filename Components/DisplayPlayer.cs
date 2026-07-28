@@ -1,4 +1,4 @@
-using HtmlTags;
+﻿using HtmlTags;
 
 namespace RotoMonsterUI
 {
@@ -24,12 +24,12 @@ namespace RotoMonsterUI
 
             var playerLink = new HtmlTag("a")
                 .AddClass("display-player-name player-link")
-                .Attr("href", $"/playerInfo.aspx?i={_input.PlayerId}")
+                .Attr("href", RotoMonsterUIUrls.PlayerUrl(_input.PlayerId))
                 .Text(_input.PlayerName);
             wrapper.Append(playerLink);
 
             var team = new HtmlTag("span")
-                .AddClass("ml-2 mr-1")
+                .AddClass("ms-2 me-1")
                 .AddClass("display-player-team");
             if (!string.IsNullOrEmpty(_input.TeamColor))
                 team.Attr("style", $"color:{NormalizeColor(_input.TeamColor)}");
@@ -39,7 +39,7 @@ namespace RotoMonsterUI
             foreach (var pos in _input.Positions)
             {
                 var posTag = new HtmlTag("span")
-                    .AddClass("ml-1")
+                    .AddClass("ms-1")
                     .AddClass("display-player-pos")
                     .Attr("style", $"color:{NormalizeColor(pos.Color)}")
                     .Text(pos.Abbreviation);

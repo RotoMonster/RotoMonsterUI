@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using HtmlTags;
 
 namespace RotoMonsterUI
@@ -55,7 +55,7 @@ namespace RotoMonsterUI
                 {
                     var viewAll = new HtmlTag("a")
                         .AddClass("comment-card-viewall")
-                        .Attr("href", $"/usercomments.aspx?i={_input.DisplayPlayerInput.PlayerId}")
+                        .Attr("href", RotoMonsterUIUrls.PlayerCommentsUrl(_input.DisplayPlayerInput.PlayerId))
                         .Attr("aria-label", "Filter player comments");
                     if (isShaded) viewAll.AddClass("color-shaded");
                     viewAll.AppendHtml(new Icon(new IconInput { Type = IconType.Filter, Size = 14, Color = "currentColor" }).Render());

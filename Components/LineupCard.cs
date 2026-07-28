@@ -1,4 +1,4 @@
-using HtmlTags;
+﻿using HtmlTags;
 using System;
 using System.Collections.Generic;
 
@@ -78,7 +78,7 @@ namespace RotoMonsterUI
                 var name = new HtmlTag("span").AddClass("lineup-card-player-name");
                 if (player.Player != null)
                 {
-                    var url = $"/playerinfo.aspx?i={player.Player.PlayerId}";
+                    var url = RotoMonsterUIUrls.PlayerUrl(player.Player.PlayerId);
                     var link = new HtmlTag("a")
                         .Attr("href", url)
                         .AddClass("player-link")
