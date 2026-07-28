@@ -78,12 +78,13 @@ namespace RotoMonsterUI
             card.Append(RenderHeader());
 
             if (!string.IsNullOrEmpty(_input.Text))
-                card.Append(new HtmlTag("div").AddClass("tweet-card-text").Text(_input.Text));
+                    card.Append(new HtmlTag("div").AddClass("tweet-card-text")
+                                .Text(System.Net.WebUtility.HtmlDecode(_input.Text)));
 
             if (_input.Media != null && _input.Media.Any())
                 card.Append(RenderMedia());
 
-            if (_input.Teams != null && _input.Teams.Any())
+            if (_input.Teams != null && _input.Teams.Count > 1)
                 card.Append(RenderTeamFilter());
 
             if (_input.Players != null && _input.Players.Any())
@@ -126,7 +127,7 @@ namespace RotoMonsterUI
             }
 
             if (_input.TimeSinceCreated.HasValue)
-                header.AppendHtml(new TimeSince(_input.TimeSinceCreated.Value).Render());
+                header.AppendHtml(new TimeSinceBadge(_input.TimeSinceCreated.Value).Render());
 
             var right = new HtmlTag("div").AddClass("tweet-card-header-right");
 

@@ -149,10 +149,11 @@
 
     --season-progress-pending-border: var(--brand-primary);
 
-    --tweet-card-bg: #fdfce8;
-    --tweet-card-border: rgba(202, 199, 138, 0.5);
     --tweet-card-posting-border: rgba(220, 38, 38, 0.35);
+    --tweet-card-posting-bg: #eafaf0;
     --tweet-card-media-bg: #e2e8f0;
+    --tweet-card-bg: #ffffff;
+    --tweet-card-border: rgba(148, 163, 184, 0.45);
 
     --chart-series-1: var(--brand-primary);
     --chart-series-2: #378add;
@@ -4330,14 +4331,21 @@ a.modern-filter-btn:hover {
     margin-bottom: 0.5rem;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
+
+.tweet-card-user {
+    color: #000;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.88rem;
+}
  
 .tweet-card:hover {
     border-color: rgba(var(--brand-primary-rgb), 0.4);
     box-shadow: 0 2px 12px rgba(0,0,0,0.12);
 }
- 
-/* Card with a player picked and the posting form open. */
+
 .tweet-card--posting {
+    background: var(--tweet-card-posting-bg);
     border-color: var(--tweet-card-posting-border);
     padding: 0.75rem;
 }
@@ -4346,18 +4354,17 @@ a.modern-filter-btn:hover {
  
 .tweet-card-header {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 0.4rem;
     font-size: 0.8rem;
 }
  
 .tweet-card-user {
-    color: var(--brand-primary);
+    color: #000;
     font-weight: 600;
     text-decoration: none;
     font-size: 0.88rem;
 }
- 
 .tweet-card-user:hover {
     text-decoration: underline;
 }
@@ -4380,7 +4387,6 @@ a.modern-filter-btn:hover {
 }
  
 .tweet-card-header .time-since {
-    color: var(--color-text-tertiary);
     font-size: 0.72rem;
 }
  
@@ -4841,3 +4847,4 @@ a.modern-filter-btn:hover {
 @media (prefers-reduced-motion: reduce) {
     .rotating-panel-dot--active::after { animation: none; transform: scaleX(1); }
 }
+
