@@ -1,4 +1,4 @@
-namespace RotoMonsterUI
+﻿namespace RotoMonsterUI
 {
     public class Icon
     {
@@ -226,6 +226,28 @@ namespace RotoMonsterUI
                     return WrapSvg(@"<circle cx=""12"" cy=""5"" r=""1.5""/><circle cx=""12"" cy=""12"" r=""1.5""/><circle cx=""12"" cy=""19"" r=""1.5""/>");
 case IconType.Basketball:
                     return WrapSvg(@"<circle cx=""12"" cy=""12"" r=""10""/><line x1=""12"" y1=""2"" x2=""12"" y2=""22""/><line x1=""2"" y1=""12"" x2=""22"" y2=""12""/><path d=""M4.93 4.93C8.5 8 8.5 16 4.93 19.07""/><path d=""M19.07 4.93C15.5 8 15.5 16 19.07 19.07""/>");
+case IconType.Baseball:
+    return WrapSvg(@"<circle cx=""12"" cy=""12"" r=""10""/><path d=""M6.3 4.5C8.5 7 8.5 17 6.3 19.5""/><path d=""M17.7 4.5C15.5 7 15.5 17 17.7 19.5""/>");
+                case IconType.Football:
+                    return WrapSvg(@"<path d=""M2 12c3-5 6.5-7.5 10-7.5S19 7 22 12c-3 5-6.5 7.5-10 7.5S5 17 2 12z""/><line x1=""9"" y1=""12"" x2=""15"" y2=""12""/><line x1=""10.5"" y1=""10.5"" x2=""10.5"" y2=""13.5""/><line x1=""12"" y1=""10.5"" x2=""12"" y2=""13.5""/><line x1=""13.5"" y1=""10.5"" x2=""13.5"" y2=""13.5""/>");
+case IconType.HockeyPuck:
+    return WrapSvg(@"<ellipse cx=""12"" cy=""9"" rx=""8"" ry=""3.5""/><path d=""M4 9v5c0 1.9 3.6 3.5 8 3.5s8-1.6 8-3.5V9""/>");
+case IconType.Robot:
+    return WrapSvg(@"<rect x=""4"" y=""8"" width=""16"" height=""12"" rx=""2""/><line x1=""12"" y1=""4"" x2=""12"" y2=""8""/><circle cx=""12"" cy=""3"" r=""1""/><circle cx=""9"" cy=""13"" r=""1""/><circle cx=""15"" cy=""13"" r=""1""/><line x1=""9"" y1=""17"" x2=""15"" y2=""17""/>");
+case IconType.WandMagic:
+    return WrapSvg(@"<line x1=""4"" y1=""20"" x2=""14"" y2=""10""/><polyline points=""15 3 16 6 19 7 16 8 15 11 14 8 11 7 14 6""/><line x1=""20"" y1=""13"" x2=""20"" y2=""17""/><line x1=""18"" y1=""15"" x2=""22"" y2=""15""/>");
+case IconType.Lock:
+    return WrapSvg(@"<rect x=""3"" y=""11"" width=""18"" height=""11"" rx=""2""/><path d=""M7 11V7a5 5 0 0 1 10 0v4""/>");
+case IconType.Envelope:
+    return WrapSvg(@"<rect x=""2"" y=""4"" width=""20"" height=""16"" rx=""2""/><polyline points=""2 6 12 13 22 6""/>");
+case IconType.Twitter:
+    return WrapSvg(@"<path d=""M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z""/>");
+case IconType.UserGear:
+    return WrapSvg(@"<path d=""M14 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2""/><circle cx=""8.5"" cy=""7"" r=""4""/><circle cx=""18"" cy=""15"" r=""3""/><line x1=""18"" y1=""10.5"" x2=""18"" y2=""12""/><line x1=""18"" y1=""18"" x2=""18"" y2=""19.5""/><line x1=""13.5"" y1=""15"" x2=""15"" y2=""15""/><line x1=""21"" y1=""15"" x2=""22.5"" y2=""15""/>");
+case IconType.Box:
+    return WrapSvg(@"<path d=""M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z""/><polyline points=""3.3 7 12 12 20.7 7""/><line x1=""12"" y1=""22"" x2=""12"" y2=""12""/>");
+case IconType.Newspaper:
+    return WrapSvg(@"<path d=""M4 22h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2z""/><path d=""M4 22a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h2""/><line x1=""10"" y1=""7"" x2=""16"" y2=""7""/><line x1=""10"" y1=""11"" x2=""16"" y2=""11""/><line x1=""10"" y1=""15"" x2=""14"" y2=""15""/>");
                 case IconType.DragHandle:
                     return $@"<svg xmlns=""http://www.w3.org/2000/svg"" width=""{_input.Size}"" height=""{_input.Size}"" viewBox=""0 0 24 24"" fill=""{_input.Color}"">
                         <circle cx=""9"" cy=""6"" r=""1.6""/><circle cx=""15"" cy=""6"" r=""1.6""/>

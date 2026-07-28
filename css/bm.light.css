@@ -2509,6 +2509,7 @@ a.modern-filter-btn:hover {
 
 .bm-segmented {
     display: inline-flex;
+    flex-wrap: wrap;
     background: var(--color-bg-secondary);
     border: 1px solid var(--color-border);
     border-radius: 8px;

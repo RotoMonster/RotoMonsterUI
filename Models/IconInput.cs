@@ -1,4 +1,4 @@
-namespace RotoMonsterUI
+﻿namespace RotoMonsterUI
 {
     public enum IconType
     {
@@ -81,7 +81,20 @@ namespace RotoMonsterUI
         Favorite,
         FavoriteOutline, 
         DragHandle, 
-        Basketball
+        Basketball,
+        Robot,
+        WandMagic,
+        Lock,
+        Envelope,
+        Twitter,
+        UserGear,
+        Box,
+        Newspaper,
+        Baseball,
+        Football,
+        HockeyPuck
+
+
     }
 
     public class IconInput

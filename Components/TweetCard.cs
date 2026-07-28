@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using HtmlTags;
 
 namespace RotoMonsterUI
@@ -41,6 +42,14 @@ namespace RotoMonsterUI
             return minutes + ":" + seconds.ToString("00");
         }
 
+        private static string RenderTweetText(string text)
+        {
+            var decoded = System.Net.WebUtility.HtmlDecode(text);
+            var escaped = System.Net.WebUtility.HtmlEncode(decoded);
+
+            return Regex.Replace(escaped, @"&lt;br\s*/?&gt;", "<br />", RegexOptions.IgnoreCase);
+        }
+
         private string SelectedTeam
         {
             get
@@ -59,8 +68,6 @@ namespace RotoMonsterUI
             if (string.Equals(team, AllTeams, StringComparison.OrdinalIgnoreCase))
                 return players.ToList();
 
-            // A player stays visible while selected even if the filter moved off their
-            // team, otherwise the open form would vanish mid-edit.
             return players
                 .Where(p => p.DisplayPlayerInput != null &&
                             (string.Equals(p.DisplayPlayerInput.TeamCode, team, StringComparison.OrdinalIgnoreCase) ||
@@ -78,8 +85,8 @@ namespace RotoMonsterUI
             card.Append(RenderHeader());
 
             if (!string.IsNullOrEmpty(_input.Text))
-                    card.Append(new HtmlTag("div").AddClass("tweet-card-text")
-                                .Text(System.Net.WebUtility.HtmlDecode(_input.Text)));
+                card.Append(new HtmlTag("div").AddClass("tweet-card-text")
+                    .AppendHtml(RenderTweetText(_input.Text)));
 
             if (_input.Media != null && _input.Media.Any())
                 card.Append(RenderMedia());
@@ -237,15 +244,12 @@ namespace RotoMonsterUI
             return wrap;
         }
 
-private HtmlTag RenderPlayers()
+        private HtmlTag RenderPlayers()
         {
             var list = new HtmlTag("div").AddClass("tweet-card-players");
             var groupName = Key("tweetplayer");
             var hiddenId = groupName + "-value";
 
-            // The checkboxes are UI only and post nothing - this hidden field is
-            // what actually submits. That's what lets a second click clear the
-            // selection; a radio fires no event when you click it while checked.
             list.Append(new HtmlTag("input")
                 .Attr("type", "hidden")
                 .Attr("name", groupName)
