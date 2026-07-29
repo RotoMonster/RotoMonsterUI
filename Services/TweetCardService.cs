@@ -94,14 +94,18 @@ namespace RotoMonsterUI
                     result.AutoFillPressed = true;
 
             // Player selection. Empty value means the user cleared it, which is still a change.
+            var playerKey = "tweetplayer_" + tweetId;
+
             string selectedPlayer;
-            if (params_.TryGetValue("tweetplayer_" + tweetId, out selectedPlayer))
+            if (params_.TryGetValue(playerKey, out selectedPlayer))
             {
-                result.PlayerSelectionChanged = true;
                 int playerId;
                 if (int.TryParse(selectedPlayer, out playerId))
                     result.SelectedPlayerId = playerId;
             }
+
+            if (eventTarget == playerKey)
+                result.PlayerSelectionChanged = true;
 
             if (result.CancelPressed)
             {
