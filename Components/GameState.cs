@@ -1,4 +1,4 @@
-using HtmlTags;
+﻿using HtmlTags;
 using System;
 
 namespace RotoMonsterUI
@@ -100,9 +100,11 @@ namespace RotoMonsterUI
                 var localTime = TimeZoneInfo.ConvertTimeFromUtc(_input.GameTimeUtc, _input.DisplayTimezone);
                 var timeStr = localTime.ToString("h:mmtt").ToLower();
                 var until = _input.GameTimeUtc - DateTime.UtcNow;
-                var untilStr = until.TotalHours >= 1
-                    ? $"in {Math.Round(until.TotalHours, 1)}h"
-                    : $"in {until.Minutes}m";
+                var untilStr = until.TotalMinutes < 0
+                    ? ""
+                    : until.TotalHours >= 1
+                        ? $"in {Math.Round(until.TotalHours, 1)}h"
+                        : $"in {(int)until.TotalMinutes}m";
 
                 var upcoming = new HtmlTag("div").AddClass("game-state-upcoming");
 

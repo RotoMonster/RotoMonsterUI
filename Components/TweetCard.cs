@@ -335,6 +335,7 @@ private HtmlTag RenderHeader()
                 Buttons = new List<NewsEditFormButton>
                 {
                     new NewsEditFormButton { Text = "Post", Style = ButtonStyle.Primary, Name = Key("tweetpost") },
+                    new NewsEditFormButton { Text = "Auto Fill", Style = ButtonStyle.Info, Name = Key("tweetautofill") },
                     new NewsEditFormButton { Text = "Cancel", Style = ButtonStyle.Secondary, Name = Key("tweetcancel") }
                 },
                 StatusTypeText = _input.StatusTypeText,
