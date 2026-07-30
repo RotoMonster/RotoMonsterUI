@@ -30,6 +30,15 @@ namespace RotoMonsterUI
         public string ColorCode { get; set; }
     }
 
+    public class TweetCardKeyword
+    {
+        public string Text { get; set; }
+
+        public string Category { get; set; }
+
+        public double? Weight { get; set; }
+    }
+
     public class TweetCardPlayer
     {
         public DisplayPlayerInput DisplayPlayerInput { get; set; }
@@ -72,13 +81,17 @@ namespace RotoMonsterUI
         public string AiText { get; set; }
 
         public bool ShowAiButton { get; set; } = true;
-        
+
         public bool IsScrollTarget { get; set; }
 
 
         public List<TweetCardTeam> Teams { get; set; } = new List<TweetCardTeam>();
 
         public string SelectedTeamCode { get; set; }
+
+        public List<TweetCardKeyword> Keywords { get; set; } = new List<TweetCardKeyword>();
+
+        public double DimKeywordsBelowWeight { get; set; } = 0.5;
 
         public List<TweetCardPlayer> Players { get; set; } = new List<TweetCardPlayer>();
 

@@ -109,6 +109,9 @@ namespace RotoMonsterUI
                 }
             }
 
+            if (_input.Keywords != null && _input.Keywords.Any())
+                card.Append(RenderKeywords());
+
             if (_input.Teams != null && _input.Teams.Count > 1)
                 card.Append(RenderTeamFilter());
 
@@ -273,6 +276,29 @@ private HtmlTag RenderHeader()
                 }
 
                 wrap.Append(item);
+            }
+
+            return wrap;
+        }
+
+        private HtmlTag RenderKeywords()
+        {
+            var wrap = new HtmlTag("div").AddClass("tweet-card-keywords");
+
+            foreach (var keyword in _input.Keywords)
+            {
+                if (keyword == null || string.IsNullOrEmpty(keyword.Text)) continue;
+
+                var pill = new HtmlTag("span").AddClass("tweet-card-keyword");
+
+                if (keyword.Weight.HasValue && keyword.Weight.Value < _input.DimKeywordsBelowWeight)
+                    pill.AddClass("tweet-card-keyword--weak");
+
+                if (!string.IsNullOrEmpty(keyword.Category))
+                    pill.Attr("title", keyword.Category);
+
+                pill.Text(keyword.Text);
+                wrap.Append(pill);
             }
 
             return wrap;
