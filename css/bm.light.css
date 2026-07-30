@@ -4855,12 +4855,14 @@ a.modern-filter-btn:hover {
 
    .range-badge {
     --range-badge-cell-width: 54px;
+    --range-badge-label-width: 116px;  
     display: inline-flex;
     align-items: center;
     gap: 8px;
 }
 
 .range-badge-label {
+    flex: 0 0 var(--range-badge-label-width); 
     font-size: 12px;
     font-weight: 600;
     color: var(--color-text-secondary);
@@ -5018,4 +5020,39 @@ a.modern-filter-btn:hover {
     left: 0;
     width: 100%;
     z-index: 20;
+}
+
+.range-badge--monster .bm-tooltip-wrap,
+.range-badge--monster .bm-tooltip-trigger {
+    display: block;
+    width: 100%;
+}
+
+.range-badge--monster .range-badge-cell {
+    width: 100%;
+    gap: 3px;
+}
+
+.range-badge--monster .monster-bar-measure {
+    font-size: 10px;
+    opacity: 0.85;
+}
+
+.range-badge--monster .monster-bar-cell--top {
+    color: #2563eb;
+    font-weight: 700;
+}
+
+.range-badge--monster .monster-bar-cell--ownable {
+    color: #7c3aed;
+    font-weight: 600;
+}
+
+.range-badge--monster .monster-bar-cell--dim {
+    color: #6b7280;
+}
+
+.range-badge--monster .monster-bar-cell--empty {
+    background: none;
+    border-color: transparent;
 }
