@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using HtmlTags;
 
 namespace RotoMonsterUI
@@ -47,10 +48,38 @@ namespace RotoMonsterUI
             return wrap.ToString();
         }
 
+
+        public static string RenderHeader(List<string> columnLabels, string label = null)
+        {
+            var wrap = new HtmlTag("div").AddClass("range-badge range-badge--monster range-badge--header");
+
+            if (!string.IsNullOrEmpty(label))
+                wrap.Append(new HtmlTag("span").AddClass("range-badge-label").Text(label));
+
+            var cells = new HtmlTag("div").AddClass("range-badge-cells");
+
+            if (columnLabels != null)
+            {
+                foreach (var columnLabel in columnLabels)
+                {
+                    cells.Append(new HtmlTag("span")
+                        .AddClass("range-badge-header-cell")
+                        .Text(columnLabel ?? ""));
+                }
+            }
+
+            wrap.Append(cells);
+            return wrap.ToString();
+        }
+
         private static HtmlTag RenderCell(MonsterBarBadgeItem item)
         {
             var cell = new HtmlTag("span").AddClass("range-badge-cell monster-bar-cell");
             cell.AddClass(EmphasisClass(item.Emphasis));
+
+            var groupClass = GroupClass(item.Group);
+            if (!string.IsNullOrEmpty(groupClass))
+                cell.AddClass(groupClass);
 
             var background = NormalizeColor(item.ColorCode);
             if (!string.IsNullOrEmpty(background))
@@ -76,6 +105,21 @@ namespace RotoMonsterUI
             return new HtmlTag("span")
                 .AddClass("range-badge-cell monster-bar-cell monster-bar-cell--empty")
                 .AppendHtml("&nbsp;");
+        }
+
+        private static string GroupClass(MonsterBarGroup group)
+        {
+            switch (group)
+            {
+                case MonsterBarGroup.Projection:
+                    return "monster-bar-cell--projection";
+                case MonsterBarGroup.LastSeason:
+                    return "monster-bar-cell--last-season";
+                case MonsterBarGroup.CurrentSeason:
+                    return "monster-bar-cell--current-season";
+                default:
+                    return null;
+            }
         }
 
         private static string EmphasisClass(MonsterBarEmphasis emphasis)

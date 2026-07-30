@@ -162,6 +162,10 @@
     --chart-series-1: var(--brand-primary);
     --chart-series-2: #378add;
     --chart-series-3: #1d9e75;
+
+    --monster-bar-border-projection: #818cf8;
+    --monster-bar-border-last-season: #94a3b8;
+    --monster-bar-border-current-season: #f97316;
 }
 
 body, p, h1, h2, h3, h4, h5, h6, span, div, a, td, th, li,
@@ -5119,4 +5123,27 @@ a.modern-filter-btn:hover {
     opacity: 0.55;
     font-weight: 500;
     border-style: dashed;
+}
+
+.range-badge--header .range-badge-header-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 14px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+}
+
+.range-badge--monster .monster-bar-cell--projection {
+    border-color: var(--monster-bar-border-projection);
+}
+
+.range-badge--monster .monster-bar-cell--last-season {
+    border-color: var(--monster-bar-border-last-season);
+}
+
+.range-badge--monster .monster-bar-cell--current-season {
+    border-color: var(--monster-bar-border-current-season);
 }

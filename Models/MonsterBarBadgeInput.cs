@@ -2,6 +2,14 @@ using System.Collections.Generic;
 
 namespace RotoMonsterUI
 {
+    public enum MonsterBarGroup
+    {
+        None,
+        Projection,
+        LastSeason,
+        CurrentSeason
+    }
+
     public enum MonsterBarEmphasis
     {
         Top,
@@ -27,6 +35,8 @@ namespace RotoMonsterUI
         public string ColorCode { get; set; }
 
         public MonsterBarEmphasis Emphasis { get; set; } = MonsterBarEmphasis.Dim;
+
+        public MonsterBarGroup Group { get; set; } = MonsterBarGroup.None;
 
         public bool IsEmpty { get; set; }
     }
