@@ -5096,8 +5096,12 @@ a.modern-filter-btn:hover {
     height: 14px;
     font-size: 10px;
     font-weight: 700;
-    color: var(--color-text-secondary);
+    color: #fff;
     white-space: nowrap;
+}
+
+.range-badge--header .range-badge-label {
+    color: #fff;
 }
 
 .range-badge--monster .monster-bar-cell--projection {

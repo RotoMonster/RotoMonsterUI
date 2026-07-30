@@ -48,7 +48,10 @@ namespace RotoMonsterUI
             return wrap.ToString();
         }
 
-
+        /// <summary>
+        /// The column header for a table of bars. Rendered once above the rows.
+        /// Takes its own short labels since the item Descriptions are the long form.
+        /// </summary>
         public static string RenderHeader(List<string> columnLabels, string label = null)
         {
             var wrap = new HtmlTag("div").AddClass("range-badge range-badge--monster range-badge--header");
@@ -64,7 +67,7 @@ namespace RotoMonsterUI
                 {
                     cells.Append(new HtmlTag("span")
                         .AddClass("range-badge-header-cell")
-                        .Text(columnLabel ?? ""));
+                        .Text(DecodeLabel(columnLabel)));
                 }
             }
 
@@ -105,6 +108,16 @@ namespace RotoMonsterUI
             return new HtmlTag("span")
                 .AddClass("range-badge-cell monster-bar-cell monster-bar-cell--empty")
                 .AppendHtml("&nbsp;");
+        }
+
+        /// <summary>
+        /// Labels can arrive with HTML entities already in them (&#x27;25). Decode
+        /// once so .Text() escapes once - same visible result, still safe.
+        /// </summary>
+        private static string DecodeLabel(string label)
+        {
+            if (string.IsNullOrEmpty(label)) return "";
+            return System.Net.WebUtility.HtmlDecode(label);
         }
 
         private static string GroupClass(MonsterBarGroup group)
