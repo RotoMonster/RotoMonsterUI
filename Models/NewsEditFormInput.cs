@@ -9,6 +9,8 @@ namespace RotoMonsterUI
         public ButtonStyle Style { get; set; } = ButtonStyle.Primary;
 
         public string Name { get; set; }
+
+        public bool UsePostBack { get; set; }
     }
 
     public class NewsEditFormInput

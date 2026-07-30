@@ -161,11 +161,11 @@ private HtmlTag RenderHeader()
             {
                 var aiButton = new HtmlTag("button")
                     .AddClass("tweet-card-ai-btn")
-                    .Attr("type", "submit")
+                    .Attr("type", "button")
                     .Attr("name", Key("tweetaitext"))
-                    .Attr("value", "1")
+                    .Attr("onclick", "__doPostBack('" + Key("tweetaitext") + "','',this.form)")
                     .Attr("title", "Summarize this tweet with AI");
-                aiButton.AppendHtml(new Icon(new IconInput { Type = IconType.Robot, Size = 20 }).Render());
+                aiButton.AppendHtml(new Icon(new IconInput { Type = IconType.Robot, Size = 24 }).Render());
                 right.Append(aiButton);
             }
 
@@ -411,9 +411,9 @@ private HtmlTag RenderHeader()
                 KeyId = _input.TweetId.ToString(),
                 Buttons = new List<NewsEditFormButton>
                 {
-                    new NewsEditFormButton { Text = "Post", Style = ButtonStyle.Primary, Name = Key("tweetpost") },
-                    new NewsEditFormButton { Text = "Auto Fill", Style = ButtonStyle.Info, Name = Key("tweetautofill") },
-                    new NewsEditFormButton { Text = "Cancel", Style = ButtonStyle.Secondary, Name = Key("tweetcancel") }
+                    new NewsEditFormButton { Text = "Post", Style = ButtonStyle.Primary, Name = Key("tweetpost"), UsePostBack = true },
+                    new NewsEditFormButton { Text = "Auto Fill", Style = ButtonStyle.Info, Name = Key("tweetautofill"), UsePostBack = true },
+                    new NewsEditFormButton { Text = "Cancel", Style = ButtonStyle.Secondary, Name = Key("tweetcancel"), UsePostBack = true }
                 },
                 StatusTypeText = _input.StatusTypeText,
                 StatusTypeTag = _input.StatusTypeTag,

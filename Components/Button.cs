@@ -54,10 +54,17 @@ namespace RotoMonsterUI
         }
 
         private string _name;
+        private bool _postBack;
 
         public Button WithName(string name)
         {
             _name = name;
+            return this;
+        }
+
+        public Button WithPostBack()
+        {
+            _postBack = true;
             return this;
         }
 
@@ -82,7 +89,15 @@ namespace RotoMonsterUI
                 tag.Attr("id", _id);
 
             if (!string.IsNullOrEmpty(_name))
+            {
                 tag.Attr("name", _name);
+
+                if (_postBack)
+                {
+                    tag.Attr("type", "button");
+                    tag.Attr("onclick", "__doPostBack('" + _name + "','',this.form)");
+                }
+            }
 
             return tag.Text(_text).ToString();
         }

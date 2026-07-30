@@ -77,7 +77,9 @@ namespace RotoMonsterUI
             foreach (var button in _input.Buttons)
             {
                 if (button == null || string.IsNullOrEmpty(button.Name)) continue;
-                buttonRow.AppendHtml(new Button(button.Text).WithStyle(button.Style).WithName(button.Name).Render());
+                var buttonTag = new Button(button.Text).WithStyle(button.Style).WithName(button.Name);
+                if (button.UsePostBack) buttonTag.WithPostBack();
+                buttonRow.AppendHtml(buttonTag.Render());
             }
             buttonRow.AppendHtml(new Checkbox()
                 .WithLabel("Unofficial")
