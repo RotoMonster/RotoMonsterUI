@@ -13,6 +13,8 @@ namespace RotoMonsterUI
         public bool GameStarted { get; set; }
         public bool ShowLineupDot { get; set; } = false;
         public bool LineupConfirmed { get; set; } = false;
+        public List<LineupPlayer> LineupPlayers { get; set; }
+        public bool HighlightOwnedPlayers { get; set; }
         public List<WarningPlayer> WarningPlayers { get; set; }
         public IconType? WarningIconType { get; set; }
         public string WarningIconColor { get; set; }
@@ -38,7 +40,9 @@ namespace RotoMonsterUI
             {
                 cell.AppendHtml(new LineupDot(new LineupDotInput
                 {
-                    IsConfirmed = _input.LineupConfirmed
+                    IsConfirmed = _input.LineupConfirmed,
+                    Players = _input.LineupPlayers,
+                    HighlightOwnedPlayers = _input.HighlightOwnedPlayers
                 }).Render());
             }
 

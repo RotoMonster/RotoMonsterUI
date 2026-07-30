@@ -17,6 +17,8 @@ namespace RotoMonsterUI
 
         public bool AutoFillPressed { get; set; }
 
+        public bool AiTextPressed { get; set; }
+
         public bool CancelPressed { get; set; }
 
         public bool SetTagPressed { get; set; }

@@ -62,7 +62,12 @@ namespace RotoMonsterUI
             var areaA = new HtmlTag("span").AddClass("game-team-cell-a");
             if (!gameStarted)
             {
-                areaA.AppendHtml(new LineupDot(new LineupDotInput { IsConfirmed = _input.LineupConfirmed }).Render());
+                areaA.AppendHtml(new LineupDot(new LineupDotInput
+                {
+                    IsConfirmed = _input.LineupConfirmed,
+                    Players = _input.LineupPlayers,
+                    HighlightOwnedPlayers = _input.HighlightOwnedPlayers
+                }).Render());
             }
             cell.Append(areaA);
 

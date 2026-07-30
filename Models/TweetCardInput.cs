@@ -67,6 +67,12 @@ namespace RotoMonsterUI
 
         public List<TweetCardMedia> Media { get; set; } = new List<TweetCardMedia>();
 
+        public bool HideMedia { get; set; }
+
+        public string AiText { get; set; }
+
+        public bool ShowAiButton { get; set; } = true;
+
 
         public List<TweetCardTeam> Teams { get; set; } = new List<TweetCardTeam>();
 

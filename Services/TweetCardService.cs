@@ -8,7 +8,7 @@ namespace RotoMonsterUI
 
         private static readonly string[] ActionPrefixes =
         {
-            "tweetpost_", "tweetsettag_", "tweetcancel_", "tweetautofill_"
+            "tweetpost_", "tweetsettag_", "tweetcancel_", "tweetautofill_", "tweetaitext_"
         };
 
 
@@ -90,8 +90,15 @@ namespace RotoMonsterUI
 
             
             var autoFillKey = "tweetautofill_" + tweetId;
-                if (params_.ContainsKey(autoFillKey) || eventTarget == autoFillKey)
-                    result.AutoFillPressed = true;
+            if (params_.ContainsKey(autoFillKey) || eventTarget == autoFillKey)
+                result.AutoFillPressed = true;
+
+            var aiTextKey = "tweetaitext_" + tweetId;
+            if (params_.ContainsKey(aiTextKey) || eventTarget == aiTextKey)
+            {
+                result.AiTextPressed = true;
+                result.AutoFillPressed = true;
+            }
 
             // Player selection. Empty value means the user cleared it, which is still a change.
             var playerKey = "tweetplayer_" + tweetId;

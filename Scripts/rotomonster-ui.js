@@ -1212,3 +1212,20 @@ document.addEventListener('click', function (e) {
         }, seconds * 1000);
     });
 })();
+
+document.addEventListener('click', function (e) {
+    var pill = e.target.closest('.tweet-card-media-indicator');
+    if (!pill) return;
+
+    var card = pill.closest('.tweet-card');
+    if (!card) return;
+
+    var media = card.querySelector('.tweet-card-media');
+    if (!media) return;
+
+    e.preventDefault();
+
+    var collapsed = media.classList.toggle('tweet-card-media--collapsed');
+    pill.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    pill.setAttribute('title', collapsed ? 'Show media' : 'Hide media');
+});

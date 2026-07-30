@@ -16,6 +16,8 @@ namespace RotoMonsterUI
         public bool LineupConfirmed { get; set; }
         public List<WarningPlayer> WarningPlayers { get; set; } = new List<WarningPlayer>();
         public int? PlayerCount { get; set; }
+        public List<LineupPlayer> LineupPlayers { get; set; }
+        public bool HighlightOwnedPlayers { get; set; }
         public string PlayerIconColor { get; set; } = "#94a3b8";
         public IconType? PlayerIconType { get; set; }
         public string BgColor { get; set; } = "FFFFFF";

@@ -88,8 +88,25 @@ namespace RotoMonsterUI
                 card.Append(new HtmlTag("div").AddClass("tweet-card-text")
                     .AppendHtml(RenderTweetText(_input.Text)));
 
+            if (!string.IsNullOrEmpty(_input.AiText))
+                card.Append(RenderAiText());
+
             if (_input.Media != null && _input.Media.Any())
-                card.Append(RenderMedia());
+            {
+                if (_input.HideMedia)
+                {
+                    var indicator = RenderMediaIndicator();
+                    if (indicator != null)
+                    {
+                        card.Append(indicator);
+                        card.Append(RenderMedia().AddClass("tweet-card-media--collapsed"));
+                    }
+                }
+                else
+                {
+                    card.Append(RenderMedia());
+                }
+            }
 
             if (_input.Teams != null && _input.Teams.Count > 1)
                 card.Append(RenderTeamFilter());
@@ -140,6 +157,18 @@ private HtmlTag RenderHeader()
 
             var right = new HtmlTag("div").AddClass("tweet-card-header-right");
 
+            if (_input.ShowAiButton)
+            {
+                var aiButton = new HtmlTag("button")
+                    .AddClass("tweet-card-ai-btn")
+                    .Attr("type", "submit")
+                    .Attr("name", Key("tweetaitext"))
+                    .Attr("value", "1")
+                    .Attr("title", "Summarize this tweet with AI");
+                aiButton.AppendHtml(new Icon(new IconInput { Type = IconType.Robot, Size = 20 }).Render());
+                right.Append(aiButton);
+            }
+
             if (_input.TimeSinceCreated.HasValue)
                 right.AppendHtml(new TimeSinceBadge(_input.TimeSinceCreated.Value).Render());
 
@@ -154,6 +183,54 @@ private HtmlTag RenderHeader()
             header.Append(right);
 
             return header;
+        }
+
+        private HtmlTag RenderAiText()
+        {
+            var wrap = new HtmlTag("div").AddClass("tweet-card-ai-text");
+
+            var icon = new HtmlTag("span").AddClass("tweet-card-ai-text-icon");
+            icon.AppendHtml(new Icon(new IconInput { Type = IconType.Robot, Size = 16 }).Render());
+            wrap.Append(icon);
+
+            wrap.Append(new HtmlTag("span")
+                .AddClass("tweet-card-ai-text-body")
+                .Text(_input.AiText));
+
+            return wrap;
+        }
+
+        private HtmlTag RenderMediaIndicator()
+        {
+            var photos = 0;
+            var videos = 0;
+            var gifs = 0;
+
+            foreach (var media in _input.Media)
+            {
+                if (media == null) continue;
+                if (media.MediaType == TweetMediaType.Video) videos++;
+                else if (media.MediaType == TweetMediaType.Gif) gifs++;
+                else photos++;
+            }
+
+            if (photos == 0 && videos == 0 && gifs == 0)
+                return null;
+
+            var parts = new List<string>();
+            if (photos > 0) parts.Add(photos + " " + SingularPlural.Get("photo", photos));
+            if (videos > 0) parts.Add(videos + " " + SingularPlural.Get("video", videos));
+            if (gifs > 0) parts.Add(gifs + " " + SingularPlural.Get("gif", gifs));
+
+            var wrap = new HtmlTag("button")
+                .AddClass("tweet-card-media-indicator")
+                .Attr("type", "button")
+                .Attr("aria-expanded", "false")
+                .Attr("title", "Show media");
+            wrap.Append(new HtmlTag("span").AddClass("tweet-card-media-indicator-caret"));
+            wrap.Append(new HtmlTag("span").Text(string.Join(", ", parts)));
+
+            return wrap;
         }
 
         private HtmlTag RenderMedia()
