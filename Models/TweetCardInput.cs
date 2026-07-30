@@ -72,6 +72,8 @@ namespace RotoMonsterUI
         public string AiText { get; set; }
 
         public bool ShowAiButton { get; set; } = true;
+        
+        public bool IsScrollTarget { get; set; }
 
 
         public List<TweetCardTeam> Teams { get; set; } = new List<TweetCardTeam>();
