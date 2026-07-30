@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using HtmlTags;
 
 namespace RotoMonsterUI
@@ -10,6 +12,59 @@ namespace RotoMonsterUI
         public GameTeam(GameTeamInput input)
         {
             _input = input;
+        }
+
+        private const int MaxPlayersShown = 5;
+
+        private string BuildTeamPlayersTooltip()
+        {
+            var players = _input.TeamPlayers == null
+                ? new List<WarningPlayer>()
+                : _input.TeamPlayers
+                    .Where(p => p != null && string.Equals(p.TeamCode, _input.TeamCode, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+            if (players.Count == 0 || players.Count > MaxPlayersShown)
+            {
+                var count = players.Count > 0 ? players.Count : _input.PlayerCount.GetValueOrDefault(0);
+                return count + " " + SingularPlural.Get("player", count) + " on this team";
+            }
+
+            var wrap = new HtmlTag("div").AddClass("lineup-tip lineup-tip--names");
+            wrap.Append(new HtmlTag("div").AddClass("lineup-tip-title").Text("Players on this team"));
+
+            foreach (var player in players)
+            {
+                var row = new HtmlTag("div").AddClass("lineup-tip-row");
+
+                var name = ((player.FirstName ?? "") + " " + (player.LastName ?? "")).Trim();
+                row.Append(new HtmlTag("span").AddClass("lineup-tip-name").Text(name));
+
+                var pos = new HtmlTag("span").AddClass("lineup-tip-pos");
+                if (player.Positions != null)
+                {
+                    foreach (var position in player.Positions)
+                    {
+                        if (position == null || string.IsNullOrEmpty(position.Abbreviation)) continue;
+                        var tag = new HtmlTag("span").AddClass("lineup-tip-pos-item").Text(position.Abbreviation);
+                        if (!string.IsNullOrEmpty(position.Color))
+                            tag.Attr("style", "color:" + NormalizeColor(position.Color) + ";");
+                        pos.Append(tag);
+                    }
+                }
+                row.Append(pos);
+
+                wrap.Append(row);
+            }
+
+            return wrap.ToString();
+        }
+
+        private static string NormalizeColor(string color)
+        {
+            if (string.IsNullOrEmpty(color)) return color;
+            if (color.StartsWith("var(") || color.StartsWith("#")) return color;
+            return "#" + color;
         }
 
         public string Render()
@@ -99,7 +154,7 @@ namespace RotoMonsterUI
                 else
                 {
                     var icon = new Icon(new IconInput { Type = _input.PlayerIconType.Value, Color = _input.PlayerIconColor ?? "#94a3b8", Size = 14 }).Render();
-                    areaC.AppendHtml(new CustomTooltip(icon, $"{_input.PlayerCount} {SingularPlural.Get("player", _input.PlayerCount.GetValueOrDefault(0))} on this team").Render());
+                    areaC.AppendHtml(new CustomTooltip(icon, BuildTeamPlayersTooltip()).WithMaxWidth(240).Render());
                 }
             }
             cell.Append(areaC);

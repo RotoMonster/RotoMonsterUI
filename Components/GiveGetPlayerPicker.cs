@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using HtmlTags;
 
 namespace RotoMonsterUI
@@ -12,13 +13,62 @@ namespace RotoMonsterUI
             _input = input;
         }
 
+        private string EscapeJson(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return "";
+            return s.Replace("\\", "\\\\").Replace("\"", "\\\"");
+        }
+
+        private string SerializeAliasesJson(List<string> aliases)
+        {
+            if (aliases == null || aliases.Count == 0) return "[]";
+
+            var sb = new StringBuilder("[");
+            var wrote = 0;
+            for (int i = 0; i < aliases.Count; i++)
+            {
+                if (string.IsNullOrEmpty(aliases[i])) continue;
+                if (wrote > 0) sb.Append(",");
+                sb.Append($"\"{EscapeJson(aliases[i])}\"");
+                wrote++;
+            }
+            sb.Append("]");
+            return sb.ToString();
+        }
+
+        private string SerializePlayersJson(List<DisplayPlayerInput> players)
+        {
+            var sb = new StringBuilder("[");
+            if (players != null)
+            {
+                for (int i = 0; i < players.Count; i++)
+                {
+                    var p = players[i];
+                    if (p == null) continue;
+                    if (i > 0) sb.Append(",");
+                    var posText = p.Positions != null && p.Positions.Count > 0
+                        ? string.Join("/", p.Positions.ConvertAll(x => x.Abbreviation))
+                        : "";
+                    sb.Append("{");
+                    sb.Append($"\"id\":{p.PlayerId},");
+                    sb.Append($"\"name\":\"{EscapeJson(p.PlayerName)}\",");
+                    sb.Append($"\"team\":\"{EscapeJson(p.TeamCode)}\",");
+                    sb.Append($"\"pos\":\"{EscapeJson(posText)}\",");
+                    sb.Append($"\"aliases\":{SerializeAliasesJson(p.Aliases)}");
+                    sb.Append("}");
+                }
+            }
+            sb.Append("]");
+            return sb.ToString();
+        }
+
         public string Render()
         {
             var wrapper = new HtmlTag("div").AddClass("give-get-picker");
 
             var columns = new HtmlTag("div").AddClass("give-get-picker-columns");
-            columns.Append(RenderColumn("Give players", $"{_input.Id}-give", _input.GivePlayers, _input.GiveSearchPlaceholder));
-            columns.Append(RenderColumn("Get players", $"{_input.Id}-get", _input.GetPlayers, _input.GetSearchPlaceholder));
+            columns.Append(RenderColumn("Give players", $"{_input.Id}-give", _input.GivePlayers, _input.AvailableGivePlayers, _input.GiveSearchPlaceholder));
+            columns.Append(RenderColumn("Get players", $"{_input.Id}-get", _input.GetPlayers, _input.AvailableGetPlayers, _input.GetSearchPlaceholder));
             wrapper.Append(columns);
 
             if (_input.CanEdit)
@@ -37,9 +87,9 @@ namespace RotoMonsterUI
             return wrapper.ToString();
         }
 
-        // Reused for both the Give and Get sides - only the label, id prefix, player list, and
+        // Reused for both the Give and Get sides - only the label, id prefix, player lists, and
         // placeholder differ between them.
-        private HtmlTag RenderColumn(string label, string pickerId, List<DisplayPlayerInput> players, string placeholder)
+        private HtmlTag RenderColumn(string label, string pickerId, List<DisplayPlayerInput> players, List<DisplayPlayerInput> availablePlayers, string placeholder)
         {
             var column = new HtmlTag("div").AddClass("give-get-picker-column");
 
@@ -77,10 +127,18 @@ namespace RotoMonsterUI
                     .Attr("name", $"{pickerId}-add")
                     .Text("Add");
 
+                var resultsList = new HtmlTag("ul")
+                    .AddClass("completionList give-get-picker-results")
+                    .Attr("id", $"{pickerId}-results")
+                    .Attr("style", "display:none;");
+
                 searchRow.AppendHtml(searchBox);
                 searchRow.Append(hiddenSelected);
                 searchRow.Append(addBtn);
+                searchRow.Append(resultsList);
                 column.Append(searchRow);
+
+                column.AppendHtml($"<script type=\"application/json\" id=\"{pickerId}-data\">{SerializePlayersJson(availablePlayers)}</script>");
             }
 
             if (players.Count > 0)

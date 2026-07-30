@@ -4999,3 +4999,23 @@ a.modern-filter-btn:hover {
 .tweet-card-media.tweet-card-media--collapsed {
     display: none;
 }
+
+.bm-tooltip-content .lineup-tip--names .lineup-tip-row {
+    grid-template-columns: 1fr auto;
+}
+
+.bm-tooltip-content .lineup-tip-pos-item + .lineup-tip-pos-item {
+    margin-left: 0.25rem;
+}
+
+.give-get-picker-search-row {
+    position: relative;
+}
+
+.give-get-picker-results {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    width: 100%;
+    z-index: 20;
+}

@@ -1229,3 +1229,64 @@ document.addEventListener('click', function (e) {
     pill.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
     pill.setAttribute('title', collapsed ? 'Show media' : 'Hide media');
 });
+
+document.addEventListener('input', function (e) {
+    if (!e.target.matches('.give-get-picker input[id$="-search"]')) return;
+
+    var baseId = e.target.id.substring(0, e.target.id.length - '-search'.length);
+    var dataEl = document.getElementById(baseId + '-data');
+    var resultsEl = document.getElementById(baseId + '-results');
+    if (!dataEl || !resultsEl) return;
+
+    var query = e.target.value.trim().toLowerCase();
+    resultsEl.innerHTML = '';
+    if (!query) { resultsEl.style.display = 'none'; return; }
+
+    var players;
+    try { players = JSON.parse(dataEl.textContent); } catch (err) { return; }
+
+    var nameMatches = [];
+    var aliasMatches = [];
+    for (var pi = 0; pi < players.length; pi++) {
+        var candidate = players[pi];
+        if (candidate.name && candidate.name.toLowerCase().indexOf(query) !== -1) {
+            nameMatches.push(candidate);
+            continue;
+        }
+        var aliases = candidate.aliases || [];
+        for (var ai = 0; ai < aliases.length; ai++) {
+            if (aliases[ai] && aliases[ai].toLowerCase().indexOf(query) !== -1) {
+                aliasMatches.push(candidate);
+                break;
+            }
+        }
+    }
+    var matches = nameMatches.concat(aliasMatches).slice(0, 8);
+
+    if (matches.length === 0) { resultsEl.style.display = 'none'; return; }
+
+    matches.forEach(function (p) {
+        var li = document.createElement('li');
+        li.className = 'listItem';
+        li.textContent = p.name + (p.team ? ' (' + p.team + (p.pos ? ' ' + p.pos : '') + ')' : '');
+        li.addEventListener('click', function () {
+            var selectedInput = document.getElementById(baseId + '-selected');
+            var searchInput = document.getElementById(baseId + '-search');
+            if (selectedInput) selectedInput.value = p.id;
+            if (searchInput) searchInput.value = p.name;
+            resultsEl.innerHTML = '';
+            resultsEl.style.display = 'none';
+        });
+        resultsEl.appendChild(li);
+    });
+
+    resultsEl.style.display = 'block';
+});
+
+document.addEventListener('click', function (e) {
+    var row = e.target.closest('.give-get-picker-search-row');
+    document.querySelectorAll('.give-get-picker-results').forEach(function (el) {
+        if (row && row.contains(el)) return;
+        el.style.display = 'none';
+    });
+});
