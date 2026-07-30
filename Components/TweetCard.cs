@@ -78,6 +78,7 @@ namespace RotoMonsterUI
         public string Render()
         {
             var card = new HtmlTag("div").AddClass("tweet-card");
+            card.Attr("id", "tweet-card-" + _input.TweetId);
 
             if (_input.SelectedPlayerId.HasValue)
                 card.AddClass("tweet-card--posting");
