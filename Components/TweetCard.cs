@@ -294,11 +294,14 @@ private HtmlTag RenderHeader()
                 if (keyword.Weight.HasValue && keyword.Weight.Value < _input.DimKeywordsBelowWeight)
                     pill.AddClass("tweet-card-keyword--weak");
 
-                if (!string.IsNullOrEmpty(keyword.Category))
-                    pill.Attr("title", keyword.Category);
-
                 pill.Text(keyword.Text);
-                wrap.Append(pill);
+
+                if (!string.IsNullOrEmpty(keyword.Category))
+                    wrap.AppendHtml(new CustomTooltip(pill.ToString(), keyword.Category)
+                        .WithHoverTrigger()
+                        .Render());
+                else
+                    wrap.Append(pill);
             }
 
             return wrap;
