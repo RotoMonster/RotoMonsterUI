@@ -48,11 +48,20 @@ namespace RotoMonsterUI
             return wrap.ToString();
         }
 
-        /// <summary>
-        /// The column header for a table of bars. Rendered once above the rows.
-        /// Takes its own short labels since the item Descriptions are the long form.
-        /// </summary>
         public static string RenderHeader(List<string> columnLabels, string label = null)
+        {
+            var columns = new List<MonsterBarHeaderCell>();
+
+            if (columnLabels != null)
+            {
+                foreach (var columnLabel in columnLabels)
+                    columns.Add(new MonsterBarHeaderCell { Label = columnLabel });
+            }
+
+            return RenderHeader(columns, label);
+        }
+
+        public static string RenderHeader(List<MonsterBarHeaderCell> columns, string label = null)
         {
             var wrap = new HtmlTag("div").AddClass("range-badge range-badge--monster range-badge--header");
 
@@ -61,13 +70,20 @@ namespace RotoMonsterUI
 
             var cells = new HtmlTag("div").AddClass("range-badge-cells");
 
-            if (columnLabels != null)
+            if (columns != null)
             {
-                foreach (var columnLabel in columnLabels)
+                foreach (var column in columns)
                 {
-                    cells.Append(new HtmlTag("span")
+                    if (column == null) continue;
+
+                    var cell = new HtmlTag("span")
                         .AddClass("range-badge-header-cell")
-                        .Text(DecodeLabel(columnLabel)));
+                        .Text(DecodeLabel(column.Label));
+
+                    if (!string.IsNullOrEmpty(column.Description))
+                        cells.AppendHtml(new CustomTooltip(cell.ToString(), column.Description).Render());
+                    else
+                        cells.Append(cell);
                 }
             }
 

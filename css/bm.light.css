@@ -166,6 +166,10 @@
     --monster-bar-border-projection: #6366f1;
     --monster-bar-border-last-season: #94a3b8;
     --monster-bar-border-current-season: #e66000;
+    --monster-bar-header-bg: #ffffff;
+    --monster-bar-header-border: rgba(148, 163, 184, 0.55);
+    --monster-bar-header-text: #1e293b;
+    --monster-bar-header-label: #ffffff;
 }
 
 /* GLOBAL STYLES */
@@ -5042,11 +5046,15 @@ a.modern-filter-btn:hover {
     width: 100%;
 }
 
-.range-badge--monster .range-badge-cell {
-    width: 100%;
-    gap: 3px;
+.range-badge.range-badge--monster {
+    --range-badge-cell-width: 38px;
 }
 
+.range-badge--monster .range-badge-cell {
+    width: 100%;
+    gap: 2px;
+    padding: 0 3px;
+}
 .range-badge--monster .monster-bar-measure {
     font-size: 10px;
     opacity: 0.85;
@@ -5101,15 +5109,21 @@ a.modern-filter-btn:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 14px;
+    width: 100%;
+    height: 18px;
+    padding: 0 3px;
     font-size: 10px;
     font-weight: 700;
-    color: #fff;
+    border: 1px solid var(--monster-bar-header-border);
+    border-radius: 4px;
+    box-sizing: border-box;
+    background: var(--monster-bar-header-bg);
+    color: var(--monster-bar-header-text);
     white-space: nowrap;
 }
 
 .range-badge--header .range-badge-label {
-    color: #fff;
+    color: var(--monster-bar-header-label);
 }
 
 .range-badge--monster .monster-bar-cell--projection {

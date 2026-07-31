@@ -24,6 +24,13 @@ namespace RotoMonsterUI
         public List<MonsterBarBadgeItem> Items { get; set; } = new List<MonsterBarBadgeItem>();
     }
 
+    public class MonsterBarHeaderCell
+    {
+        public string Label { get; set; }
+
+        public string Description { get; set; }
+    }
+
     public class MonsterBarBadgeItem
     {
         public string Description { get; set; }
