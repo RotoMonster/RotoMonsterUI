@@ -4975,7 +4975,8 @@ a.modern-filter-btn:hover {
 
 .tweet-card-ai-text-body { color: var(--color-text-primary); }
 
-.tweet-card-media-indicator {
+.tweet-card-media-indicator,
+.tweet-card-players-toggle {
     display: inline-flex; align-items: center; gap: 0.35rem;
     margin-top: 0.5rem; padding: 0.15rem 0.5rem;
     border: 1px solid var(--tweet-card-ai-border);
@@ -4986,12 +4987,14 @@ a.modern-filter-btn:hover {
     cursor: pointer;
 }
 
-.tweet-card-media-indicator:hover {
+.tweet-card-media-indicator:hover,
+.tweet-card-players-toggle:hover {
     color: var(--brand-primary);
     border-color: var(--brand-primary);
 }
 
-.tweet-card-media-indicator-caret {
+.tweet-card-media-indicator-caret,
+.tweet-card-players-toggle-caret {
     width: 0; height: 0;
     border-top: 4px solid transparent;
     border-bottom: 4px solid transparent;
@@ -5000,11 +5003,16 @@ a.modern-filter-btn:hover {
     transition: transform 0.15s ease;
 }
 
-.tweet-card-media-indicator[aria-expanded="true"] .tweet-card-media-indicator-caret {
+.tweet-card-media-indicator[aria-expanded="true"] .tweet-card-media-indicator-caret,
+.tweet-card-players-toggle[aria-expanded="true"] .tweet-card-players-toggle-caret {
     transform: rotate(90deg);
 }
 
 .tweet-card-media.tweet-card-media--collapsed {
+    display: none;
+}
+
+.tweet-card-players.tweet-card-players--collapsed {
     display: none;
 }
 

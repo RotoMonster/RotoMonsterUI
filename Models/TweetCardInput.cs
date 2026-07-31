@@ -78,6 +78,8 @@ namespace RotoMonsterUI
 
         public bool HideMedia { get; set; }
 
+        public int CollapsePlayersAbove { get; set; } = 5;
+
         public string AiText { get; set; }
 
         public bool ShowAiButton { get; set; } = true;

@@ -116,7 +116,22 @@ namespace RotoMonsterUI
                 card.Append(RenderTeamFilter());
 
             if (_input.Players != null && _input.Players.Any())
-                card.Append(RenderPlayers());
+            {
+                var visibleCount = VisiblePlayers().Count;
+                var collapse = _input.CollapsePlayersAbove > 0
+                    && visibleCount > _input.CollapsePlayersAbove
+                    && !_input.SelectedPlayerId.HasValue;
+
+                if (collapse)
+                {
+                    card.Append(RenderPlayersToggle(visibleCount));
+                    card.Append(RenderPlayers().AddClass("tweet-card-players--collapsed"));
+                }
+                else
+                {
+                    card.Append(RenderPlayers());
+                }
+            }
 
             return card.ToString();
         }
@@ -233,6 +248,21 @@ private HtmlTag RenderHeader()
                 .Attr("title", "Show media");
             wrap.Append(new HtmlTag("span").AddClass("tweet-card-media-indicator-caret"));
             wrap.Append(new HtmlTag("span").Text(string.Join(", ", parts)));
+
+            return wrap;
+        }
+
+        private HtmlTag RenderPlayersToggle(int count)
+        {
+            var wrap = new HtmlTag("button")
+                .AddClass("tweet-card-players-toggle")
+                .Attr("type", "button")
+                .Attr("aria-expanded", "false")
+                .Attr("title", "Show players");
+
+            wrap.Append(new HtmlTag("span").AddClass("tweet-card-players-toggle-caret"));
+            wrap.Append(new HtmlTag("span")
+                .Text(count + " " + SingularPlural.Get("player", count)));
 
             return wrap;
         }

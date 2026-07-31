@@ -1290,3 +1290,20 @@ document.addEventListener('click', function (e) {
         el.style.display = 'none';
     });
 });
+
+document.addEventListener('click', function (e) {
+    var toggle = e.target.closest('.tweet-card-players-toggle');
+    if (!toggle) return;
+
+    var card = toggle.closest('.tweet-card');
+    if (!card) return;
+
+    var players = card.querySelector('.tweet-card-players');
+    if (!players) return;
+
+    e.preventDefault();
+
+    var collapsed = players.classList.toggle('tweet-card-players--collapsed');
+    toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    toggle.setAttribute('title', collapsed ? 'Show players' : 'Hide players');
+});
