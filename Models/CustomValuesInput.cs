@@ -53,6 +53,8 @@ namespace RotoMonsterUI
         public bool AllowsTotalGames { get; set; } = true;
 
         public int DisplayOrder { get; set; }
+        
+        public string Description { get; set; }
     }
 
     public class CustomValueEntry

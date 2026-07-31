@@ -5288,3 +5288,20 @@ a.modern-filter-btn:hover {
     padding-top: 0.85rem;
     border-top: 1px solid var(--color-border-light);
 }
+
+.custom-values-control {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.custom-values-info {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+}
+
+.custom-values-info:hover {
+    color: var(--brand-primary);
+}

@@ -86,9 +86,21 @@ namespace RotoMonsterUI
             if (!string.IsNullOrEmpty(_input.SelectedOptionId))
                 dropdown.WithSelectedValue(_input.SelectedOptionId);
 
-            return new HtmlTag("div")
-                .AddClass("custom-values-control")
-                .AppendHtml(dropdown.Render());
+            var wrap = new HtmlTag("div").AddClass("custom-values-control");
+            wrap.AppendHtml(dropdown.Render());
+
+            var selected = SelectedOption();
+
+            if (selected != null && !string.IsNullOrEmpty(selected.Description))
+            {
+                var icon = new HtmlTag("span")
+                    .AddClass("custom-values-info")
+                    .AppendHtml(new Icon(new IconInput { Type = IconType.Info, Size = 16 }).Render());
+
+                wrap.AppendHtml(new CustomTooltip(icon.ToString(), selected.Description).Render());
+            }
+
+            return wrap;
         }
 
         private HtmlTag RenderTypePicker()
@@ -145,13 +157,18 @@ namespace RotoMonsterUI
             return label;
         }
 
-        private bool SelectedAllowsTotal()
+        private CustomValueOption SelectedOption()
         {
             var option = FindOption(_input.SelectedOptionId);
-            if (option != null) return option.AllowsTotalGames;
+            if (option != null) return option;
 
-            var first = (_input.Options ?? new List<CustomValueOption>()).FirstOrDefault();
-            return first == null || first.AllowsTotalGames;
+            return (_input.Options ?? new List<CustomValueOption>()).FirstOrDefault();
+        }
+
+        private bool SelectedAllowsTotal()
+        {
+            var option = SelectedOption();
+            return option == null || option.AllowsTotalGames;
         }
 
         private CustomValueOption FindOption(string optionId)
