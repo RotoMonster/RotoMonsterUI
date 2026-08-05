@@ -23,25 +23,33 @@ namespace RotoMonsterUI
 
             var cells = new HtmlTag("div").AddClass("range-badge-cells");
 
+            var items = new List<MonsterBarBadgeItem>();
             if (_input.Items != null)
             {
                 foreach (var item in _input.Items)
                 {
-                    if (item == null) continue;
-
-                    if (item.IsEmpty)
-                    {
-                        cells.Append(RenderEmptyCell());
-                        continue;
-                    }
-
-                    var cellHtml = RenderCell(item).ToString();
-
-                    if (!string.IsNullOrEmpty(item.Description))
-                        cells.AppendHtml(new CustomTooltip(cellHtml, item.Description).Render());
-                    else
-                        cells.AppendHtml(cellHtml);
+                    if (item != null) items.Add(item);
                 }
+            }
+
+            for (var i = 0; i < items.Count; i++)
+            {
+                var item = items[i];
+                var isFirst = i == 0;
+                var isLast = i == items.Count - 1;
+
+                if (item.IsEmpty)
+                {
+                    cells.Append(RenderEmptyCell(isFirst, isLast));
+                    continue;
+                }
+
+                var cellHtml = RenderCell(item, isFirst, isLast).ToString();
+
+                if (!string.IsNullOrEmpty(item.Description))
+                    cells.AppendHtml(new CustomTooltip(cellHtml, item.Description).Render());
+                else
+                    cells.AppendHtml(cellHtml);
             }
 
             wrap.Append(cells);
@@ -91,14 +99,13 @@ namespace RotoMonsterUI
             return wrap.ToString();
         }
 
-        private static HtmlTag RenderCell(MonsterBarBadgeItem item)
+        private static HtmlTag RenderCell(MonsterBarBadgeItem item, bool isFirst, bool isLast)
         {
             var cell = new HtmlTag("span").AddClass("range-badge-cell monster-bar-cell");
             cell.AddClass(EmphasisClass(item.Emphasis));
 
-            var groupClass = GroupClass(item.Group);
-            if (!string.IsNullOrEmpty(groupClass))
-                cell.AddClass(groupClass);
+            if (isFirst) cell.AddClass("monster-bar-cell--first");
+            if (isLast) cell.AddClass("monster-bar-cell--last");
 
             var background = NormalizeColor(item.ColorCode);
             if (!string.IsNullOrEmpty(background))
@@ -119,36 +126,21 @@ namespace RotoMonsterUI
             return cell;
         }
 
-        private static HtmlTag RenderEmptyCell()
+        private static HtmlTag RenderEmptyCell(bool isFirst, bool isLast)
         {
-            return new HtmlTag("span")
-                .AddClass("range-badge-cell monster-bar-cell monster-bar-cell--empty")
-                .AppendHtml("&nbsp;");
+            var cell = new HtmlTag("span")
+                .AddClass("range-badge-cell monster-bar-cell monster-bar-cell--empty");
+
+            if (isFirst) cell.AddClass("monster-bar-cell--first");
+            if (isLast) cell.AddClass("monster-bar-cell--last");
+
+            return cell.AppendHtml("&nbsp;");
         }
 
-        /// <summary>
-        /// Labels can arrive with HTML entities already in them (&#x27;25). Decode
-        /// once so .Text() escapes once - same visible result, still safe.
-        /// </summary>
         private static string DecodeLabel(string label)
         {
             if (string.IsNullOrEmpty(label)) return "";
             return System.Net.WebUtility.HtmlDecode(label);
-        }
-
-        private static string GroupClass(MonsterBarGroup group)
-        {
-            switch (group)
-            {
-                case MonsterBarGroup.Projection:
-                    return "monster-bar-cell--projection";
-                case MonsterBarGroup.LastSeason:
-                    return "monster-bar-cell--last-season";
-                case MonsterBarGroup.CurrentSeason:
-                    return "monster-bar-cell--current-season";
-                default:
-                    return null;
-            }
         }
 
         private static string EmphasisClass(MonsterBarEmphasis emphasis)
