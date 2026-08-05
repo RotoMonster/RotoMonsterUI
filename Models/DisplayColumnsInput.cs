@@ -31,7 +31,7 @@ namespace RotoMonsterUI
         public bool ShowFooter { get; set; } = true;
         public string ApplyButtonText { get; set; } = "Apply";
         public string ResetButtonText { get; set; } = "Reset";
-        public string SaveButtonText { get; set; }
+        public string SaveButtonText { get; set; } = "Save";
 
         public int ColumnCount { get; set; } = 3;
 
