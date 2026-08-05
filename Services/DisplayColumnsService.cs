@@ -27,6 +27,7 @@ namespace RotoMonsterUI
 
             result.ApplyPressed = Pressed("dcapply" + suffix, params_, eventTarget);
             result.ResetPressed = Pressed("dcreset" + suffix, params_, eventTarget);
+            result.SavePressed = Pressed("dcsave" + suffix, params_, eventTarget);
 
             return result;
         }

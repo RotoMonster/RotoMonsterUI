@@ -80,13 +80,22 @@ namespace RotoMonsterUI
 
             if (columns != null)
             {
+                var list = new List<MonsterBarHeaderCell>();
                 foreach (var column in columns)
                 {
-                    if (column == null) continue;
+                    if (column != null) list.Add(column);
+                }
+
+                for (var i = 0; i < list.Count; i++)
+                {
+                    var column = list[i];
 
                     var cell = new HtmlTag("span")
                         .AddClass("range-badge-header-cell")
                         .Text(DecodeLabel(column.Label));
+
+                    if (i == 0) cell.AddClass("monster-bar-header-cell--first");
+                    if (i == list.Count - 1) cell.AddClass("monster-bar-header-cell--last");
 
                     if (!string.IsNullOrEmpty(column.Description))
                         cells.AppendHtml(new CustomTooltip(cell.ToString(), column.Description).Render());
@@ -137,6 +146,10 @@ namespace RotoMonsterUI
             return cell.AppendHtml("&nbsp;");
         }
 
+        /// <summary>
+        /// Labels can arrive with HTML entities already in them (&#x27;25). Decode
+        /// once so .Text() escapes once - same visible result, still safe.
+        /// </summary>
         private static string DecodeLabel(string label)
         {
             if (string.IsNullOrEmpty(label)) return "";

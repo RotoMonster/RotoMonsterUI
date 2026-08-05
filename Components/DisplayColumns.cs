@@ -296,6 +296,13 @@ namespace RotoMonsterUI
                     .WithPostBack()
                     .Render());
 
+            if (!string.IsNullOrEmpty(_input.SaveButtonText))
+                footer.AppendHtml(new Button(_input.SaveButtonText)
+                    .WithStyle(ButtonStyle.Secondary)
+                    .WithName(Key("dcsave"))
+                    .WithPostBack()
+                    .Render());
+
             if (!string.IsNullOrEmpty(_input.ApplyButtonText))
                 footer.AppendHtml(new Button(_input.ApplyButtonText)
                     .WithStyle(ButtonStyle.Primary)

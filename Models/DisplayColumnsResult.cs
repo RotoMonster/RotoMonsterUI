@@ -7,5 +7,6 @@ namespace RotoMonsterUI
         public List<string> SelectedColumnIds { get; set; } = new List<string>();
         public bool ApplyPressed { get; set; }
         public bool ResetPressed { get; set; }
+        public bool SavePressed { get; set; }
     }
 }
