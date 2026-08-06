@@ -12,6 +12,7 @@ namespace RotoMonsterUI
     {
         public string Abbreviation { get; set; }
         public bool IsActive { get; set; } = true;
+        public double PointsPerStat { get; set; }
     }
 
     public class LeagueSettingsInput

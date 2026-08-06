@@ -26,18 +26,26 @@ namespace RotoMonsterUI
             if (activeCategories.Count > 0)
             {
                 var activeRow = new HtmlTag("span").AddClass("league-settings-categories league-settings-categories--active");
-                activeRow.AppendHtml($"{activeCategories.Count} Active = {string.Join(" ", activeCategories.Select(c => c.Abbreviation))}");
+                activeRow.AppendHtml($"{activeCategories.Count} Active = {string.Join(" ", activeCategories.Select(Label))}");
                 wrapper.Append(activeRow);
             }
 
             if (puntedCategories.Count > 0)
             {
                 var puntedRow = new HtmlTag("span").AddClass("league-settings-categories league-settings-categories--punted");
-                puntedRow.AppendHtml($"{puntedCategories.Count} Punted = {string.Join(" ", puntedCategories.Select(c => c.Abbreviation))}");
+                puntedRow.AppendHtml($"{puntedCategories.Count} Punted = {string.Join(" ", puntedCategories.Select(Label))}");
                 wrapper.Append(puntedRow);
             }
 
             return wrapper.ToString();
+        }
+
+        private static string Label(LeagueSettingsCategory category)
+        {
+            if (category.PointsPerStat == 0)
+                return category.Abbreviation;
+
+            return category.Abbreviation + " (" + category.PointsPerStat.ToString("0.####") + ")";
         }
     }
 }
