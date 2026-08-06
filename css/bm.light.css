@@ -5449,3 +5449,17 @@ a.display-columns-item--membership { cursor: pointer; }
     font-size: 0.75rem; color: var(--color-text-tertiary);
     margin-right: auto; font-variant-numeric: tabular-nums;
 }
+
+.favorites-toolbar-pill--current {
+    background: rgba(var(--brand-primary-rgb), 0.08);
+    border-color: var(--brand-primary);
+}
+.favorites-toolbar-pill--current .favorites-toolbar-link {
+    color: var(--brand-primary);
+    font-weight: 600;
+}
+
+.favorites-toolbar-pill--current .favorites-toolbar-hide-btn:hover {
+    color: #c0392b;
+    background: rgba(192, 57, 43, 0.10);
+}
