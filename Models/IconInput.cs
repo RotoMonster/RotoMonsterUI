@@ -93,7 +93,8 @@
         Baseball,
         Football,
         HockeyPuck,
-        PersonMinus
+        PersonMinus,
+        Verified
 
 
 

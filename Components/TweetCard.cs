@@ -156,6 +156,20 @@ private HtmlTag RenderHeader()
                     .Attr("rel", "noopener noreferrer")
                     .Text(_input.ScreenName);
                 header.Append(user);
+
+                if (_input.IsVerified)
+                {
+                    var verified = new HtmlTag("span")
+                        .AddClass("tweet-card-verified")
+                        .Attr("title", "Verified account");
+                    verified.AppendHtml(new Icon(new IconInput
+                    {
+                        Type = IconType.Verified,
+                        Size = 15,
+                        Color = "#1d9bf0"
+                    }).Render());
+                    header.Append(verified);
+                }
             }
 
             if (!string.IsNullOrEmpty(_input.TweetUrl))
