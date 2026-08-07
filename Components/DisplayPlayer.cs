@@ -41,8 +41,13 @@ namespace RotoMonsterUI
                 var posTag = new HtmlTag("span")
                     .AddClass("ml-1 ms-1")
                     .AddClass("display-player-pos")
-                    .Attr("style", $"color:{NormalizeColor(pos.Color)}")
                     .Text(pos.Abbreviation);
+
+                if (!string.IsNullOrEmpty(pos.Abbreviation))
+                    posTag.Attr("data-pos", pos.Abbreviation.Trim().ToUpperInvariant());
+
+                if (!string.IsNullOrEmpty(pos.Color))
+                    posTag.Attr("style", $"color:{NormalizeColor(pos.Color)}");
                 wrapper.Append(posTag);
             }
 

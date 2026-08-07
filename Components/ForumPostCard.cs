@@ -16,6 +16,14 @@ namespace RotoMonsterUI
         {
             var card = new HtmlTag("div").AddClass("forum-post-card");
 
+            var ageShadeColor = ColorHelper.GetAgeShadeHex(_input.TimeSinceCreated);
+            bool isShaded = ageShadeColor != null;
+            if (isShaded)
+            {
+                card.Attr("style", $"background:{ageShadeColor};");
+                card.AddClass("color-shaded");
+            }
+
             // Username row (with avatar + post count via DisplayUsername) + New badge + TimeSince
             var usernameRow = new HtmlTag("div").AddClass("forum-post-card-username d-flex align-items-center gap-2");
             _input.DisplayUsernameInput.ShowAvatar = true;
@@ -58,7 +66,8 @@ namespace RotoMonsterUI
                     UpVoteCount = _input.UpVoteCount,
                     DownVoteCount = _input.DownVoteCount,
                     VotedUp = _input.UserVoteInput != null && _input.UserVoteInput.HasVoted && _input.UserVoteInput.VotedUp,
-                    VotedDown = _input.UserVoteInput != null && _input.UserVoteInput.HasVoted && _input.UserVoteInput.VotedDown
+                    VotedDown = _input.UserVoteInput != null && _input.UserVoteInput.HasVoted && _input.UserVoteInput.VotedDown,
+                    ForceDarkText = isShaded
                 }).Render();
                 actionsRow.AppendHtml(voteControl);
             }

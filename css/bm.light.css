@@ -5463,3 +5463,27 @@ a.display-columns-item--membership { cursor: pointer; }
     color: #c0392b;
     background: rgba(192, 57, 43, 0.10);
 }
+
+.display-player-pos[data-pos="C"] { color: var(--pos-c); }
+.display-player-pos[data-pos="1B"] { color: var(--pos-1b); }
+.display-player-pos[data-pos="2B"] { color: var(--pos-2b); }
+.display-player-pos[data-pos="3B"] { color: var(--pos-3b); }
+.display-player-pos[data-pos="SS"] { color: var(--pos-ss); }
+.display-player-pos[data-pos="OF"] { color: var(--pos-of); }
+.display-player-pos[data-pos="CF"] { color: var(--pos-cf); }
+.display-player-pos[data-pos="LF"] { color: var(--pos-lf); }
+.display-player-pos[data-pos="RF"] { color: var(--pos-rf); }
+.display-player-pos[data-pos="DH"] { color: var(--pos-dh); }
+.display-player-pos[data-pos="PH"] { color: var(--pos-ph); }
+.display-player-pos[data-pos="P"] { color: var(--pos-p); }
+.display-player-pos[data-pos="PP"] { color: var(--pos-pp); }
+.display-player-pos[data-pos="PR"] { color: var(--pos-pr); }
+.display-player-pos[data-pos="SP"] { color: var(--pos-sp); }
+.display-player-pos[data-pos="RP"] { color: var(--pos-rp); }
+.display-player-pos[data-pos="CL"] { color: var(--pos-cl); }
+.display-player-pos[data-pos="G"] { color: var(--pos-g); }
+.display-player-pos[data-pos="F"] { color: var(--pos-f); }
+.display-player-pos[data-pos="PG"] { color: var(--pos-pg); }
+.display-player-pos[data-pos="SG"] { color: var(--pos-sg); }
+.display-player-pos[data-pos="SF"] { color: var(--pos-sf); }
+.display-player-pos[data-pos="PF"] { color: var(--pos-pf); }

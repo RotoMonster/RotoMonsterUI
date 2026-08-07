@@ -5500,3 +5500,78 @@ a.display-columns-item--membership { cursor: pointer; }
     color: #ef9a9a;
     background: rgba(229, 57, 53, 0.20);
 }
+
+.display-player-pos[data-pos="C"] { color: var(--pos-c); }
+.display-player-pos[data-pos="1B"] { color: var(--pos-1b); }
+.display-player-pos[data-pos="2B"] { color: var(--pos-2b); }
+.display-player-pos[data-pos="3B"] { color: var(--pos-3b); }
+.display-player-pos[data-pos="SS"] { color: var(--pos-ss); }
+.display-player-pos[data-pos="OF"] { color: var(--pos-of); }
+.display-player-pos[data-pos="CF"] { color: var(--pos-cf); }
+.display-player-pos[data-pos="LF"] { color: var(--pos-lf); }
+.display-player-pos[data-pos="RF"] { color: var(--pos-rf); }
+.display-player-pos[data-pos="DH"] { color: var(--pos-dh); }
+.display-player-pos[data-pos="PH"] { color: var(--pos-ph); }
+.display-player-pos[data-pos="P"] { color: var(--pos-p); }
+.display-player-pos[data-pos="PP"] { color: var(--pos-pp); }
+.display-player-pos[data-pos="PR"] { color: var(--pos-pr); }
+.display-player-pos[data-pos="SP"] { color: var(--pos-sp); }
+.display-player-pos[data-pos="RP"] { color: var(--pos-rp); }
+.display-player-pos[data-pos="CL"] { color: var(--pos-cl); }
+.display-player-pos[data-pos="G"] { color: var(--pos-g); }
+.display-player-pos[data-pos="F"] { color: var(--pos-f); }
+.display-player-pos[data-pos="PG"] { color: var(--pos-pg); }
+.display-player-pos[data-pos="SG"] { color: var(--pos-sg); }
+.display-player-pos[data-pos="SF"] { color: var(--pos-sf); }
+.display-player-pos[data-pos="PF"] { color: var(--pos-pf); }
+
+.tweet-card--shaded {
+    --color-text-primary: #1e293b;
+    --color-text-secondary: #475569;
+    --color-text-tertiary: #64748b;
+    --color-text-light: #94a3b8;
+ 
+    --color-bg-primary: #f8fafc;
+    --color-bg-secondary: #ffffff;
+    --color-bg-card: #ffffff;
+ 
+    --color-border: rgba(148, 163, 184, 0.5);
+    --color-border-light: rgba(148, 163, 184, 0.3);
+ 
+    --tweet-card-ai-bg: #ffffff;
+    --tweet-card-ai-border: rgba(148, 163, 184, 0.45);
+    --tweet-card-keyword-bg: #ffffff;
+    --tweet-card-keyword-border: rgba(148, 163, 184, 0.45);
+    --tweet-card-media-bg: #e2e8f0;
+ 
+    color: #1e293b;
+}
+ 
+.tweet-card--shaded .tweet-card-post-form {
+    border-color: rgba(148, 163, 184, 0.5);
+}
+ 
+.tweet-card--shaded .bm-custom-select-trigger {
+    background: #ffffff;
+    color: #1e293b;
+    border-color: rgba(148, 163, 184, 0.5);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+ 
+.tweet-card--shaded .bm-custom-select-arrow {
+    border-top-color: #64748b;
+}
+ 
+.tweet-card--shaded .bm-custom-select-options {
+    background: #ffffff;
+}
+ 
+.tweet-card--shaded .bm-custom-select-option {
+    color: #1e293b;
+}
+ 
+.tweet-card--shaded .modern-filter-btn-secondary {
+    background: #ffffff;
+    color: #1e293b;
+}
+ 
