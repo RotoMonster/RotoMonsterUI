@@ -94,9 +94,9 @@
         Football,
         HockeyPuck,
         PersonMinus,
-        Verified
+        Verified, 
 
-
+        ChromeExtension
 
     }
 
