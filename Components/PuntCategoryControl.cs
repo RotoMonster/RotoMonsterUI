@@ -68,7 +68,6 @@ namespace RotoMonsterUI
                     .Attr("name", weightName)
                     .Attr("step", "0.01")
                     .Attr("min", "0")
-                    .Attr("placeholder", "1.00")
                     .Attr("title", $"Weight for {category.Abbreviation}");
 
                 decimal? existing;
