@@ -747,6 +747,7 @@ footer a:hover { color: var(--brand-primary-light); text-shadow: 0 0 10px var(--
     max-height: 300px; overflow-y: auto; z-index: 100000;
     opacity: 0; visibility: hidden; transform: translateY(-10px);
     transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+    will-change: transform;
 }
 .bm-custom-select.open .bm-custom-select-options { opacity: 1; visibility: visible; transform: translateY(0); }
 .bm-custom-select-option {
