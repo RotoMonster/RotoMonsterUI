@@ -34,9 +34,10 @@ namespace RotoMonsterUI
 
             var tooltipParts = new System.Collections.Generic.List<string>();
             if (!string.IsNullOrEmpty(_input.StatusText)) tooltipParts.Add(_input.StatusText);
+            if (!string.IsNullOrEmpty(_input.TagText)) tooltipParts.Add(_input.TagText);
             if (!string.IsNullOrEmpty(_input.StatusDetails)) tooltipParts.Add(_input.StatusDetails);
             if (_input.IsUnofficial) tooltipParts.Add("Status is Unofficial");
-            var tooltipText = string.Join(" – ", tooltipParts);
+            var tooltipText = string.Join(" - ", tooltipParts);
 
             var color = string.IsNullOrEmpty(_input.StatusColor) ? "e05c00" : _input.StatusColor;
             var normalizedColor = color.StartsWith("#") ? color : "#" + color;
