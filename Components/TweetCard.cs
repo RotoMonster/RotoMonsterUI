@@ -458,21 +458,25 @@ private HtmlTag RenderHeader()
 
                 label.AppendHtml(new DisplayPlayer(display).Render());
 
+                row.Append(label);
+
+                if (player.InjuryBadge != null)
+                    row.AppendHtml(new InjuryBadge(player.InjuryBadge).Render());
+
                 if (player.MatchConfidence.HasValue)
                 {
-                    label.Append(new HtmlTag("span")
+                    row.Append(new HtmlTag("span")
                         .AddClass("tweet-card-player-confidence")
                         .Text(player.MatchConfidence.Value.ToString("0.00")));
                 }
 
                 if (!string.IsNullOrEmpty(player.PercentText))
                 {
-                    label.Append(new HtmlTag("span")
+                    row.Append(new HtmlTag("span")
                         .AddClass("tweet-card-player-pct")
                         .Text(player.PercentText));
                 }
 
-                row.Append(label);
                 list.Append(row);
 
                 if (isSelected)
@@ -504,8 +508,8 @@ private HtmlTag RenderHeader()
                 NewsLevel = _input.NewsLevel,
                 StatusTypeOptions = _input.StatusTypeOptions,
                 StatusTypeTagOptions = _input.StatusTypeTagOptions,
-                AvailableNewsTags = _input.AvailableNewsTags,
-                NewsTags = _input.NewsTags
+                NewsTags = _input.NewsTags,
+                AvailableNewsTags = _input.AvailableNewsTags
             }).RenderTag());
 
             return wrap;

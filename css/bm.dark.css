@@ -5604,4 +5604,6 @@ a.display-columns-item--membership { cursor: pointer; }
     background: #ffffff;
     color: #1e293b;
 }
+
+.tweet-card-player-row .injury-badge { margin-left: 0.4rem; }
  

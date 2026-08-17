@@ -46,6 +46,8 @@ namespace RotoMonsterUI
         public string PercentText { get; set; }
 
         public double? MatchConfidence { get; set; }
+
+        public InjuryBadgeInput InjuryBadge { get; set; }
     }
 
     public class TweetCardInput

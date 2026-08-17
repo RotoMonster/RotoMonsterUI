@@ -5522,3 +5522,5 @@ a.display-columns-item--membership { cursor: pointer; }
 .display-player-pos[data-pos="SG"] { color: var(--pos-sg); }
 .display-player-pos[data-pos="SF"] { color: var(--pos-sf); }
 .display-player-pos[data-pos="PF"] { color: var(--pos-pf); }
+
+.tweet-card-player-row .injury-badge { margin-left: 0.4rem; }
