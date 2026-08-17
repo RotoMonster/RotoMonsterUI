@@ -4723,14 +4723,23 @@ a.modern-filter-btn:hover {
     padding: 0.15rem 0.6rem; border-radius: 6px;
 }
 
-.pricing-plan-name { font-size: 1.05rem; font-weight: 600; }
+.pricing-plan-name {
+    font-size: 1.35rem; font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.35rem;
+}
 .pricing-plan-subtitle {
-    font-size: 0.72rem; color: var(--color-text-secondary);
-    min-height: 2.5rem; margin-bottom: 0.8rem;
+    font-size: 0.8rem; line-height: 1.55;
+    color: var(--color-text-secondary);
+    min-height: 0; margin: 0 auto 1.4rem;
+    max-width: 34rem;
+    padding-bottom: 1.4rem;
+    border-bottom: 1px solid var(--color-border);
 }
 .pricing-plan-price {
-    font-size: 2.2rem; font-weight: 700;
-    line-height: 1.1; margin-bottom: 0.9rem;
+    font-size: 2.9rem; font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1; margin-bottom: 1.1rem;
 }
 
 .pricing-plan-addon {
@@ -4772,12 +4781,25 @@ a.modern-filter-btn:hover {
 .pricing-plan-addon-note { font-size: 0.72rem; color: var(--color-text-secondary); }
 
 .pricing-plan-buy {
-    width: 100%; border: none; cursor: pointer;
-    background: var(--brand-primary); color: #fff;
-    font-size: 0.85rem; font-weight: 600;
-    padding: 0.55rem; border-radius: 8px; margin-bottom: 0.85rem;
+    display: block; width: 100%;
+    background: var(--brand-primary);
+    color: #fff; border: none;
+    border-radius: 10px;
+    padding: 0.85rem 1.5rem;
+    font-size: 0.95rem; font-weight: 600;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
-.pricing-plan-buy:hover { background: var(--brand-primary-dark); }
+.pricing-plan-buy:hover {
+    background: var(--brand-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(var(--brand-primary-rgb), 0.3);
+}
+.pricing-plan-buy:active { transform: translateY(0); box-shadow: none; }
+
+.pricing-table:has(> .pricing-plan:only-child) .pricing-plan { text-align: center; }
+.pricing-table:has(> .pricing-plan:only-child) .pricing-plan-buy { max-width: 22rem; margin: 0 auto 1.6rem; }
 
 .pricing-plan-features-heading {
     font-size: 0.7rem; font-weight: 600;
@@ -4787,16 +4809,25 @@ a.modern-filter-btn:hover {
     margin-bottom: 0.5rem;
 }
 .pricing-plan-feature {
-    position: relative;
-    font-size: 0.75rem; line-height: 1.5;
-    color: var(--color-text-secondary);
-    padding-left: 0.85rem; margin-bottom: 0.4rem;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 0.85rem 1rem;
+    margin-bottom: 0.6rem;
+    text-align: center;
 }
-.pricing-plan-feature::before {
-    content: '';
-    position: absolute; left: 0; top: 0.5rem;
-    width: 4px; height: 4px; border-radius: 50%;
-    background: var(--brand-primary);
+.pricing-plan-feature-title {
+    font-size: 1.05rem; font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: 0.35rem;
+}
+.pricing-plan-feature-description {
+    font-size: 0.8rem; line-height: 1.5;
+    color: var(--color-text-secondary);
+}
+.pricing-plan-feature-note {
+    font-size: 0.8rem; line-height: 1.5;
+    color: var(--status-success);
+    margin-top: 0.3rem;
 }
 
 .pricing-plan-highlight {
@@ -4806,6 +4837,10 @@ a.modern-filter-btn:hover {
 }
 .pricing-plan-highlight-title { font-size: 0.72rem; font-weight: 600; color: var(--status-success); margin-bottom: 0.2rem; }
 .pricing-plan-highlight-body { font-size: 0.72rem; line-height: 1.5; color: var(--status-success); }
+
+.pricing-table:has(> .pricing-plan:only-child) .pricing-plan { max-width: 680px; }
+
+.pricing-plan-feature-title-accent { color: var(--brand-primary); }
 
 .rotating-panel {
     display: flex; flex-direction: column;

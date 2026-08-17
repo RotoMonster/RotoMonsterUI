@@ -81,19 +81,47 @@ namespace RotoMonsterUI
                     .AddClass("pricing-plan-features-heading")
                     .Text(plan.FeaturesHeading));
 
-            var features = plan.Features ?? new List<string>();
+            var features = plan.Features ?? new List<PricingFeature>();
             foreach (var feature in features)
             {
-                if (string.IsNullOrEmpty(feature)) continue;
-                card.Append(new HtmlTag("div")
-                    .AddClass("pricing-plan-feature")
-                    .Text(feature));
+                if (feature == null) continue;
+                card.Append(RenderFeature(feature));
             }
 
             if (plan.Highlight != null)
                 card.Append(RenderHighlight(plan.Highlight));
 
             return card;
+        }
+
+        private HtmlTag RenderFeature(PricingFeature feature)
+        {
+            var box = new HtmlTag("div").AddClass("pricing-plan-feature");
+
+            if (!string.IsNullOrEmpty(feature.TitleHtml))
+                box.Append(new HtmlTag("div")
+                    .AddClass("pricing-plan-feature-title")
+                    .AppendHtml(feature.TitleHtml));
+            else if (!string.IsNullOrEmpty(feature.Title))
+                box.Append(new HtmlTag("div")
+                    .AddClass("pricing-plan-feature-title")
+                    .Text(feature.Title));
+
+            if (!string.IsNullOrEmpty(feature.DescriptionHtml))
+                box.Append(new HtmlTag("div")
+                    .AddClass("pricing-plan-feature-description")
+                    .AppendHtml(feature.DescriptionHtml));
+            else if (!string.IsNullOrEmpty(feature.Description))
+                box.Append(new HtmlTag("div")
+                    .AddClass("pricing-plan-feature-description")
+                    .Text(feature.Description));
+
+            if (!string.IsNullOrEmpty(feature.Note))
+                box.Append(new HtmlTag("div")
+                    .AddClass("pricing-plan-feature-note")
+                    .Text(feature.Note));
+
+            return box;
         }
 
         private HtmlTag RenderAddOn(PricingPlan plan)

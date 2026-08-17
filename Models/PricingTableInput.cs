@@ -16,6 +16,19 @@ namespace RotoMonsterUI
         public string Body { get; set; }
     }
 
+    public class PricingFeature
+    {
+        public string Title { get; set; }
+
+        public string TitleHtml { get; set; }
+
+        public string Description { get; set; }
+
+        public string DescriptionHtml { get; set; }
+
+        public string Note { get; set; }
+    }
+
     public class PricingPlan
     {
         public string PlanId { get; set; }
@@ -27,7 +40,7 @@ namespace RotoMonsterUI
         public PricingAddOn AddOn { get; set; }
         public string PurchaseText { get; set; } = "Purchase";
         public string FeaturesHeading { get; set; }
-        public List<string> Features { get; set; } = new List<string>();
+        public List<PricingFeature> Features { get; set; } = new List<PricingFeature>();
         public PricingHighlight Highlight { get; set; }
     }
 
