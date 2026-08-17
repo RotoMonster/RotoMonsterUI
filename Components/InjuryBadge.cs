@@ -9,6 +9,12 @@ namespace RotoMonsterUI
         public string StatusColor { get; set; }
         public int NumberOfGames { get; set; }
         public string StatusDetails { get; set; }
+
+        /// <summary>Resolved to an icon shown in the badge. Falls back to Other when it doesn't match an IconType.</summary>
+        public string TagText { get; set; }
+
+        /// <summary>Show StatusDetails in the badge itself. It always appears in the tooltip regardless.</summary>
+        public bool ShowDetailsInBadge { get; set; }
     }
 
     public class InjuryBadge
@@ -35,8 +41,27 @@ namespace RotoMonsterUI
 
             var badge = new HtmlTag("span")
                 .AddClass("injury-badge")
-                .Attr("style", $"background-color:{normalizedColor};")
-                .Text(badgeText);
+                .Attr("style", $"background-color:{normalizedColor};");
+
+            if (!string.IsNullOrEmpty(_input.TagText))
+            {
+                badge.Append(new HtmlTag("span")
+                    .AddClass("injury-badge-tag")
+                    .AppendHtml(new Icon(new IconInput
+                    {
+                        Type = IconTypeResolver.Resolve(_input.TagText, IconType.Other),
+                        Size = 12,
+                        Color = "currentColor"
+                    }).Render()));
+            }
+
+            if (!string.IsNullOrEmpty(badgeText))
+                badge.Append(new HtmlTag("span").Text(badgeText));
+
+            if (_input.ShowDetailsInBadge && !string.IsNullOrEmpty(_input.StatusDetails))
+                badge.Append(new HtmlTag("span")
+                    .AddClass("injury-badge-details")
+                    .Text(_input.StatusDetails));
 
             return new CustomTooltip(badge.ToString(), tooltipText).Render();
         }

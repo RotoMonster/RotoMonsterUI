@@ -1020,7 +1020,9 @@ a.modern-filter-btn:hover {
 }
 
 .injury-badge {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
     padding: 2px 6px;
     border-radius: 4px;
     font-size: 0.7em;
@@ -1031,6 +1033,18 @@ a.modern-filter-btn:hover {
     margin: 0 2px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     text-transform: uppercase;
+}
+
+.injury-badge-tag { display: inline-flex; align-items: center; }
+.injury-badge-tag svg { display: block; }
+.injury-badge-details {
+    text-transform: none;
+    font-weight: 400;
+    letter-spacing: 0;
+    opacity: 0.85;
+    padding-left: 4px;
+    margin-left: 1px;
+    border-left: 1px solid rgba(255,255,255,0.35);
 }
 
 .display-player-name { font-size: 1.25rem; }
