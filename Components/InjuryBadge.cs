@@ -10,11 +10,11 @@ namespace RotoMonsterUI
         public int NumberOfGames { get; set; }
         public string StatusDetails { get; set; }
 
-        /// <summary>Resolved to an icon shown in the badge. Falls back to Other when it doesn't match an IconType.</summary>
         public string TagText { get; set; }
 
-        /// <summary>Show StatusDetails in the badge itself. It always appears in the tooltip regardless.</summary>
         public bool ShowDetailsInBadge { get; set; }
+
+        public bool IsUnofficial { get; set; }
     }
 
     public class InjuryBadge
@@ -32,9 +32,11 @@ namespace RotoMonsterUI
                 ? $"{_input.StatusAbbreviation} {_input.NumberOfGames}g"
                 : _input.StatusAbbreviation;
 
-            var tooltipText = !string.IsNullOrEmpty(_input.StatusDetails)
-                ? $"{_input.StatusText} – {_input.StatusDetails}"
-                : _input.StatusText;
+            var tooltipParts = new System.Collections.Generic.List<string>();
+            if (!string.IsNullOrEmpty(_input.StatusText)) tooltipParts.Add(_input.StatusText);
+            if (!string.IsNullOrEmpty(_input.StatusDetails)) tooltipParts.Add(_input.StatusDetails);
+            if (_input.IsUnofficial) tooltipParts.Add("Status is Unofficial");
+            var tooltipText = string.Join(" – ", tooltipParts);
 
             var color = string.IsNullOrEmpty(_input.StatusColor) ? "e05c00" : _input.StatusColor;
             var normalizedColor = color.StartsWith("#") ? color : "#" + color;
@@ -42,6 +44,9 @@ namespace RotoMonsterUI
             var badge = new HtmlTag("span")
                 .AddClass("injury-badge")
                 .Attr("style", $"background-color:{normalizedColor};");
+
+            if (!string.IsNullOrEmpty(badgeText))
+                badge.Append(new HtmlTag("span").Text(badgeText));
 
             if (!string.IsNullOrEmpty(_input.TagText))
             {
@@ -55,8 +60,17 @@ namespace RotoMonsterUI
                     }).Render()));
             }
 
-            if (!string.IsNullOrEmpty(badgeText))
-                badge.Append(new HtmlTag("span").Text(badgeText));
+            if (_input.IsUnofficial)
+            {
+                badge.Append(new HtmlTag("span")
+                    .AddClass("injury-badge-tag")
+                    .AppendHtml(new Icon(new IconInput
+                    {
+                        Type = IconType.UnofficialTag,
+                        Size = 12,
+                        Color = "currentColor"
+                    }).Render()));
+            }
 
             if (_input.ShowDetailsInBadge && !string.IsNullOrEmpty(_input.StatusDetails))
                 badge.Append(new HtmlTag("span")
