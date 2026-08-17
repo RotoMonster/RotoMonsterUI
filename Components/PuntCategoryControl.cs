@@ -74,7 +74,8 @@ namespace RotoMonsterUI
                 decimal? existing;
                 if (_input.Weights != null
                     && _input.Weights.TryGetValue(category.Id, out existing)
-                    && existing.HasValue)
+                    && existing.HasValue
+                    && existing.Value != 0m)
                 {
                     weight.Attr("value", existing.Value.ToString("0.00", CultureInfo.InvariantCulture));
                 }
