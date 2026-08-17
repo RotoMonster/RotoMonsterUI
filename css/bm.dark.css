@@ -5621,3 +5621,14 @@ a.display-columns-item--membership { cursor: pointer; }
 
 .tweet-card-player-row .injury-badge { margin-left: 0.4rem; }
  
+.punt-category-control { align-items: flex-start; }
+.punt-category-cell { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; }
+.punt-category-weight {
+    width: 3.5rem; padding: 0.15rem 0.3rem;
+    font-size: 0.75rem; text-align: center;
+    border: 1px solid var(--color-border); border-radius: 6px;
+    background: var(--color-bg-card); color: var(--color-text-primary);
+    -moz-appearance: textfield;
+}
+.punt-category-weight::-webkit-outer-spin-button,
+.punt-category-weight::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
