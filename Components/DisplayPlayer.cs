@@ -22,11 +22,19 @@ namespace RotoMonsterUI
         {
             var wrapper = new HtmlTag("span").AddClass("display-player");
 
-            var playerLink = new HtmlTag("a")
-                .AddClass("display-player-name player-link")
-                .Attr("href", RotoMonsterUIUrls.PlayerUrl(_input.PlayerId))
-                .Text(_input.PlayerName);
-            wrapper.Append(playerLink);
+            if (_input.DisableLink)
+            {
+                wrapper.Append(new HtmlTag("span")
+                    .AddClass("display-player-name")
+                    .Text(_input.PlayerName));
+            }
+            else
+            {
+                wrapper.Append(new HtmlTag("a")
+                    .AddClass("display-player-name player-link")
+                    .Attr("href", RotoMonsterUIUrls.PlayerUrl(_input.PlayerId))
+                    .Text(_input.PlayerName));
+            }
 
             var team = new HtmlTag("span")
                 .AddClass("ml-2 mr-1 ms-2 me-1")

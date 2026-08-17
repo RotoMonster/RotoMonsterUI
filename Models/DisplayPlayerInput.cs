@@ -9,6 +9,8 @@ namespace RotoMonsterUI
         public string TeamCode { get; set; }
         public string TeamColor { get; set; }
 
+        public bool DisableLink { get; set; }
+
         public List<DisplayPosition> Positions { get; set; } = new List<DisplayPosition>();
 
         // Alternate names a player can be searched by 
