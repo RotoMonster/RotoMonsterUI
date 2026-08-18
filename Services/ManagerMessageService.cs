@@ -14,6 +14,17 @@ namespace RotoMonsterUI
 
             var prefix = ManagerMessages.DismissPrefix(controlId);
 
+            // Dismiss fires via __doPostBack, so the control name arrives as the
+            // VALUE of __EVENTTARGET, not as its own form key. Check that first.
+            if (formValues.TryGetValue("__EVENTTARGET", out var eventTarget)
+                && eventTarget.StartsWith(prefix)
+                && int.TryParse(eventTarget.Substring(prefix.Length), out int targetId))
+            {
+                result.DismissedMessageId = targetId;
+                return result;
+            }
+
+            // Fallback: control name posted as its own key.
             foreach (var kvp in formValues)
             {
                 if (!kvp.Key.StartsWith(prefix)) continue;
