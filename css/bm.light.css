@@ -5127,13 +5127,13 @@ a.modern-filter-btn:hover {
 }
 
 .range-badge--monster .monster-bar-cell--top {
-    color: #2563eb;
-    font-weight: 700;
+    color: #2563eb;        /* same */
+    font-weight: 600;      /* was 700 */
 }
 
 .range-badge--monster .monster-bar-cell--ownable {
-    color: #7c3aed;
-    font-weight: 500;
+    color: #b35900;        /* was #7c3aed (purple) */
+    font-weight: 600;      /* was 500 */
 }
 
 .range-badge--monster .monster-bar-cell--dim {
