@@ -65,13 +65,8 @@ namespace RotoMonsterUI
                 list.Append(row);
             }
 
-            return new CollapseControl(new CollapseControlInput
-            {
-                Id = _input.Id,
-                ButtonText = string.Format(_input.ButtonTextFormat, messages.Count),
-                IsExpanded = _input.IsExpanded,
-                CollapsibleHtml = list.ToString()
-            }).Render();
+
+            return list.ToString();
         }
     }
 }
