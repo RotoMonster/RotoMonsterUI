@@ -56,15 +56,8 @@ namespace RotoMonsterUI
                         .AddClass("manager-message-dismiss")
                         .Attr("type", "button")
                         .Attr("name", name)
-                        .Attr("title", "Dismiss")
-                        .Attr("aria-label", "Dismiss")
-                        .Attr("onclick", "__doPostBack('" + name + "','',this.form)");
-
-                    dismiss.AppendHtml(new Icon(new IconInput
-                    {
-                        Type = IconType.Close,
-                        Size = 14
-                    }).Render());
+                        .Attr("onclick", "__doPostBack('" + name + "','',this.form)")
+                        .Text("Dismiss");
 
                     row.Append(dismiss);
                 }

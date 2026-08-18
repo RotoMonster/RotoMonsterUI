@@ -5554,19 +5554,31 @@ a.display-columns-item--membership { cursor: pointer; }
 .manager-messages { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.6rem; }
 .manager-message {
     display: flex; align-items: flex-start; gap: 0.6rem;
-    background: rgba(var(--brand-primary-rgb), 0.08);
+    background: rgba(37, 99, 235, 0.07);
     border-radius: 8px; padding: 0.6rem 0.75rem;
 }
 .manager-message-body { flex: 1; min-width: 0; }
 .manager-message-subject {
     font-size: 0.7rem; font-weight: 600;
     text-transform: uppercase; letter-spacing: 0.05em;
-    color: var(--brand-primary); margin-bottom: 0.15rem;
+    color: #2563eb; margin-bottom: 0.15rem;
 }
 .manager-message-text { font-size: 0.85rem; color: var(--color-text-primary); }
 .manager-message-dismiss {
-    flex-shrink: 0; background: none; border: none; cursor: pointer;
-    color: var(--color-text-secondary); padding: 0.15rem; line-height: 1;
-    border-radius: 4px;
+    flex-shrink: 0;
+    padding: 0.2rem 0.7rem;
+    font-size: 0.75rem; font-weight: 600;
+    background: none; cursor: pointer; line-height: 1.5;
+    border: 1px solid rgba(37, 99, 235, 0.3); border-radius: 6px;
+    color: #2563eb;
+    transition: background 0.15s ease, border-color 0.15s ease;
 }
-.manager-message-dismiss:hover { color: var(--color-text-primary); background: rgba(0,0,0,0.06); }
+.manager-message-dismiss:hover {
+    background: rgba(37, 99, 235, 0.1);
+    border-color: rgba(37, 99, 235, 0.55);
+}
+.manager-message-dismiss:active { transform: scale(0.94); }
+#managerMessages > .modern-filter-btn:hover {
+    color: #2563eb;
+    border-color: rgba(37, 99, 235, 0.4);
+}

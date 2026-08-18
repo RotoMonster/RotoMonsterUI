@@ -87,8 +87,7 @@ namespace RotoMonsterUI
                         .Attr("onclick", $"TriggerPostBack(this, '{_input.Id}_addcurrent_', 'data-pageid')")
                         .Attr("data-pageid", _input.CurrentPage.PageId);
                     addBtn.AppendHtml(new Icon(new IconInput { Type = IconType.Plus, Size = 12, Color = "currentColor" }).Render());
-                    addBtn.AppendHtml($"<span style='margin-left:0.35rem;'>Add {System.Net.WebUtility.HtmlEncode(_input.CurrentPage.Name)}</span>");
-                    wrapper.Append(addBtn);
+                    addBtn.AppendHtml($"<span style='margin-left:0.35rem;'>Add {System.Net.WebUtility.HtmlEncode(_input.CurrentPage.Name)} to Favorites</span>");                    wrapper.Append(addBtn);
                 }
             }
 
