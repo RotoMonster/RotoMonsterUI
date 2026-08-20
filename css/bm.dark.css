@@ -5666,3 +5666,30 @@ a.display-columns-item--membership { cursor: pointer; }
     color: #60a5fa;
     border-color: rgba(59, 130, 246, 0.5);
 }
+
+.sportradar-attribution {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    color: var(--color-text-tertiary);
+    text-align: center;
+    padding: 0.5rem 0;
+}
+.sportradar-attribution-logo-link {
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+}
+.sportradar-attribution-logo {
+    display: block;
+    height: 16px;
+    width: auto;
+}
+.sportradar-attribution-logo--light {
+    display: none;
+}
+.sportradar-attribution-logo--dark {
+    display: block;
+}
