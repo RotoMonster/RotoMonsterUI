@@ -96,7 +96,13 @@
         PersonMinus,
         Verified, 
 
-        ChromeExtension
+        ChromeExtension,
+
+        // Lineup state. Play for a confirmed starter, pause for a benched
+        // player, play with a question badge for a probable one.
+        Play,
+        Pause,
+        PlayQuestion
 
     }
 
@@ -106,5 +112,12 @@
         public int Size { get; set; } = 20;
         public string Color { get; set; } = "currentColor";
         public string Fill { get; set; } = "none";
+
+        /// <summary>
+        /// Only used by PlayQuestion. That icon's mark has to contrast with
+        /// the play shape rather than match it, so it cannot take Color.
+        /// Leave empty for the default amber.
+        /// </summary>
+        public string QuestionColor { get; set; } = "";
     }
 }

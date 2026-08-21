@@ -74,6 +74,44 @@
                         <line x1=""30"" y1=""40"" x2=""20"" y2=""55"" stroke=""{_input.Color}"" stroke-width=""4"" stroke-linecap=""round""/>
                         <line x1=""30"" y1=""40"" x2=""40"" y2=""55"" stroke=""{_input.Color}"" stroke-width=""4"" stroke-linecap=""round""/>
                     </svg>";
+                // Lineup state icons. Drawn as filled shapes rather than
+                // through WrapSvg, which strokes at width 2 and would leave a
+                // play triangle looking hollow at the 13px these render at in
+                // the game state badge.
+
+                case IconType.Play:
+                    return $@"<svg xmlns=""http://www.w3.org/2000/svg"" width=""{_input.Size}"" height=""{_input.Size}"" viewBox=""0 0 24 24"">
+                        <path d=""M8 5.5v13l11-6.5z"" fill=""{_input.Color}""/>
+                    </svg>";
+
+                case IconType.Pause:
+                    return $@"<svg xmlns=""http://www.w3.org/2000/svg"" width=""{_input.Size}"" height=""{_input.Size}"" viewBox=""0 0 24 24"">
+                        <rect x=""7"" y=""5.5"" width=""3.5"" height=""13"" rx=""1"" fill=""{_input.Color}""/>
+                        <rect x=""13.5"" y=""5.5"" width=""3.5"" height=""13"" rx=""1"" fill=""{_input.Color}""/>
+                    </svg>";
+
+                // Probable starter. The question mark sits in a filled badge
+                // on the corner rather than inside the triangle - these render
+                // at 13px in the game state badge, and a glyph squeezed into
+                // the wedge has about 6px to work with and turns to mush.
+                //
+                // The badge carries its own colour rather than taking
+                // _input.Color, since the whole point is that it contrasts
+                // with the play shape. QuestionColor overrides it if a caller
+                // ever needs to.
+                case IconType.PlayQuestion:
+                    var markColor = string.IsNullOrEmpty(_input.QuestionColor)
+                        ? "#e68a00"
+                        : _input.QuestionColor;
+
+                    return $@"<svg xmlns=""http://www.w3.org/2000/svg"" width=""{_input.Size}"" height=""{_input.Size}"" viewBox=""0 0 24 24"">
+                        <path d=""M6 6.5v13l11-6.5z"" fill=""{_input.Color}""/>
+                        <circle cx=""17.5"" cy=""6.5"" r=""6"" fill=""{markColor}""/>
+                        <path d=""M15.9 5.1c0-.9.7-1.6 1.6-1.6s1.6.6 1.6 1.5c0 .7-.4 1-.9 1.3-.4.3-.6.5-.6.9v.2""
+                              fill=""none"" stroke=""#fff"" stroke-width=""1.3"" stroke-linecap=""round""/>
+                        <circle cx=""17.6"" cy=""9.3"" r=""0.85"" fill=""#fff""/>
+                    </svg>";
+
                 case IconType.Settings:
                     return WrapSvg(@"<path d=""M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z""/><circle cx=""12"" cy=""12"" r=""3""/>");
                 case IconType.RefreshRosters:
