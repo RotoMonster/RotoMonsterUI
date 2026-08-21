@@ -45,9 +45,10 @@ namespace RotoMonsterUI
                 }
 
                 var cellHtml = RenderCell(item, isFirst, isLast).ToString();
+                var tooltipHtml = BuildTooltip(item);
 
-                if (!string.IsNullOrEmpty(item.Description))
-                    cells.AppendHtml(new CustomTooltip(cellHtml, item.Description).Render());
+                if (!string.IsNullOrEmpty(tooltipHtml))
+                    cells.AppendHtml(new CustomTooltip(cellHtml, tooltipHtml).Render());
                 else
                     cells.AppendHtml(cellHtml);
             }
@@ -133,6 +134,46 @@ namespace RotoMonsterUI
                     .Text(item.MeasureText));
 
             return cell;
+        }
+
+        private static string BuildTooltip(MonsterBarBadgeItem item)
+        {
+            var hasValue = !string.IsNullOrEmpty(item.ValueText);
+            var hasRank = !string.IsNullOrEmpty(item.RankText);
+            var hasDescription = !string.IsNullOrEmpty(item.Description);
+
+            if (!hasValue && !hasRank)
+                return hasDescription ? item.Description : null;
+
+            var tip = new HtmlTag("div").AddClass("mbar-tip");
+
+            if (hasDescription)
+                tip.Append(new HtmlTag("div")
+                    .AddClass("mbar-tip-title")
+                    .Text(DecodeLabel(item.Description)));
+
+            var stats = new HtmlTag("div").AddClass("mbar-tip-stats");
+
+            if (hasValue)
+            {
+                var value = new HtmlTag("span")
+                    .AddClass("mbar-tip-value")
+                    .Text(item.ValueText);
+
+                var background = NormalizeColor(item.ColorCode);
+                if (!string.IsNullOrEmpty(background))
+                    value.Attr("style", "background:" + background + ";");
+
+                stats.Append(value);
+            }
+
+            if (hasRank)
+                stats.Append(new HtmlTag("span")
+                    .AddClass("mbar-tip-rank")
+                    .Text("Rank " + item.RankText));
+
+            tip.Append(stats);
+            return tip.ToString();
         }
 
         private static HtmlTag RenderEmptyCell(bool isFirst, bool isLast)

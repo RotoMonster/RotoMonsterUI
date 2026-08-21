@@ -41,6 +41,10 @@ namespace RotoMonsterUI
 
         public string ColorCode { get; set; }
 
+        public string ValueText { get; set; }
+
+        public string RankText { get; set; }
+
         public MonsterBarEmphasis Emphasis { get; set; } = MonsterBarEmphasis.Dim;
 
         public MonsterBarGroup Group { get; set; } = MonsterBarGroup.None;
