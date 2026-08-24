@@ -5657,3 +5657,23 @@ a.display-columns-item--membership { cursor: pointer; }
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
 }
+
+.collapse-control-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.collapse-control-lock {
+    width: 32px;
+    height: 32px;
+}
+.collapse-control-lock.is-locked {
+    background: var(--brand-primary);
+    border-color: var(--brand-primary);
+    color: #ffffff;
+}
+.collapse-control-lock.is-locked:hover {
+    border-color: var(--brand-primary);
+    color: #ffffff;
+}

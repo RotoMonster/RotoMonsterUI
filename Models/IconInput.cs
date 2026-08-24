@@ -79,8 +79,8 @@
         Grok,
         Gemini,
         Favorite,
-        FavoriteOutline, 
-        DragHandle, 
+        FavoriteOutline,
+        DragHandle,
         Basketball,
         Robot,
         WandMagic,
@@ -94,7 +94,7 @@
         Football,
         HockeyPuck,
         PersonMinus,
-        Verified, 
+        Verified,
 
         ChromeExtension,
 
@@ -102,7 +102,8 @@
         // player, play with a question badge for a probable one.
         Play,
         Pause,
-        PlayQuestion
+        PlayQuestion, 
+        LockOpen
 
     }
 

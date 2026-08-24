@@ -110,6 +110,28 @@ $(document).on('hide.bs.collapse', function(e) {
     $('#' + e.target.id.replace('-content', '-toggle')).val('0');
 });
 
+// Collapse Control - lock toggle
+document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-collapse-lock]');
+    if (!btn) return;
+
+    var controlId = btn.getAttribute('data-collapse-lock');
+    var field = document.getElementById(controlId + '-lock');
+    var locked = btn.classList.toggle('is-locked');
+
+    if (field) field.value = locked ? '1' : '0';
+    btn.setAttribute('aria-pressed', locked ? 'true' : 'false');
+
+    var shackle = btn.querySelector('svg path');
+    if (shackle) {
+        shackle.setAttribute('d', locked ? 'M7 11V7a5 5 0 0 1 10 0v4' : 'M7 11V7a5 5 0 0 1 9.9-1');
+    }
+
+    if (btn.getAttribute('data-collapse-lock-postback') === '1') {
+        __doPostBack(controlId + '-lock-btn', '', btn.form);
+    }
+});
+
 $(document).on('change', '.game-date-toggle-checkbox', function() {
     var row = $(this).closest('label').parent();
     if ($(this).is(':checked')) {

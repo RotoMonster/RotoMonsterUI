@@ -15,6 +15,8 @@ namespace RotoMonsterUI
         {
             var contentId = $"{_input.Id}-content";
             var toggleId = $"{_input.Id}-toggle";
+            var lockId = $"{_input.Id}-lock";
+            var lockButtonId = $"{_input.Id}-lock-btn";
 
             // Chevron icon
             var chevronSvg = _input.IsExpanded
@@ -37,6 +39,44 @@ namespace RotoMonsterUI
             button.AppendHtml($"{_input.ButtonText}&nbsp;");
             button.AppendHtml(chevronSvg);
 
+            // Header row holds the collapse button and, optionally, the lock toggle
+            var header = new HtmlTag("div").AddClass("collapse-control-header");
+            header.Append(button);
+
+            if (_input.ShowLock)
+            {
+                var lockIcon = new Icon(new IconInput
+                {
+                    Type = _input.IsLocked ? IconType.Lock : IconType.LockOpen,
+                    Size = 16
+                }).Render();
+
+                var lockButton = new HtmlTag("button")
+                    .AddClass("modern-filter-btn modern-filter-btn-icon-only collapse-control-lock")
+                    .Attr("type", "button")
+                    .Attr("id", lockButtonId)
+                    .Attr("data-collapse-lock", _input.Id)
+                    .Attr("aria-pressed", _input.IsLocked ? "true" : "false")
+                    .Attr("title", _input.IsLocked ? _input.UnlockTitle : _input.LockTitle);
+
+                if (_input.IsLocked)
+                    lockButton.AddClass("is-locked");
+
+                if (_input.LockPostsBack)
+                    lockButton.Attr("data-collapse-lock-postback", "1");
+
+                lockButton.AppendHtml(lockIcon);
+                header.Append(lockButton);
+
+                var lockHidden = new HtmlTag("input")
+                    .Attr("type", "hidden")
+                    .Attr("name", lockId)
+                    .Attr("id", lockId)
+                    .Attr("value", _input.IsLocked ? "1" : "0");
+
+                header.Append(lockHidden);
+            }
+
             // Hidden field for postback state
             var hidden = new HtmlTag("input")
                 .Attr("type", "hidden")
@@ -53,7 +93,7 @@ namespace RotoMonsterUI
 
             // Wrapper
             var wrapper = new HtmlTag("div").Attr("id", _input.Id);
-            wrapper.Append(button);
+            wrapper.Append(header);
             wrapper.Append(hidden);
             wrapper.Append(contentDiv);
 
