@@ -606,9 +606,19 @@ body {
 }
 .rankings-table td:first-child, .modern-stats-table td:first-child { padding-left: 0.5rem; text-align: left; }
 .rankings-table td:last-child, .modern-stats-table td:last-child { padding-right: 0.5rem; }
+.rankings-table td[style*="background-color:"],
+.modern-stats-table td[style*="background-color:"] {
+    color: #1e293b;
+}
 .rankings-table tbody tr:hover, .modern-stats-table tbody tr:hover {
     background: rgba(var(--brand-primary-rgb), 0.1);
     box-shadow: 0 0 20px rgba(var(--brand-primary-rgb), 0.1);
+}
+.rankings-table tbody tr:hover td,
+.modern-stats-table tbody tr:hover td {
+    box-shadow: inset 0 1px 0 var(--brand-primary),
+                inset 0 -1px 0 var(--brand-primary);
+    text-shadow: 0.2px 0 0 currentColor, -0.2px 0 0 currentColor;
 }
 .rankings-table a, .modern-stats-table a { color: #38bdf8; font-weight: 600; text-decoration: none; transition: all 0.2s ease; }
 .rankings-table a:hover, .modern-stats-table a:hover { color: #0ea5e9; text-shadow: 0 0 10px rgba(56,189,248,0.5); }
