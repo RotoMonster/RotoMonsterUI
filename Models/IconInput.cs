@@ -102,8 +102,9 @@
         // player, play with a question badge for a probable one.
         Play,
         Pause,
-        PlayQuestion, 
-        LockOpen
+        PlayQuestion,
+        LockOpen, 
+        Question
 
     }
 

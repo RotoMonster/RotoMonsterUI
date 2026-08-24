@@ -340,6 +340,13 @@ case IconType.Newspaper:
                 case IconType.LockOpen:
                     return WrapSvg(@"<rect x=""3"" y=""11"" width=""18"" height=""11"" rx=""2""/><path d=""M7 11V7a5 5 0 0 1 9.9-1""/>");
 
+                case IconType.Question:
+                    return $@"<svg xmlns=""http://www.w3.org/2000/svg"" width=""{_input.Size}"" height=""{_input.Size}"" viewBox=""0 0 24 24"">
+                        <path d=""M8.6 8.9c0-1.9 1.5-3.4 3.4-3.4s3.4 1.4 3.4 3.2c0 1.5-.9 2.2-1.9 2.9-.9.6-1.4 1.1-1.4 2.1v.6""
+                              fill=""none"" stroke=""{_input.Color}"" stroke-width=""2.4"" stroke-linecap=""round""/>
+                        <circle cx=""12.1"" cy=""18.4"" r=""1.6"" fill=""{_input.Color}""/>
+                    </svg>";
+
                 case IconType.Gemini:
                     return $@"<svg xmlns=""http://www.w3.org/2000/svg"" width=""{_input.Size}"" height=""{_input.Size}"" viewBox=""0 0 24 24"" fill=""{_input.Color}""><path d=""M12 2 Q13 11 22 12 Q13 13 12 22 Q11 13 2 12 Q11 11 12 2 Z""/></svg>";
                 case IconType.ChromeExtension:

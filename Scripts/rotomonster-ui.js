@@ -1476,3 +1476,16 @@ document.addEventListener('click', function (e) {
         e.stopPropagation();
     }
 }, true);
+
+// NBA Lineup Card - bench collapse
+document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-nba-bench]');
+    if (!btn) return;
+ 
+    var bench = document.getElementById(btn.getAttribute('data-nba-bench'));
+    if (!bench) return;
+ 
+    var collapsed = bench.classList.toggle('nba-lineup-bench--collapsed');
+    btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+});
+ 

@@ -5685,3 +5685,211 @@ a.display-columns-item--membership { cursor: pointer; }
     border-color: var(--brand-primary);
     color: #ffffff;
 }
+/* ---------------- NBA lineup card ---------------- */
+
+.nba-lineup-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.nba-lineup-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.7rem 0.9rem;
+    border-bottom: 1px solid var(--color-border-light);
+}
+.nba-lineup-when {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+.nba-lineup-line {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.nba-lineup-teams {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.nba-lineup-team {
+    border-right: 1px solid var(--color-border-light);
+    min-width: 0;
+}
+.nba-lineup-team:last-child { border-right: none; }
+
+.nba-lineup-team-head {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border-light);
+}
+.nba-lineup-team-code {
+    font-weight: 800;
+    font-size: 0.95rem;
+}
+.nba-lineup-team-proj {
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    padding: 0.1rem 0.4rem;
+    border-radius: 5px;
+    background: rgba(var(--brand-primary-rgb), 0.12);
+    color: var(--brand-primary);
+}
+.nba-lineup-b2b {
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    padding: 0.08rem 0.3rem;
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+}
+
+.nba-lineup-status {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.28rem;
+    font-size: 0.66rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+.nba-lineup-status--verified { color: var(--status-success); }
+.nba-lineup-status--projected { color: var(--color-text-secondary); }
+.nba-lineup-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+}
+
+.nba-lineup-row {
+    display: grid;
+    grid-template-columns: 26px 1fr auto;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.38rem 0.75rem;
+    border-bottom: 1px solid var(--color-border-light);
+    min-width: 0;
+}
+.nba-lineup-row:last-child { border-bottom: none; }
+.nba-lineup-row:hover { background: rgba(var(--brand-primary-rgb), 0.08); }
+.nba-lineup-row--empty { opacity: 0.4; }
+.nba-lineup-row--owned { box-shadow: inset 3px 0 0 var(--brand-primary); }
+
+.nba-lineup-slot {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--color-text-secondary);
+}
+.nba-lineup-slot[data-pos="PG"] { color: var(--pos-pg); }
+.nba-lineup-slot[data-pos="SG"] { color: var(--pos-sg); }
+.nba-lineup-slot[data-pos="SF"] { color: var(--pos-sf); }
+.nba-lineup-slot[data-pos="PF"] { color: var(--pos-pf); }
+.nba-lineup-slot[data-pos="C"]  { color: var(--pos-c);  }
+.nba-lineup-slot[data-pos="G"]  { color: var(--pos-g);  }
+.nba-lineup-slot[data-pos="F"]  { color: var(--pos-f);  }
+
+.nba-lineup-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.85rem;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.nba-lineup-name .display-player-team { display: none; }
+
+.nba-lineup-mins {
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-secondary);
+    text-align: right;
+}
+
+@media (max-width: 520px) {
+    .nba-lineup-row { grid-template-columns: 24px 1fr auto; padding: 0.34rem 0.5rem; }
+    .nba-lineup-name { font-size: 0.8rem; }
+}
+
+/* bench divider, doubles as the collapse toggle */
+.nba-lineup-divider {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem;
+    width: 100%;
+    padding: 0.35rem 0.75rem;
+    font: inherit;
+    font-size: 0.66rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary);
+    background: var(--color-bg-secondary);
+    border: none;
+    border-bottom: 1px solid var(--color-border-light);
+    border-top: 1px solid var(--color-border-light);
+    cursor: pointer;
+    text-align: left;
+}
+.nba-lineup-divider:hover { color: var(--brand-primary); }
+
+.nba-lineup-caret {
+    width: 0; height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid currentColor;
+    transition: transform 0.15s ease;
+    flex-shrink: 0;
+}
+.nba-lineup-divider[aria-expanded="false"] .nba-lineup-caret {
+    transform: rotate(-90deg);
+}
+
+.nba-lineup-bench--collapsed { display: none; }
+
+/* bench rows have no slot, so let the name use that column */
+.nba-lineup-row--noslot { grid-template-columns: 1fr auto; }
+.nba-lineup-row--noslot .nba-lineup-slot { display: none; }
+
+/* DisplayPlayer is sized for a roomier layout, bring it down to row size */
+.nba-lineup-name .display-player-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    min-width: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.nba-lineup-name .display-player { min-width: 0; overflow: hidden; }
+.nba-lineup-name .injury-badge { flex-shrink: 0; }
+
+.nba-lineup-name .display-player-name,
+.nba-lineup-name .display-player-name a {
+    color: var(--color-text-primary);
+    text-decoration: none;
+}
+.nba-lineup-name .display-player-name a:hover,
+.nba-lineup-row:hover .display-player-name,
+.nba-lineup-row:hover .display-player-name a {
+    color: var(--brand-primary);
+}
