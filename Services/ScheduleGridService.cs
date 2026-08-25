@@ -9,6 +9,7 @@ namespace RotoMonsterUI
         public int? StartSelectedPeriod { get; set; }
         public int? EndSelectedPeriod { get; set; }
         public string EasePositionFilterValue { get; set; }
+        public bool? ShowQualityGames { get; set; }
         public int? ExpandedPeriodNumber { get; set; }
         public bool IsCollapseRequested { get; set; }
     }
@@ -47,6 +48,10 @@ namespace RotoMonsterUI
                 if (kvp.Key == $"{controlId}-set-end" && int.TryParse(kvp.Value, out var endPeriod))
                     result.EndSelectedPeriod = endPeriod;
             }
+
+            // The toggle only submits a value when checked, so the hidden marker tells us it was rendered
+            if (formValues.ContainsKey($"{controlId}-quality-present"))
+                result.ShowQualityGames = formValues.ContainsKey($"{controlId}-showquality");
 
             if (formValues.TryGetValue($"{controlId}-ease-position", out var easePosition))
                 result.EasePositionFilterValue = easePosition;

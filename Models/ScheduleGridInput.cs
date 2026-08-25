@@ -6,7 +6,8 @@ namespace RotoMonsterUI
     public enum ScheduleGridColorType
     {
         MaxWeeks,
-        Ease
+        Ease,
+        QualityGames
     }
 
     public enum ScheduleGridSortBy
@@ -14,7 +15,8 @@ namespace RotoMonsterUI
         Team,
         Games,
         MaxWeeks,
-        Ease
+        Ease,
+        QualityGames
     }
 
     public class ScheduleGridDay
@@ -29,6 +31,9 @@ namespace RotoMonsterUI
     public class ScheduleGridPeriodCell
     {
         public int Games { get; set; }
+
+        /// <summary>Quality games in this period. If left at 0, the grid falls back to counting Days where IsQualityGame is true.</summary>
+        public int QualityGames { get; set; }
         public bool IsMaxWeek { get; set; }
         public string EaseColor { get; set; }
         public double Ease { get; set; }
@@ -69,7 +74,11 @@ namespace RotoMonsterUI
         public int EndSelectedPeriod { get; set; }
         public ScheduleGridColorType ColorType { get; set; } = ScheduleGridColorType.MaxWeeks;
         public ScheduleGridSortBy SortBy { get; set; } = ScheduleGridSortBy.Team;
+        /// <summary>Sport supports quality games at all. Gates the toggle, the sort option and the coloring option.</summary>
         public bool UseQualityGames { get; set; } = false;
+
+        /// <summary>User toggle state. Controls the Quality Games summary row and the small count beside each cell's total.</summary>
+        public bool ShowQualityGames { get; set; } = true;
         public bool ShowEasePositionFilter { get; set; } = false;
         public List<(string Text, string Value)> EasePositionOptions { get; set; } = new List<(string, string)>();
         public string EasePositionFilterValue { get; set; }

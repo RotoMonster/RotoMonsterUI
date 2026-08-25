@@ -31,6 +31,15 @@ namespace RotoMonsterUI
             "<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>";
         private int TeamCellColSpan => 4;
 
+        private bool ShowQuality => _input.UseQualityGames && _input.ShowQualityGames;
+
+        private static int QualityCount(ScheduleGridPeriodCell cell)
+        {
+            if (cell == null) return 0;
+            if (cell.QualityGames > 0) return cell.QualityGames;
+            return cell.Days.Count(d => d.IsQualityGame);
+        }
+
         private ScheduleGridPeriod GetPeriodForSelectedDate()
         {
             if (!_input.SelectedDate.HasValue) return null;
@@ -73,7 +82,7 @@ namespace RotoMonsterUI
             tbody.Append(RenderSummaryRow("Games", t => t.Summary.Games.ToString(), null));
             tbody.Append(RenderSummaryRow("Max Weeks", t => t.Summary.MaxWeeks.ToString(), null));
 
-            if (_input.UseQualityGames)
+            if (ShowQuality)
                 tbody.Append(RenderSummaryRow("Quality Games", t => t.Summary.QualityGames.ToString(), null));
 
             tbody.Append(RenderSummaryRow("Avg Ease", t => t.Summary.AvgEase.ToString("0.00"), t => t.Summary.AvgEaseColor));
@@ -93,6 +102,10 @@ namespace RotoMonsterUI
             tbody.Append(RenderTeamHeaderRow(teams));
             tbody.Append(RenderSummaryRow("Games", t => t.Summary.Games.ToString(), null));
             tbody.Append(RenderSummaryRow("Max Weeks", t => t.Summary.MaxWeeks.ToString(), null));
+
+            if (ShowQuality)
+                tbody.Append(RenderSummaryRow("Quality Games", t => t.Summary.QualityGames.ToString(), null));
+
             tbody.Append(RenderSummaryRow("Avg Ease", t => t.Summary.AvgEase.ToString("0.00"), t => t.Summary.AvgEaseColor));
 
             table.Append(tbody);
@@ -112,6 +125,8 @@ namespace RotoMonsterUI
                     return teams.OrderByDescending(t => t.Summary.MaxWeeks).ToList();
                 case ScheduleGridSortBy.Ease:
                     return teams.OrderByDescending(t => t.Summary.AvgEase).ToList();
+                case ScheduleGridSortBy.QualityGames:
+                    return teams.OrderByDescending(t => t.Summary.QualityGames).ThenBy(t => t.TeamCode).ToList();
                 case ScheduleGridSortBy.Team:
                 default:
                     return teams.OrderBy(t => t.TeamCode).ToList();
@@ -129,6 +144,8 @@ namespace RotoMonsterUI
                 .WithSegmented()
                 .AddOption("Max Weeks Coloring", ScheduleGridColorType.MaxWeeks.ToString(), _input.ColorType == ScheduleGridColorType.MaxWeeks)
                 .AddOption("Ease Coloring", ScheduleGridColorType.Ease.ToString(), _input.ColorType == ScheduleGridColorType.Ease);
+            if (_input.UseQualityGames)
+                coloringRadio.AddOption("Quality Games Coloring", ScheduleGridColorType.QualityGames.ToString(), _input.ColorType == ScheduleGridColorType.QualityGames);
             coloringGroup.AppendHtml(coloringRadio.Render());
 
             var sortGroup = new HtmlTag("div").AddClass("schedule-grid-control-group");
@@ -137,11 +154,33 @@ namespace RotoMonsterUI
                 .WithPostBack()
                 .WithSegmented();
             foreach (ScheduleGridSortBy option in Enum.GetValues(typeof(ScheduleGridSortBy)))
+            {
+                if (option == ScheduleGridSortBy.QualityGames && !_input.UseQualityGames) continue;
                 sortRadio.AddOption(SortByLabel(option), option.ToString(), _input.SortBy == option);
+            }
             sortGroup.AppendHtml(sortRadio.Render());
 
             controls.Append(coloringGroup);
             controls.Append(sortGroup);
+
+            if (_input.UseQualityGames)
+            {
+                var qualityGroup = new HtmlTag("div").AddClass("schedule-grid-control-group");
+                var qualityToggle = new ToggleSwitch()
+                    .WithLabel("Quality Games")
+                    .WithName($"{_input.Id}-showquality")
+                    .WithChecked(_input.ShowQualityGames)
+                    .WithPostBack();
+                qualityGroup.AppendHtml(qualityToggle.Render());
+
+                // Unchecked checkboxes are not submitted, so this marker tells the service the toggle was on the page
+                qualityGroup.Append(new HtmlTag("input")
+                    .Attr("type", "hidden")
+                    .Attr("name", $"{_input.Id}-quality-present")
+                    .Attr("value", "1"));
+
+                controls.Append(qualityGroup);
+            }
 
             if (_input.ShowEasePositionFilter && _input.EasePositionOptions.Count > 0)
             {
@@ -164,6 +203,7 @@ namespace RotoMonsterUI
             switch (sortBy)
             {
                 case ScheduleGridSortBy.MaxWeeks: return "Max Weeks";
+                case ScheduleGridSortBy.QualityGames: return "Quality Games";
                 default: return sortBy.ToString();
             }
         }
@@ -292,8 +332,22 @@ namespace RotoMonsterUI
                 cell.Attr("style", $"background-color:#{cellData.EaseColor};");
                 cell.AddClass("schedule-grid-cell-colored");
             }
+            else if (_input.ColorType == ScheduleGridColorType.QualityGames)
+            {
+                var shade = Math.Min(QualityCount(cellData), 3);
+                if (shade > 0)
+                    cell.AddClass($"schedule-grid-quality-{shade}");
+            }
 
-            cell.Text(cellData.Games.ToString());
+            cell.Append(new HtmlTag("span").AddClass("schedule-grid-team-games").Text(cellData.Games.ToString()));
+
+            if (ShowQuality)
+            {
+                var quality = QualityCount(cellData);
+                if (quality > 0)
+                    cell.Append(new HtmlTag("span").AddClass("schedule-grid-quality-count").Text(quality.ToString()));
+            }
+
             return cell;
         }
 

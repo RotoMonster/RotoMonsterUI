@@ -15,6 +15,13 @@ namespace RotoMonsterUI
             _input = input;
         }
 
+        private static int QualityCount(ScheduleGridPeriodCell cell)
+        {
+            if (cell == null) return 0;
+            if (cell.QualityGames > 0) return cell.QualityGames;
+            return cell.Days.Count(d => d.IsQualityGame);
+        }
+
         public string Render()
         {
             var wrapper = new HtmlTag("div").AddClass("schedule-team-row-wrapper").Attr("id", _input.Id);
@@ -39,6 +46,12 @@ namespace RotoMonsterUI
                         cell.AddClass("schedule-grid-maxweek");
                     else if (_input.ColorType == ScheduleGridColorType.Ease && !string.IsNullOrEmpty(cellData.EaseColor))
                         cell.Attr("style", $"background-color:#{cellData.EaseColor};");
+                    else if (_input.ColorType == ScheduleGridColorType.QualityGames)
+                    {
+                        var shade = System.Math.Min(QualityCount(cellData), 3);
+                        if (shade > 0)
+                            cell.AddClass($"schedule-grid-quality-{shade}");
+                    }
 
                     var inner = new HtmlTag("button")
                         .AddClass("schedule-team-row-cell-btn")
@@ -47,6 +60,14 @@ namespace RotoMonsterUI
                         .Attr("value", isExpanded ? "collapse" : period.PeriodNumber.ToString());
 
                     inner.AppendHtml($"<span>{cellData.Games}</span>");
+
+                    if (_input.ShowQualityGames)
+                    {
+                        var quality = QualityCount(cellData);
+                        if (quality > 0)
+                            inner.AppendHtml($"<span class='schedule-grid-quality-count'>{quality}</span>");
+                    }
+
                     if (cellData.Days.Count > 0)
                         inner.AppendHtml(ExpandChevronSvg);
 

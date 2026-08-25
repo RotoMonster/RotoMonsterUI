@@ -2390,6 +2390,25 @@ a.modern-filter-btn:hover {
     color: var(--color-text-primary);
 }
 
+/* Quality games */
+.schedule-grid-quality-1 { background: rgba(5, 150, 105, 0.14); }
+.schedule-grid-quality-2 { background: rgba(5, 150, 105, 0.28); }
+.schedule-grid-quality-3 { background: rgba(5, 150, 105, 0.42); }
+
+.schedule-grid-quality-count {
+    margin-left: 0.22rem;
+    font-size: 0.62rem;
+    font-weight: 700;
+    line-height: 1;
+    vertical-align: super;
+    color: var(--status-success);
+}
+
+.schedule-grid-cell-colored .schedule-grid-quality-count {
+    color: #111827;
+    opacity: 0.65;
+}
+
 .schedule-grid-cell-colored {
     color: #111827 !important;
     font-weight: 600 !important;
