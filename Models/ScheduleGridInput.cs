@@ -82,6 +82,10 @@ namespace RotoMonsterUI
         public bool ShowEasePositionFilter { get; set; } = false;
         public List<(string Text, string Value)> EasePositionOptions { get; set; } = new List<(string, string)>();
         public string EasePositionFilterValue { get; set; }
+        /// <summary>Single expanded period. Kept for callers that only ever expand one; ExpandedPeriodNumbers is the general form and the two are unioned.</summary>
         public int? ExpandedPeriodNumber { get; set; }
+
+        /// <summary>Every period currently expanded. Any number of periods can be open at once.</summary>
+        public List<int> ExpandedPeriodNumbers { get; set; } = new List<int>();
     }
 }

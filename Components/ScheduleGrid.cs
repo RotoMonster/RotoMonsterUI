@@ -33,6 +33,12 @@ namespace RotoMonsterUI
 
         private bool ShowQuality => _input.UseQualityGames && _input.ShowQualityGames;
 
+        private bool IsPeriodExpanded(int periodNumber)
+        {
+            if (_input.ExpandedPeriodNumber.HasValue && _input.ExpandedPeriodNumber.Value == periodNumber) return true;
+            return _input.ExpandedPeriodNumbers != null && _input.ExpandedPeriodNumbers.Contains(periodNumber);
+        }
+
         private static int QualityCount(ScheduleGridPeriodCell cell)
         {
             if (cell == null) return 0;
@@ -92,7 +98,7 @@ namespace RotoMonsterUI
             foreach (var period in _input.Periods.OrderBy(p => p.PeriodNumber))
             {
                 tbody.Append(RenderPeriodRow(period, teams));
-                if (_input.ExpandedPeriodNumber.HasValue && _input.ExpandedPeriodNumber.Value == period.PeriodNumber)
+                if (IsPeriodExpanded(period.PeriodNumber))
                 {
                     foreach (var dayRow in RenderExpandedDayRows(period, teams))
                         tbody.Append(dayRow);
@@ -254,7 +260,7 @@ namespace RotoMonsterUI
             var isCurrent = _selectedPeriod != null && _selectedPeriod.PeriodNumber == period.PeriodNumber;
             var isRangeStart = period.PeriodNumber == _input.StartSelectedPeriod;
             var isRangeEnd = period.PeriodNumber == _input.EndSelectedPeriod;
-            var isExpanded = _input.ExpandedPeriodNumber.HasValue && _input.ExpandedPeriodNumber.Value == period.PeriodNumber;
+            var isExpanded = IsPeriodExpanded(period.PeriodNumber);
 
             var row = new HtmlTag("tr").AddClass("schedule-grid-period-row");
             if (isRangeStart) row.AddClass("schedule-grid-range-start-row");
@@ -299,7 +305,8 @@ namespace RotoMonsterUI
                     .AddClass("schedule-grid-expand-btn")
                     .Attr("type", "submit")
                     .Attr("name", $"{_input.Id}-expand")
-                    .Attr("value", isExpanded ? "collapse" : period.PeriodNumber.ToString());
+                    .Attr("value", isExpanded ? $"collapse-{period.PeriodNumber}" : period.PeriodNumber.ToString())
+                    .Attr("title", isExpanded ? "Collapse this period" : "Expand this period");
                 expandBtn.AppendHtml(isExpanded ? CollapseChevronSvg : ExpandChevronSvg);
                 dateCell.Append(expandBtn);
             }
@@ -396,6 +403,12 @@ namespace RotoMonsterUI
                         oppSpan.AppendHtml(day.Opponent);
                         if (!string.IsNullOrEmpty(day.EaseColor))
                             oppSpan.Attr("style", $"background-color:#{day.EaseColor}; color:#000;");
+
+                        
+                        if (day.IsQualityGame)
+                            oppSpan.AppendHtml(new CustomTooltip(
+                                "<span class='schedule-grid-day-star'>&#9733;</span>",
+                                "Quality Game").Render());
                         dayDiv.Append(oppSpan);
 
                         cell.Append(dayDiv);

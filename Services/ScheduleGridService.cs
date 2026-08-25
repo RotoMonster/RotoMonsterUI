@@ -12,6 +12,10 @@ namespace RotoMonsterUI
         public bool? ShowQualityGames { get; set; }
         public int? ExpandedPeriodNumber { get; set; }
         public bool IsCollapseRequested { get; set; }
+
+        public int? CollapsedPeriodNumber { get; set; }
+
+        public int? ToggledPeriodNumber { get; set; }
     }
 
     public class ScheduleGridService
@@ -59,9 +63,22 @@ namespace RotoMonsterUI
             if (formValues.TryGetValue($"{controlId}-expand", out var expandValue))
             {
                 if (int.TryParse(expandValue, out var expandPeriod))
+                {
                     result.ExpandedPeriodNumber = expandPeriod;
+                    result.ToggledPeriodNumber = expandPeriod;
+                }
                 else
+                {
                     result.IsCollapseRequested = true;
+
+                    // "collapse-4" tells us which one; a bare "collapse" is the old single-expand form
+                    var dash = expandValue.IndexOf('-');
+                    if (dash >= 0 && int.TryParse(expandValue.Substring(dash + 1), out var collapsePeriod))
+                    {
+                        result.CollapsedPeriodNumber = collapsePeriod;
+                        result.ToggledPeriodNumber = collapsePeriod;
+                    }
+                }
             }
 
             return result;
