@@ -2361,6 +2361,28 @@ a.modern-filter-btn:hover {
     border-bottom: 2px solid var(--brand-primary) !important;
 }
 
+.schedule-grid-playoff-badge {
+    display: inline-block;
+    margin-left: 0.35rem;
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: var(--status-warning);
+    background: rgba(217, 119, 6, 0.14);
+    border-radius: 4px;
+    padding: 0.08rem 0.3rem;
+    cursor: pointer;
+}
+
+/* Left columns only, so the marker never competes with the cell coloring */
+.schedule-grid-playoff-row .schedule-grid-period-cell,
+.schedule-grid-playoff-row .schedule-grid-date-cell {
+    background: rgba(217, 119, 6, 0.08);
+}
+
+.schedule-grid-playoff-row .schedule-grid-indicator-cell {
+    box-shadow: inset 3px 0 0 var(--status-warning);
+}
+
 .schedule-grid-multiweek-badge {
     display: inline-block;
     margin-left: 0.35rem;

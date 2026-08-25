@@ -33,6 +33,69 @@ namespace RotoMonsterUI
 
         private bool ShowQuality => _input.UseQualityGames && _input.ShowQualityGames;
 
+        /// <summary>The position the user picked, or null when it's All / not in use.</summary>
+        private string SelectedEasePosition
+        {
+            get
+            {
+                var pos = _input.EasePositionFilterValue;
+                if (string.IsNullOrEmpty(pos) || pos.Equals("all", StringComparison.OrdinalIgnoreCase)) return null;
+                return pos;
+            }
+        }
+
+        private static string EaseToColor(double ease)
+        {
+            var e = (float)ease;
+            return e >= 0
+                ? ColorHelper.GetGreenColorCode(e, 0, 1, true)
+                : ColorHelper.GetRedColorCode(-e, 0, 1, true);
+        }
+
+        /// <summary>Ease for a cell under the current position, falling back to the flat Ease when there's no per-position value.</summary>
+        private double EaseValueFor(ScheduleGridPeriodCell cell)
+        {
+            if (cell == null) return 0;
+            var pos = SelectedEasePosition;
+            if (pos != null && cell.EaseByPosition != null && cell.EaseByPosition.TryGetValue(pos, out var posEase))
+                return posEase;
+            return cell.Ease;
+        }
+
+        /// <summary>Cell color under the current position. Generated here rather than taken from EaseColor, so the caller only supplies numbers.</summary>
+        private string EaseColorFor(ScheduleGridPeriodCell cell)
+        {
+            if (cell == null) return null;
+            var pos = SelectedEasePosition;
+            if (pos != null && cell.EaseByPosition != null && cell.EaseByPosition.TryGetValue(pos, out var posEase))
+                return EaseToColor(posEase);
+            return cell.EaseColor;
+        }
+
+        private bool HasPositionEase(ScheduleGridTeam team)
+        {
+            var pos = SelectedEasePosition;
+            if (pos == null) return false;
+            return team.Periods.Values.Any(c => c.EaseByPosition != null && c.EaseByPosition.ContainsKey(pos));
+        }
+
+        private double AvgEaseFor(ScheduleGridTeam team)
+        {
+            if (!HasPositionEase(team)) return team.Summary.AvgEase;
+
+            var inRange = team.Periods
+                .Where(kv => kv.Key >= _input.StartSelectedPeriod && kv.Key <= _input.EndSelectedPeriod)
+                .Select(kv => EaseValueFor(kv.Value))
+                .ToList();
+
+            return inRange.Count > 0 ? inRange.Average() : team.Summary.AvgEase;
+        }
+
+        private string AvgEaseColorFor(ScheduleGridTeam team)
+        {
+            return HasPositionEase(team) ? EaseToColor(AvgEaseFor(team)) : team.Summary.AvgEaseColor;
+        }
+
         private bool IsPeriodExpanded(int periodNumber)
         {
             if (_input.ExpandedPeriodNumber.HasValue && _input.ExpandedPeriodNumber.Value == periodNumber) return true;
@@ -91,7 +154,7 @@ namespace RotoMonsterUI
             if (ShowQuality)
                 tbody.Append(RenderSummaryRow("Quality Games", t => t.Summary.QualityGames.ToString(), null));
 
-            tbody.Append(RenderSummaryRow("Avg Ease", t => t.Summary.AvgEase.ToString("0.00"), t => t.Summary.AvgEaseColor));
+            tbody.Append(RenderSummaryRow("Avg Ease", t => AvgEaseFor(t).ToString("0.00"), t => AvgEaseColorFor(t)));
 
             tbody.Append(RenderTeamHeaderRow(teams));
 
@@ -112,7 +175,7 @@ namespace RotoMonsterUI
             if (ShowQuality)
                 tbody.Append(RenderSummaryRow("Quality Games", t => t.Summary.QualityGames.ToString(), null));
 
-            tbody.Append(RenderSummaryRow("Avg Ease", t => t.Summary.AvgEase.ToString("0.00"), t => t.Summary.AvgEaseColor));
+            tbody.Append(RenderSummaryRow("Avg Ease", t => AvgEaseFor(t).ToString("0.00"), t => AvgEaseColorFor(t)));
 
             table.Append(tbody);
             tableWrapper.Append(table);
@@ -130,7 +193,7 @@ namespace RotoMonsterUI
                 case ScheduleGridSortBy.MaxWeeks:
                     return teams.OrderByDescending(t => t.Summary.MaxWeeks).ToList();
                 case ScheduleGridSortBy.Ease:
-                    return teams.OrderByDescending(t => t.Summary.AvgEase).ToList();
+                    return teams.OrderByDescending(t => AvgEaseFor(t)).ToList();
                 case ScheduleGridSortBy.QualityGames:
                     return teams.OrderByDescending(t => t.Summary.QualityGames).ThenBy(t => t.TeamCode).ToList();
                 case ScheduleGridSortBy.Team:
@@ -265,6 +328,7 @@ namespace RotoMonsterUI
             var row = new HtmlTag("tr").AddClass("schedule-grid-period-row");
             if (isRangeStart) row.AddClass("schedule-grid-range-start-row");
             if (isRangeEnd) row.AddClass("schedule-grid-range-end-row");
+            if (period.IsPlayoffPeriod) row.AddClass("schedule-grid-playoff-row");
 
             var indicatorCell = new HtmlTag("td").AddClass("schedule-grid-indicator-cell");
             if (isCurrent) indicatorCell.AppendHtml(CurrentPeriodSvg);
@@ -293,6 +357,10 @@ namespace RotoMonsterUI
             periodCell.Text(period.PeriodNumber.ToString());
             if (period.NumWeeks > 1)
                 periodCell.Append(new HtmlTag("span").AddClass("schedule-grid-multiweek-badge").Text($"{period.NumWeeks}w"));
+            if (period.IsPlayoffPeriod)
+                periodCell.AppendHtml(new CustomTooltip(
+                    "<span class='schedule-grid-playoff-badge'>P</span>",
+                    "Playoff Period").Render());
             row.Append(periodCell);
 
             var dateCell = new HtmlTag("td").AddClass("schedule-grid-date-cell");
@@ -334,10 +402,14 @@ namespace RotoMonsterUI
                 if (cellData.IsMaxWeek)
                     cell.AddClass("schedule-grid-maxweek");
             }
-            else if (_input.ColorType == ScheduleGridColorType.Ease && !string.IsNullOrEmpty(cellData.EaseColor))
+            else if (_input.ColorType == ScheduleGridColorType.Ease)
             {
-                cell.Attr("style", $"background-color:#{cellData.EaseColor};");
-                cell.AddClass("schedule-grid-cell-colored");
+                var easeColor = EaseColorFor(cellData);
+                if (!string.IsNullOrEmpty(easeColor))
+                {
+                    cell.Attr("style", $"background-color:#{easeColor};");
+                    cell.AddClass("schedule-grid-cell-colored");
+                }
             }
             else if (_input.ColorType == ScheduleGridColorType.QualityGames)
             {
@@ -404,11 +476,10 @@ namespace RotoMonsterUI
                         if (!string.IsNullOrEmpty(day.EaseColor))
                             oppSpan.Attr("style", $"background-color:#{day.EaseColor}; color:#000;");
 
-                        
+                        // Real element rather than a ::after, so it can carry its own tooltip
                         if (day.IsQualityGame)
-                            oppSpan.AppendHtml(new CustomTooltip(
-                                "<span class='schedule-grid-day-star'>&#9733;</span>",
-                                "Quality Game").Render());
+                            oppSpan.AppendHtml("<span class='schedule-grid-day-star' title='Quality Game'>&#9733;</span>");
+
                         dayDiv.Append(oppSpan);
 
                         cell.Append(dayDiv);

@@ -62,7 +62,7 @@ namespace RotoMonsterUI
 
             if (_autoPostBack)
             {
-                input.Attr("onclick", $"__doPostBack('{_name}','')");
+                input.Attr("onclick", $"__doPostBack('{_name}','',this.form)");
                 input.Attr("language", "javascript");
             }
 

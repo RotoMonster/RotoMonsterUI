@@ -125,7 +125,7 @@ namespace RotoMonsterUI
 
                 if (_autoPostBack)
                 {
-                    select.Attr("onchange", $"__doPostBack('{_name}','')");
+                    select.Attr("onchange", $"__doPostBack('{_name}','',this.form)");
                     select.Attr("language", "javascript");
                 }
             }

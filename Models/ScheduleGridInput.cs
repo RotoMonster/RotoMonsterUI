@@ -37,6 +37,9 @@ namespace RotoMonsterUI
         public bool IsMaxWeek { get; set; }
         public string EaseColor { get; set; }
         public double Ease { get; set; }
+
+        /// <summary>Ease per position, keyed by the value from EasePositionOptions (e.g. "pg"). When the user picks a position, the grid uses this and generates the color itself. Leave empty to keep using Ease/EaseColor.</summary>
+        public Dictionary<string, double> EaseByPosition { get; set; } = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
         public List<ScheduleGridDay> Days { get; set; } = new List<ScheduleGridDay>();
     }
 
@@ -45,6 +48,9 @@ namespace RotoMonsterUI
         public int PeriodNumber { get; set; }
         public DateTime StartDate { get; set; }
         public int NumWeeks { get; set; } = 1;
+
+        /// <summary>Marks this period as part of the fantasy playoffs. Adds a P badge and tints the left columns.</summary>
+        public bool IsPlayoffPeriod { get; set; }
     }
 
     public class ScheduleGridTeamSummary
