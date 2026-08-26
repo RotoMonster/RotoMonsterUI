@@ -59,7 +59,11 @@ namespace RotoMonsterUI
                     .WithName(PageTitleRowService.RefreshAllRostersName)
                     .WithStyle(ButtonStyle.Secondary)
                     .Render();
-                row.AppendHtml(refreshAllBtn);
+
+                // IconButton only tooltips itself in the icon-only path, so wrap it here.
+                row.AppendHtml(new CustomTooltip(refreshAllBtn, "Refresh All Rosters")
+                    .WithHoverTrigger()
+                    .Render());
             }
 
             if (_input.PlayerSearch != null)
