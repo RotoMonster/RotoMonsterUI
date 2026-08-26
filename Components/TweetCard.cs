@@ -81,11 +81,8 @@ namespace RotoMonsterUI
             card.Attr("id", _input.IsScrollTarget ? "tweet-card-selected" : "tweet-card-" + _input.TweetId);
 
             var ageShadeColor = ColorHelper.GetAgeShadeHex(_input.TimeSinceCreated);
-            if (ageShadeColor != null)
-            {
-                card.Attr("style", $"background:{ageShadeColor};border-color:var(--tweet-card-border);");
-                card.AddClass("tweet-card--shaded");
-            }
+            card.AddClass("card-age-shade");
+            card.Attr("style", $"border-color:{(ageShadeColor ?? "transparent")};");
 
             if (_input.SelectedPlayerId.HasValue)
                 card.AddClass("tweet-card--posting");

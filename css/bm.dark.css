@@ -5688,6 +5688,14 @@ a.display-columns-item--membership { cursor: pointer; }
 .punt-category-weight::-webkit-outer-spin-button,
 .punt-category-weight::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
+:root { --card-age-border-width: 6px; }
+
+.card-age-shade {
+    border-style: solid;
+    border-width: var(--card-age-border-width);
+    box-sizing: border-box;
+}
+
 .manager-messages { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.6rem; }
 .manager-message {
     display: flex; align-items: flex-start; gap: 0.6rem;

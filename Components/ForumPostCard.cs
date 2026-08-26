@@ -14,30 +14,20 @@ namespace RotoMonsterUI
 
         public string Render()
         {
-            var card = new HtmlTag("div").AddClass("forum-post-card");
+            var card = new HtmlTag("div").AddClass("forum-post-card").AddClass("card-age-shade");
 
             var ageShadeColor = ColorHelper.GetAgeShadeHex(_input.TimeSinceCreated);
             bool isShaded = ageShadeColor != null;
-            if (isShaded)
-            {
-                card.Attr("style", $"background:{ageShadeColor};");
-                card.AddClass("color-shaded");
-            }
+            card.Attr("style", $"border-color:{(isShaded ? ageShadeColor : "transparent")};");
 
             // Username row (with avatar + post count via DisplayUsername) + New badge + TimeSince
             var usernameRow = new HtmlTag("div").AddClass("forum-post-card-username d-flex align-items-center gap-2");
             _input.DisplayUsernameInput.ShowAvatar = true;
-            usernameRow.AppendHtml(new DisplayUsername(_input.DisplayUsernameInput).Render());
 
             if (_input.IsNew)
-            {
-                var newBadge = new Badge(new BadgeInput
-                {
-                    BadgeText = "New",
-                    ColorClass = "badge-new"
-                }).Render();
-                usernameRow.AppendHtml(newBadge);
-            }
+                usernameRow.AppendHtml(new Badge(new BadgeInput { BadgeText = "New", ColorClass = "badge-new" }).Render());
+
+            usernameRow.AppendHtml(new DisplayUsername(_input.DisplayUsernameInput).Render());
 
             if (_input.TimeSinceCreated.HasValue)
             {
@@ -67,7 +57,7 @@ namespace RotoMonsterUI
                     DownVoteCount = _input.DownVoteCount,
                     VotedUp = _input.UserVoteInput != null && _input.UserVoteInput.HasVoted && _input.UserVoteInput.VotedUp,
                     VotedDown = _input.UserVoteInput != null && _input.UserVoteInput.HasVoted && _input.UserVoteInput.VotedDown,
-                    ForceDarkText = isShaded
+                    ForceDarkText = false
                 }).Render();
                 actionsRow.AppendHtml(voteControl);
             }

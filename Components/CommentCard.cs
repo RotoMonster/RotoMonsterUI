@@ -12,6 +12,11 @@ namespace RotoMonsterUI
             _input = input;
         }
 
+        private static string NewBadgeHtml()
+        {
+            return new Badge(new BadgeInput { BadgeText = "New", ColorClass = "badge-new" }).Render();
+        }
+
         public string Render()
         {
             if (_input.ShowPlayerInfo && _input.DisplayPlayerInput != null
@@ -23,33 +28,23 @@ namespace RotoMonsterUI
                     : TeamColorHelper.GetTeamColorVar(_input.DisplayPlayerInput.TeamCode);
             }
 
-            var card = new HtmlTag("div").AddClass("comment-card");
+            var card = new HtmlTag("div").AddClass("comment-card").AddClass("card-age-shade");
 
             var ageShadeColor = ColorHelper.GetAgeShadeHex(_input.TimeSinceCreated);
             bool isShaded = ageShadeColor != null;
-            if (isShaded)
-                card.Attr("style", $"background:{ageShadeColor};");
+            // Width lives in CSS so it's one place to adjust; only the color changes here.
+            // Unshaded cards keep a transparent border of the same width so nothing shifts as a card ages.
+            card.Attr("style", $"border-color:{(isShaded ? ageShadeColor : "transparent")};");
 
             // Player title row
             if (_input.ShowPlayerInfo && _input.DisplayPlayerInput != null)
             {
                 var titleRow = new HtmlTag("div").AddClass("comment-card-title-row d-flex justify-content-between align-items-center");
+                if (_input.IsNew) titleRow.AppendHtml(NewBadgeHtml());
 
                 var displayPlayerInput = _input.DisplayPlayerInput;
-                if (isShaded && !string.IsNullOrEmpty(displayPlayerInput.TeamColor))
-                {
-                    displayPlayerInput = new DisplayPlayerInput
-                    {
-                        PlayerName = _input.DisplayPlayerInput.PlayerName,
-                        PlayerId = _input.DisplayPlayerInput.PlayerId,
-                        TeamCode = _input.DisplayPlayerInput.TeamCode,
-                        TeamColor = "#000000",
-                        Positions = _input.DisplayPlayerInput.Positions
-                    };
-                }
                 var playerDisplay = new DisplayPlayer(displayPlayerInput).Render();
                 var playerTitle = new HtmlTag("span").AddClass("comment-card-player d-flex align-items-center gap-2").AppendHtml(playerDisplay);
-                if (isShaded) playerTitle.AddClass("comment-card-player--shaded");
 
                 if (_input.ShowViewAll)
                 {
@@ -57,7 +52,6 @@ namespace RotoMonsterUI
                         .AddClass("comment-card-viewall")
                         .Attr("href", RotoMonsterUIUrls.PlayerCommentsUrl(_input.DisplayPlayerInput.PlayerId))
                         .Attr("aria-label", "Filter player comments");
-                    if (isShaded) viewAll.AddClass("color-shaded");
                     viewAll.AppendHtml(new Icon(new IconInput { Type = IconType.Filter, Size = 14, Color = "currentColor" }).Render());
 
                     var viewAllTooltip = new CustomTooltip(viewAll.ToString(), "Filter player comments").WithHoverTrigger().Render();
@@ -69,7 +63,6 @@ namespace RotoMonsterUI
                 if (_input.TimeSinceCreated.HasValue)
                 {
                     var timeSince = new HtmlTag("span").AppendHtml(new TimeSince(_input.TimeSinceCreated.Value).Render());
-                    if (isShaded) timeSince.AddClass("color-shaded");
                     titleRow.Append(timeSince);
                 }
 
@@ -77,23 +70,16 @@ namespace RotoMonsterUI
             }
            
             var usernameRow = new HtmlTag("div").AddClass("comment-card-username d-flex align-items-center gap-2");
-            usernameRow.AppendHtml(new DisplayUsername(_input.DisplayUsernameInput).Render());
 
-            if (_input.IsNew)
-            {
-                // Badge keeps its own background/text color regardless of shading - it already has enough contrast on its own.
-                var newBadge = new Badge(new BadgeInput
-                {
-                    BadgeText = "New",
-                    ColorClass = "badge-new"
-                }).Render();
-                usernameRow.AppendHtml(newBadge);
-            }
+            // Badge keeps its own background/text color regardless of shading - it already has enough contrast on its own.
+            if (_input.IsNew && !(_input.ShowPlayerInfo && _input.DisplayPlayerInput != null))
+                usernameRow.AppendHtml(NewBadgeHtml());
+
+            usernameRow.AppendHtml(new DisplayUsername(_input.DisplayUsernameInput).Render());
 
             if (!_input.ShowPlayerInfo && _input.TimeSinceCreated.HasValue)
             {
                 var timeSince = new HtmlTag("span").AddClass("comment-card-time").AppendHtml(new TimeSince(_input.TimeSinceCreated.Value).Render());
-                if (isShaded) timeSince.AddClass("color-shaded");
                 usernameRow.Append(timeSince);
             }
 
@@ -101,7 +87,6 @@ namespace RotoMonsterUI
 
             // Comment text
             var commentText = new HtmlTag("div").AddClass("comment-card-text").Text(_input.CommentText);
-            if (isShaded) commentText.AddClass("color-shaded");
             card.Append(commentText);
 
             // Actions row - vote buttons and delete icon keep their own styling (borders/explicit colors already read fine on yellow)
@@ -118,7 +103,7 @@ namespace RotoMonsterUI
                     DownVoteCount = _input.DownVoteCount,
                     VotedUp = _input.UserVoteInput != null && _input.UserVoteInput.HasVoted && _input.UserVoteInput.VotedUp,
                     VotedDown = _input.UserVoteInput != null && _input.UserVoteInput.HasVoted && _input.UserVoteInput.VotedDown,
-                    ForceDarkText = isShaded
+                    ForceDarkText = false
                 }).Render();
                 actionsRow.Append(new HtmlTag("span").AppendHtml(voteControl));
             }

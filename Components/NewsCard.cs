@@ -73,8 +73,8 @@ namespace RotoMonsterUI
 
             var ageShadeColor = ColorHelper.GetAgeShadeHex(_input.TimeSinceCreated);
             bool isShaded = ageShadeColor != null;
-            if (isShaded)
-                card.Attr("style", $"background:{ageShadeColor};");
+            card.AddClass("card-age-shade");
+            card.Attr("style", $"border-color:{(isShaded ? ageShadeColor : "transparent")};");
 
             // ---- Header row ----
             var headerRow = new HtmlTag("div").AddClass("news-card-header");
@@ -92,24 +92,11 @@ namespace RotoMonsterUI
                 }
 
                 var displayPlayerInput = _input.DisplayPlayerInput;
-                if (isShaded && !string.IsNullOrEmpty(displayPlayerInput.TeamColor))
-                {
-                    displayPlayerInput = new DisplayPlayerInput
-                    {
-                        PlayerName = _input.DisplayPlayerInput.PlayerName,
-                        PlayerId = _input.DisplayPlayerInput.PlayerId,
-                        TeamCode = _input.DisplayPlayerInput.TeamCode,
-                        TeamColor = "#000000",
-                        Positions = _input.DisplayPlayerInput.Positions
-                    };
-                }
                 headerRow.AppendHtml(new DisplayPlayer(displayPlayerInput).Render());
             }
             else if (_input.DisplayTeamInput != null)
             {
-                var teamColor = isShaded
-                    ? ColorHelper.GetAutoColorForLightBackground(_input.DisplayTeamInput.ColorCode)
-                    : _input.DisplayTeamInput.ColorCode;
+                var teamColor = _input.DisplayTeamInput.ColorCode;
 
                 var teamSpan = new HtmlTag("span")
                     .AddClass("news-card-team")
@@ -119,7 +106,6 @@ namespace RotoMonsterUI
             }
 
             var headerRight = new HtmlTag("div").AddClass("news-card-header-right");
-            if (isShaded) headerRight.AddClass("color-shaded");
 
             if (!string.IsNullOrEmpty(_input.SourceURL))
             {
@@ -144,7 +130,6 @@ namespace RotoMonsterUI
             {
                 var rosterRow = new HtmlTag("div").AddClass("news-card-roster");
                 var rosterNames = new HtmlTag("span").Text(string.Join(", ", _input.TeamPlayerNames));
-                if (isShaded) rosterNames.AddClass("color-shaded");
                 rosterRow.Append(rosterNames);
 
                 var teamLevelColor = LevelColor(_input.NewsLevel);
@@ -164,13 +149,11 @@ namespace RotoMonsterUI
             {
                 var statusRow = new HtmlTag("div").AddClass("news-card-status-row");
                 var statusText = new HtmlTag("span").AddClass("news-card-status-text").Text(_input.StatusTypeText);
-                if (isShaded) statusText.AddClass("color-shaded");
                 statusRow.Append(statusText);
 
                 if (!string.IsNullOrEmpty(_input.NewsTitle))
                 {
                     var newsTitle = new HtmlTag("span").AddClass("news-card-news-title").Text(_input.NewsTitle);
-                    if (isShaded) newsTitle.AddClass("color-shaded");
                     statusRow.Append(newsTitle);
                 }
 
@@ -192,7 +175,6 @@ namespace RotoMonsterUI
             if (!_input.IsEditing && !string.IsNullOrEmpty(_input.NewsDetails))
             {
                 var detailsDiv = new HtmlTag("div").AddClass("news-card-details").Text(_input.NewsDetails);
-                if (isShaded) detailsDiv.AddClass("color-shaded");
                 card.Append(detailsDiv);
             }
 
@@ -238,7 +220,6 @@ namespace RotoMonsterUI
                             .Attr("onclick", "EditNews(this)")
                             .Attr("aria-label", "Edit")
                             .AppendHtml(new Icon(new IconInput { Type = IconType.Edit, Size = 15 }).Render());
-                        if (isShaded) editBtn.AddClass("color-shaded");
                         actionRow.Append(editBtn);
                     }
 
@@ -263,7 +244,6 @@ namespace RotoMonsterUI
                 if (hasCounts)
                 {
                     var countsRow = new HtmlTag("div").AddClass("news-card-counts");
-                    if (isShaded) countsRow.AddClass("color-shaded");
                     if (_input.UserOwnCount.HasValue)
                         countsRow.AppendHtml($"yours {_input.UserOwnCount.Value}");
                     if (_input.UserFreeAgentCount.HasValue)
