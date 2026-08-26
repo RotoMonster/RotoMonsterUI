@@ -28,23 +28,30 @@ namespace RotoMonsterUI
                     : TeamColorHelper.GetTeamColorVar(_input.DisplayPlayerInput.TeamCode);
             }
 
-            var card = new HtmlTag("div").AddClass("comment-card").AddClass("card-age-shade");
+            var card = new HtmlTag("div").AddClass("comment-card");
 
             var ageShadeColor = ColorHelper.GetAgeShadeHex(_input.TimeSinceCreated);
             bool isShaded = ageShadeColor != null;
             // Width lives in CSS so it's one place to adjust; only the color changes here.
-            // Unshaded cards keep a transparent border of the same width so nothing shifts as a card ages.
-            card.Attr("style", $"border-color:{(isShaded ? ageShadeColor : "transparent")};");
+            // Only override while it's shaded - once it expires the card's normal border comes back.
+            if (isShaded)
+            {
+                card.AddClass("card-age-shade");
+                card.Attr("style", $"border-color:{ageShadeColor};");
+            }
 
             // Player title row
             if (_input.ShowPlayerInfo && _input.DisplayPlayerInput != null)
             {
                 var titleRow = new HtmlTag("div").AddClass("comment-card-title-row d-flex justify-content-between align-items-center");
-                if (_input.IsNew) titleRow.AppendHtml(NewBadgeHtml());
 
                 var displayPlayerInput = _input.DisplayPlayerInput;
                 var playerDisplay = new DisplayPlayer(displayPlayerInput).Render();
-                var playerTitle = new HtmlTag("span").AddClass("comment-card-player d-flex align-items-center gap-2").AppendHtml(playerDisplay);
+                // Badge goes inside the player group, not as its own flex child - a third
+                // child would break justify-content-between and center the player name.
+                var playerTitle = new HtmlTag("span").AddClass("comment-card-player d-flex align-items-center gap-2");
+                if (_input.IsNew) playerTitle.AppendHtml(NewBadgeHtml());
+                playerTitle.AppendHtml(playerDisplay);
 
                 if (_input.ShowViewAll)
                 {

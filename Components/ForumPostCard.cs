@@ -14,11 +14,16 @@ namespace RotoMonsterUI
 
         public string Render()
         {
-            var card = new HtmlTag("div").AddClass("forum-post-card").AddClass("card-age-shade");
+            var card = new HtmlTag("div").AddClass("forum-post-card");
 
             var ageShadeColor = ColorHelper.GetAgeShadeHex(_input.TimeSinceCreated);
             bool isShaded = ageShadeColor != null;
-            card.Attr("style", $"border-color:{(isShaded ? ageShadeColor : "transparent")};");
+            // Only override while it's shaded - once it expires the card's normal border comes back.
+            if (isShaded)
+            {
+                card.AddClass("card-age-shade");
+                card.Attr("style", $"border-color:{ageShadeColor};");
+            }
 
             // Username row (with avatar + post count via DisplayUsername) + New badge + TimeSince
             var usernameRow = new HtmlTag("div").AddClass("forum-post-card-username d-flex align-items-center gap-2");

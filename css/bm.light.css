@@ -1078,6 +1078,12 @@ a.modern-filter-btn:hover {
     vertical-align: middle;
 }
 
+.comment-card-title-row .badge-new,
+.comment-card-username .badge-new,
+.forum-post-card-username .badge-new {
+    margin-right: 0.45rem;
+}
+
 .badge-new {
     background-color: #2d7a3e;
     border: 1px solid #2d7a3e;
@@ -3830,7 +3836,7 @@ a.modern-filter-btn:hover {
 }
 
 .time-since-badge .time-since {
-    color: #000;
+    color: var(--color-text-primary);
 }
 
 .time-since-badge--expired .time-since {

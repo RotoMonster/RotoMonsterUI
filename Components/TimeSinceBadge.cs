@@ -14,12 +14,8 @@ namespace RotoMonsterUI
 
         public string Render()
         {
-            var ageColor = ColorHelper.GetAgeShadeHex(_timeSpan);
+            // Age is conveyed by the card border now, so the badge no longer shades.
             var badge = new HtmlTag("span").AddClass("time-since-badge");
-            if (ageColor != null)
-                badge.Attr("style", $"background:{ageColor};");
-            else
-                badge.AddClass("time-since-badge--expired");
             badge.AppendHtml(new TimeSince(_timeSpan).Render());
             return badge.ToString();
         }
