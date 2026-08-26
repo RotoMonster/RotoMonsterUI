@@ -31,7 +31,7 @@ namespace RotoMonsterUI
                 card.Attr("style", $"background:{ageShadeColor};");
 
             // Player title row
-            if (_input.ShowPlayerInfo)
+            if (_input.ShowPlayerInfo && _input.DisplayPlayerInput != null)
             {
                 var titleRow = new HtmlTag("div").AddClass("comment-card-title-row d-flex justify-content-between align-items-center");
 
