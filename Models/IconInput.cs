@@ -104,7 +104,10 @@
         Pause,
         PlayQuestion,
         LockOpen, 
-        Question
+        Question,
+
+        // Megaphone. Marks a message from the site managers.
+        ManagerMessage
 
     }
 

@@ -34,6 +34,25 @@ namespace RotoMonsterUI
                 if (message == null) continue;
 
                 var row = new HtmlTag("div").AddClass("manager-message");
+
+                // Icon marks the row as a message from the site managers
+                row.AppendHtml(new HtmlTag("span")
+                    .AddClass("manager-message-icon")
+                    .AppendHtml(new Icon(new IconInput { Type = IconType.ManagerMessage, Size = 22 }).Render())
+                    .ToString());
+
+                if (_input.ShowDismiss)
+                {
+                    var dismissName = DismissName(_input.Id, message.MessageId);
+
+                    row.Append(new HtmlTag("button")
+                        .AddClass("manager-message-dismiss")
+                        .Attr("type", "button")
+                        .Attr("name", dismissName)
+                        .Attr("onclick", "__doPostBack('" + dismissName + "','',this.form)")
+                        .Text("Dismiss"));
+                }
+
                 var body = new HtmlTag("div").AddClass("manager-message-body");
 
                 if (!string.IsNullOrEmpty(message.SubjectHtml))
@@ -47,20 +66,6 @@ namespace RotoMonsterUI
                         .AppendHtml(message.MessageHtml));
 
                 row.Append(body);
-
-                if (_input.ShowDismiss)
-                {
-                    var name = DismissName(_input.Id, message.MessageId);
-
-                    var dismiss = new HtmlTag("button")
-                        .AddClass("manager-message-dismiss")
-                        .Attr("type", "button")
-                        .Attr("name", name)
-                        .Attr("onclick", "__doPostBack('" + name + "','',this.form)")
-                        .Text("Dismiss");
-
-                    row.Append(dismiss);
-                }
 
                 list.Append(row);
             }

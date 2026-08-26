@@ -5612,11 +5612,19 @@ a.display-columns-item--membership { cursor: pointer; }
 }
 .manager-message-body { flex: 1; min-width: 0; }
 .manager-message-subject {
-    display: inline; font-size: 0.7rem; font-weight: 600;
+    display: inline; font-size: 0.85rem; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.05em;
     color: #1e4d8c; margin-right: 0.4rem;
 }
-.manager-message-text { display: inline; font-size: 0.85rem; color: var(--color-text-primary); }
+.manager-message-text { display: inline; font-size: 1rem; color: var(--color-text-primary); }
+
+.manager-message-icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    color: #2563eb;
+    margin-top: 0.05rem;
+}
 .manager-message-dismiss {
     flex-shrink: 0;
     padding: 0.2rem 0.7rem;

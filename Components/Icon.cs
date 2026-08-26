@@ -304,6 +304,9 @@ case IconType.Newspaper:
 
                 case IconType.LimitedMinutes:
                     return WrapSvg(@"<circle cx=""12"" cy=""12"" r=""9""/><path d=""M12 7v5h4""/>");
+                case IconType.ManagerMessage:
+                    // Source: Tabler Icons "speakerphone", MIT - https://tabler.io/icons
+                    return WrapSvg(@"<path d=""M18 8a3 3 0 0 1 0 6""/><path d=""M10 8v11a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-5""/><path d=""M12 8h0l4.524-3.77A.9.9 0 0 1 18 4.922v12.156a.9.9 0 0 1-1.476.692L12 14H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h8""/>");
                 case IconType.IsTeamUpdate:
                     return WrapSvg(@"<path d=""M3 11v2a2 2 0 0 0 2 2h1l2 4h2l-1.5-4H11l7 3V6l-7 3H6a2 2 0 0 0-2 2z""/><path d=""M11 9v6""/>");
                 case IconType.Edit:
