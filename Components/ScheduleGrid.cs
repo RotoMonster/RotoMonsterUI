@@ -102,6 +102,25 @@ namespace RotoMonsterUI
             return _input.ExpandedPeriodNumbers != null && _input.ExpandedPeriodNumbers.Contains(periodNumber);
         }
 
+        /// <summary>
+        /// Falls back to the team palette when no color was supplied, and accepts a hex with or
+        /// without the leading #. TeamColorHelper returns one, so requiring bare hex silently
+        /// dropped the color for anyone passing its output straight through.
+        /// </summary>
+        private string TeamHeaderColor(ScheduleGridTeam team)
+        {
+            if (!string.IsNullOrEmpty(team.TeamColor))
+            {
+                var color = team.TeamColor;
+                if (color.StartsWith("var(") || color.StartsWith("#")) return color;
+                return "#" + color;
+            }
+
+            return _input.Sport == GameSport.Basketball
+                ? TeamColorHelper.GetNbaTeamColorVar(team.TeamCode)
+                : TeamColorHelper.GetTeamColorVar(team.TeamCode);
+        }
+
         private static int QualityCount(ScheduleGridPeriodCell cell)
         {
             if (cell == null) return 0;
@@ -285,8 +304,10 @@ namespace RotoMonsterUI
             foreach (var team in teams)
             {
                 var td = new HtmlTag("td").AddClass("schedule-grid-team-header").Text(team.TeamCode);
-                if (!string.IsNullOrEmpty(team.TeamColor))
-                    td.Attr("style", $"background-color:#{team.TeamColor}; color:#fff;");
+
+                var headerColor = TeamHeaderColor(team);
+                if (!string.IsNullOrEmpty(headerColor))
+                    td.Attr("style", $"background-color:{headerColor}; color:#fff;");
                 row.Append(td);
             }
 

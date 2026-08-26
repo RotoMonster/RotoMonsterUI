@@ -101,6 +101,10 @@ namespace RotoMonsterUI
             else if (_input.DisplayTeamInput != null)
             {
                 var teamColor = _input.DisplayTeamInput.ColorCode;
+                if (string.IsNullOrEmpty(teamColor) && !string.IsNullOrEmpty(_input.DisplayTeamInput.TeamCode))
+                    teamColor = _input.Sport == NewsCardSport.NBA
+                        ? TeamColorHelper.GetNbaTeamColorVar(_input.DisplayTeamInput.TeamCode)
+                        : TeamColorHelper.GetTeamColorVar(_input.DisplayTeamInput.TeamCode);
 
                 var teamSpan = new HtmlTag("span")
                     .AddClass("news-card-team")

@@ -81,6 +81,9 @@ namespace RotoMonsterUI
         public ScheduleGridColorType ColorType { get; set; } = ScheduleGridColorType.MaxWeeks;
         public ScheduleGridSortBy SortBy { get; set; } = ScheduleGridSortBy.Team;
         /// <summary>Sport supports quality games at all. Gates the toggle, the sort option and the coloring option.</summary>
+        /// <summary>Picks which team color palette the headers auto-fill from.</summary>
+        public GameSport Sport { get; set; } = GameSport.Baseball;
+
         public bool UseQualityGames { get; set; } = false;
 
         /// <summary>User toggle state. Controls the Quality Games summary row and the small count beside each cell's total.</summary>
