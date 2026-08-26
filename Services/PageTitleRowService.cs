@@ -6,6 +6,7 @@ namespace RotoMonsterUI
     {
         public const string LeagueDropdownName = "pageTitleRowLeague";
         public const string RefreshRostersName = "pageTitleRowRefresh";
+        public const string RefreshAllRostersName = "pageTitleRowRefreshAll";
         public const string PlayerSearchId = "pageTitleRowSearch";
         public const string FavoritesId = "pageTitleRowFavorites";
         public const string DarkModeToggleName = "pageTitleRowDarkToggle";
@@ -31,6 +32,9 @@ namespace RotoMonsterUI
             formValues.TryGetValue("__EVENTTARGET", out var eventTarget);
             if (formValues.ContainsKey(RefreshRostersName) || eventTarget == RefreshRostersName)
                 result.RefreshRostersClicked = true;
+
+            if (formValues.ContainsKey(RefreshAllRostersName) || eventTarget == RefreshAllRostersName)
+                result.RefreshAllRostersClicked = true;
 
             // Dark mode toggle 
             if (formValues.ContainsKey(DarkModeToggleName) || eventTarget == DarkModeToggleName)

@@ -51,6 +51,17 @@ namespace RotoMonsterUI
                 row.AppendHtml(refreshBtn);
             }
 
+            if (_input.ShowRefreshAllRosters)
+            {
+                // Labelled rather than icon-only: at this size no shape reliably reads as
+                // "the same thing, but for every league".
+                var refreshAllBtn = new IconButton("All", IconType.RefreshRosters)
+                    .WithName(PageTitleRowService.RefreshAllRostersName)
+                    .WithStyle(ButtonStyle.Secondary)
+                    .Render();
+                row.AppendHtml(refreshAllBtn);
+            }
+
             if (_input.PlayerSearch != null)
             {
                 _input.PlayerSearch.Id = PageTitleRowService.PlayerSearchId;

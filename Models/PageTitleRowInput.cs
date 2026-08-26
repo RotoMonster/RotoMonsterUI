@@ -23,6 +23,9 @@ namespace RotoMonsterUI
 
         public bool ShowRefreshRosters { get; set; }
 
+        /// <summary>Shows a second icon button that refreshes every league's rosters, not just the selected one.</summary>
+        public bool ShowRefreshAllRosters { get; set; }
+
         public bool ShowDarkModeToggle { get; set; } = true;
         public bool IsDarkMode { get; set; }
 
