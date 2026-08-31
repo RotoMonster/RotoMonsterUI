@@ -15,6 +15,9 @@ namespace RotoMonsterUI
         public int? MoveDownIndex { get; set; }
 
         public int? RemoveIndex { get; set; }
+        public int? SetMainIndex { get; set; }
+
+        public int? AddDefaultIndex { get; set; }
 
         public string SelectedOptionId { get; set; }
 

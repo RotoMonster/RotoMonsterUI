@@ -5958,3 +5958,49 @@ a.display-columns-item--membership { cursor: pointer; }
 .nba-lineup-row:hover .display-player-name a {
     color: var(--brand-primary);
 }
+
+/* custom-values main value + defaults ---------------------------------- */
+
+.custom-values-main-btn {
+    color: var(--color-text-tertiary);
+}
+
+.custom-values-main-btn:hover {
+    color: var(--brand-primary);
+}
+
+.custom-values-main-btn.custom-values-main-on {
+    color: var(--brand-primary);
+}
+
+.custom-values-main-btn.custom-values-main-on svg {
+    fill: currentColor;
+}
+
+.custom-values-item-main {
+    background: rgba(var(--brand-primary-rgb), 0.07);
+}
+
+.custom-values-defaults {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.6rem;
+}
+
+.custom-values-default-btn {
+    padding: 0.25rem 0.7rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.custom-values-default-btn:hover {
+    border-color: var(--brand-primary);
+    color: var(--brand-primary);
+}

@@ -40,6 +40,9 @@ namespace RotoMonsterUI
             result.MoveUpIndex = RowIndex("cvup" + suffix + "_", params_, eventTarget);
             result.MoveDownIndex = RowIndex("cvdown" + suffix + "_", params_, eventTarget);
             result.RemoveIndex = RowIndex("cvremove" + suffix + "_", params_, eventTarget);
+            result.SetMainIndex = RowIndex("cvmain" + suffix + "_", params_, eventTarget);
+
+            result.AddDefaultIndex = RowIndex("cvadddefault" + suffix + "_", params_, eventTarget);
 
             return result;
         }

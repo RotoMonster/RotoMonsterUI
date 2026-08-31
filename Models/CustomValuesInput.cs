@@ -38,10 +38,13 @@ namespace RotoMonsterUI
 
         public bool ShowDefaultOrder { get; set; } = true;
 
+        public bool ShowMainValue { get; set; } = false;
+
         public string AddButtonText { get; set; } = "Add value";
 
         public string EmptyText { get; set; }
             = "No values yet. Pick one above and press Add value.";
+        public string AddDefaultPrefix { get; set; } = "Add";
     }
 
     public class CustomValueOption
@@ -64,5 +67,7 @@ namespace RotoMonsterUI
         public CustomValueType Type { get; set; }
 
         public List<CustomValueColumn> Columns { get; set; } = new List<CustomValueColumn>();
+
+        public bool IsMainValue { get; set; }
     }
 }

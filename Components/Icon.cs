@@ -350,6 +350,9 @@ case IconType.Newspaper:
                         <circle cx=""12.1"" cy=""18.4"" r=""1.6"" fill=""{_input.Color}""/>
                     </svg>";
 
+                case IconType.MainValue:
+                    return WrapSvg(@"<polygon points=""12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2""/>");
+
                 case IconType.Gemini:
                     return $@"<svg xmlns=""http://www.w3.org/2000/svg"" width=""{_input.Size}"" height=""{_input.Size}"" viewBox=""0 0 24 24"" fill=""{_input.Color}""><path d=""M12 2 Q13 11 22 12 Q13 13 12 22 Q11 13 2 12 Q11 11 12 2 Z""/></svg>";
                 case IconType.ChromeExtension:

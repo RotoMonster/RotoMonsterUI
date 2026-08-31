@@ -45,6 +45,68 @@ namespace RotoMonsterUI
             return wrap.ToString();
         }
 
+        /// <summary>
+        /// A small block of buttons, one per default value that is not already
+        /// in the list, e.g. "Add Bonus Per Game".
+        ///
+        /// Deliberately NOT part of Render - Ken's mockup has these sitting
+        /// above the component next to the Edit Display and Value Columns
+        /// button rather than inside it, so the caller places them.
+        ///
+        /// Returns an empty string when every default is already added, so it
+        /// can be written out unconditionally.
+        /// </summary>
+        public string RenderDefaults()
+        {
+            if (_input == null) return "";
+
+            var defaults = _input.DefaultValues ?? new List<CustomValueEntry>();
+            if (!defaults.Any()) return "";
+
+            var wrap = new HtmlTag("div").AddClass("custom-values-defaults");
+            var any = false;
+
+            for (var i = 0; i < defaults.Count; i++)
+            {
+                var entry = defaults[i];
+                if (entry == null) continue;
+                if (AlreadyAdded(entry)) continue;
+
+                var option = FindOption(entry.OptionId);
+                var name = option != null ? option.Name : entry.OptionId;
+
+                var typeText = entry.Type == CustomValueType.TotalGames ? "Total Games" : "Per Game";
+                var text = (_input.AddDefaultPrefix + " " + name + " " + typeText).Trim();
+                var buttonName = RowKey("cvadddefault", i);
+
+                var button = new HtmlTag("button")
+                    .AddClass("custom-values-default-btn")
+                    .Attr("type", "button")
+                    .Attr("name", buttonName)
+                    .Attr("onclick", "__doPostBack('" + buttonName + "','',this.form)")
+                    .Text(text);
+
+                wrap.Append(button);
+                any = true;
+            }
+
+            return any ? wrap.ToString() : "";
+        }
+
+        /// <summary>
+        /// A default counts as added when the same value is present with the
+        /// same type. Columns are deliberately not compared - the user is free
+        /// to change those after adding, and re-offering the button because
+        /// they unticked Games would be wrong.
+        /// </summary>
+        private bool AlreadyAdded(CustomValueEntry entry)
+        {
+            return (_input.Values ?? new List<CustomValueEntry>())
+                .Any(v => v != null
+                          && v.OptionId == entry.OptionId
+                          && v.Type == entry.Type);
+        }
+
         private HtmlTag RenderCreateRow()
         {
             var row = new HtmlTag("div").AddClass("custom-values-create");
@@ -200,13 +262,16 @@ namespace RotoMonsterUI
 
                 var row = new HtmlTag("div").AddClass("custom-values-item");
 
+                if (_input.ShowMainValue && entry.IsMainValue)
+                    row.AddClass("custom-values-item-main");
+
                 row.Append(new HtmlTag("span")
                     .AddClass("custom-values-item-name")
                     .Text(option != null ? option.Name : entry.OptionId));
 
                 row.Append(new HtmlTag("span")
                     .AddClass("custom-values-item-type")
-                    .Text(entry.Type == CustomValueType.TotalGames ? "Total games" : "Per game"));
+                    .Text(TypeText(entry.Type)));
 
                 var cols = new HtmlTag("span").AddClass("custom-values-item-cols");
                 foreach (var column in entry.Columns ?? new List<CustomValueColumn>())
@@ -218,6 +283,10 @@ namespace RotoMonsterUI
                 row.Append(cols);
 
                 var actions = new HtmlTag("span").AddClass("custom-values-item-actions");
+
+                if (_input.ShowMainValue)
+                    actions.Append(MainButton(i, entry.IsMainValue));
+
                 actions.Append(RowButton("cvup", i, IconType.ArrowUp, "Move up", i == 0));
                 actions.Append(RowButton("cvdown", i, IconType.ArrowDown, "Move down",
                     i == values.Count - 1));
@@ -228,6 +297,33 @@ namespace RotoMonsterUI
             }
 
             return list;
+        }
+
+        /// <summary>
+        /// The main value control. Always clickable, including on the row that
+        /// is already the main value - pressing it again is how the caller gets
+        /// told to clear it, and a disabled button would give no way back.
+        /// </summary>
+        private HtmlTag MainButton(int index, bool isMain)
+        {
+            var name = RowKey("cvmain", index);
+
+            var button = new HtmlTag("button")
+                .AddClass("custom-values-icon-btn custom-values-main-btn")
+                .Attr("type", "button")
+                .Attr("name", name)
+                .Attr("title", isMain ? "Main value" : "Set as main value")
+                .Attr("onclick", "__doPostBack('" + name + "','',this.form)");
+
+            if (isMain) button.AddClass("custom-values-main-on");
+
+            button.AppendHtml(new Icon(new IconInput
+            {
+                Type = IconType.MainValue,
+                Size = 15
+            }).Render());
+
+            return button;
         }
 
         private HtmlTag RowButton(string prefix, int index, IconType icon, string title, bool disabled)
@@ -246,6 +342,11 @@ namespace RotoMonsterUI
             button.AppendHtml(new Icon(new IconInput { Type = icon, Size = 15 }).Render());
 
             return button;
+        }
+
+        private static string TypeText(CustomValueType type)
+        {
+            return type == CustomValueType.TotalGames ? "Total games" : "Per game";
         }
 
         private static string ColumnText(CustomValueColumn column)
