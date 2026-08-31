@@ -1,0 +1,101 @@
+using System.Collections.Generic;
+
+namespace RotoMonsterUI
+{
+    public class DraftMonsterOption
+    {
+        public string Value { get; set; }
+        public string Text { get; set; }
+    }
+
+    public class DraftMonsterPuntCategory
+    {
+        public string CategoryId { get; set; }
+        public string Abbreviation { get; set; }
+        public bool IsSelected { get; set; }
+        public string Weight { get; set; }
+    }
+
+    public class DraftMonsterPosition
+    {
+        public string PositionId { get; set; }
+        public string Abbreviation { get; set; }
+        public string ColorCSS { get; set; }
+        public bool IsSelected { get; set; }
+    }
+
+    public class DraftMonsterOptionsInput
+    {
+        public string Id { get; set; }
+        public string Heading { get; set; } = "Draft Monster";
+        public string Description { get; set; }
+
+        public List<DraftMonsterOption> ProjectionSources { get; set; } = new List<DraftMonsterOption>();
+        public string SelectedProjectionSourceId { get; set; }
+        public List<DraftMonsterOption> ValueTypes { get; set; } = new List<DraftMonsterOption>();
+        public string SelectedValueTypeId { get; set; }
+        public bool ReplacementPlayers { get; set; }
+        public bool AssumeGoodHealth { get; set; }
+        public List<DraftMonsterPuntCategory> PuntCategories { get; set; } = new List<DraftMonsterPuntCategory>();
+        public string PuntHelpText { get; set; }
+            = "Pick the categories you're giving up. Weight is optional, 1 is normal.";
+
+        public bool ShowRotoStandings { get; set; }
+        public bool ShowH2HStandings { get; set; }
+        public bool UseAdvancedStandings { get; set; }
+        public bool ApplyGameLimits { get; set; }
+
+        public List<DraftMonsterOption> StatsDisplayFormats { get; set; } = new List<DraftMonsterOption>();
+        public string SelectedStatsDisplayFormatId { get; set; }
+        public List<DraftMonsterOption> ValueConsistencies { get; set; } = new List<DraftMonsterOption>();
+        public string SelectedValueConsistencyId { get; set; }
+        public List<DraftMonsterOption> PlayerFilters { get; set; } = new List<DraftMonsterOption>();
+        public string SelectedPlayerFilterId { get; set; }
+        public List<DraftMonsterOption> Teams { get; set; } = new List<DraftMonsterOption>();
+        public string SelectedTeamId { get; set; }
+        public List<DraftMonsterOption> HomeAwayOptions { get; set; } = new List<DraftMonsterOption>();
+        public string SelectedHomeAwayId { get; set; }
+        public List<DraftMonsterPosition> Positions { get; set; } = new List<DraftMonsterPosition>();
+        public bool AllPositionsSelected { get; set; } = true;
+        public string ColumnsButtonText { get; set; } = "Choose columns";
+        public string ColumnsUrl { get; set; }
+        public string ColumnsSummary { get; set; }
+
+        public string PickNumber { get; set; }
+        public bool ThirdRoundReversal { get; set; }
+        public bool SecondRoundHighToLow { get; set; }
+        public bool FifthRoundReversal { get; set; }
+        public bool IsConnected { get; set; }
+        public string ConnectedStatusHtml { get; set; }
+        public string ConnectButtonText { get; set; } = "Connect";
+        public string ConnectHeading { get; set; } = "Connect your draft";
+        public string ConnectLead { get; set; }
+            = "Picks come in from your draft room automatically. Enter the slot you're "
+              + "drafting from so Draft Monster knows when you're up.";
+
+        public bool HideDraftedPlayers { get; set; } = true;
+        public bool HighlightDraftedSinceImport { get; set; }
+        public bool IncludeTargetsInAnalysis { get; set; }
+        public bool ShowStatFilters { get; set; }
+
+        public string StandingsHtml { get; set; }
+        public string TeamAnalysisHtml { get; set; }
+        public string ResultsHtml { get; set; }
+
+        public string StandingsHeading { get; set; } = "Standings";
+        public string TeamAnalysisHeading { get; set; } = "Team analysis";
+
+        public bool StandingsExpanded { get; set; } = true;
+        public bool TeamAnalysisExpanded { get; set; } = true;
+        public bool StandingsCompact { get; set; } = true;
+        public bool TeamAnalysisCompact { get; set; } = true;
+        public string CompactText { get; set; } = "Just my team";
+        public string FullText { get; set; } = "All teams";
+
+        public bool ValuesExpanded { get; set; }
+        public bool StandingsSettingsExpanded { get; set; }
+        public bool TableSettingsExpanded { get; set; }
+
+        public string Message { get; set; }
+    }
+}
