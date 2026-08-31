@@ -16,6 +16,9 @@ namespace RotoMonsterUI
         public string ImportProvider { get; set; }
         public List<string> SelectedLeagueIds { get; set; } = new List<string>();
 
+        public string ImportLeagueProvider { get; set; }
+        public string ImportLeagueId { get; set; }
+
         public string ManualEntryProvider { get; set; }
         public string ManualEntryLeagueId { get; set; }
 

@@ -57,6 +57,17 @@ namespace RotoMonsterUI
                 if (leagueId.Length > 0) result.SelectedLeagueIds.Add(leagueId);
             }
 
+            var one = Value("ulimportone" + suffix + "_", params_, eventTarget);
+            if (!string.IsNullOrEmpty(one))
+            {
+                var split = one.IndexOf("__");
+                if (split > 0)
+                {
+                    result.ImportLeagueProvider = one.Substring(0, split);
+                    result.ImportLeagueId = one.Substring(split + 2);
+                }
+            }
+
             result.ManualEntryProvider = Value("ulmanual" + suffix + "_", params_, eventTarget);
             if (!string.IsNullOrEmpty(result.ManualEntryProvider))
             {

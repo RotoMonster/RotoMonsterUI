@@ -263,7 +263,9 @@ namespace RotoMonsterUI
 
             if (!tab.SupportsBulkImport)
             {
-                lead.Text("Your " + tab.ProviderName + " leagues.");
+                lead.Text(Selectable(tab) > 0
+                    ? "Choose Import on a league to add it."
+                    : "All of your " + tab.ProviderName + " leagues are imported.");
                 return lead;
             }
 
@@ -374,7 +376,13 @@ namespace RotoMonsterUI
 
             var actionCell = new HtmlTag("td").AddClass("user-leagues-action");
 
-            if (league.IsImported)
+            if (!league.IsImported)
+            {
+                if (!tab.SupportsBulkImport && !tab.IsCustom)
+                    actionCell.Append(RowButton("ulimportone",
+                        tab.ProviderName + "__" + league.ProviderLeagueId, "Import", false));
+            }
+            else
             {
                 actionCell.Append(RowButton("ultrack", league.UserLeagueId,
                     league.IsTracked ? "Untrack" : "Track", false));
