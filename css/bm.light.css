@@ -6004,3 +6004,283 @@ a.display-columns-item--membership { cursor: pointer; }
     border-color: var(--brand-primary);
     color: var(--brand-primary);
 }
+
+/* user-leagues ---------------------------------------------------------- */
+
+.user-leagues-heading {
+    margin-bottom: 0.75rem;
+}
+
+.user-leagues-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.user-leagues-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    min-width: 118px;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.user-leagues-tab:hover {
+    border-color: var(--brand-primary);
+}
+
+.user-leagues-tab--active {
+    border-color: var(--brand-primary);
+    background: var(--color-bg-card);
+}
+
+.user-leagues-tab-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.user-leagues-tab--active .user-leagues-tab-name {
+    color: var(--brand-primary);
+}
+
+.user-leagues-tab-count {
+    font-size: 0.72rem;
+    color: var(--color-text-secondary);
+}
+
+.user-leagues-tab-count--off {
+    font-style: italic;
+    color: var(--color-text-tertiary);
+}
+
+.user-leagues-panel {
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: var(--color-bg-card);
+}
+
+.user-leagues-connection {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.user-leagues-connection-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.user-leagues-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+}
+
+.user-leagues-lead {
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+}
+
+.user-leagues-message {
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--brand-primary);
+}
+
+.user-leagues-error {
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid #ef4444;
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+
+.user-leagues-empty {
+    padding: 1.4rem 1rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--color-text-tertiary);
+    border: 1px dashed var(--color-border);
+    border-radius: 8px;
+}
+
+.user-leagues-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.user-leagues-table th {
+    padding: 0.4rem 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--color-text-secondary);
+    text-align: left;
+}
+
+.user-leagues-table td {
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--color-border-light);
+    vertical-align: middle;
+}
+
+.user-leagues-check {
+    width: 32px;
+}
+
+.user-leagues-row--pick {
+    cursor: pointer;
+}
+
+.user-leagues-row--pick:hover {
+    background: var(--color-bg-secondary);
+}
+
+.user-leagues-name {
+    font-weight: 600;
+}
+
+.user-leagues-mono {
+    font-variant-numeric: tabular-nums;
+}
+
+.user-leagues-muted {
+    font-size: 0.78rem;
+    color: var(--color-text-tertiary);
+}
+
+.user-leagues-pill {
+    display: inline-block;
+    padding: 1px 8px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+
+.user-leagues-pill--done {
+    border-color: #22c55e;
+    color: #22c55e;
+}
+
+.user-leagues-pill--failed {
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.user-leagues-action {
+    white-space: nowrap;
+}
+
+.user-leagues-linkbtn {
+    padding: 0 0.35rem;
+    border: none;
+    background: none;
+    color: var(--brand-primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.user-leagues-linkbtn:hover {
+    text-decoration: none;
+}
+
+.user-leagues-linkbtn--danger {
+    color: #ef4444;
+}
+
+.user-leagues-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.85rem;
+}
+
+.user-leagues-hint {
+    font-size: 0.78rem;
+    color: var(--color-text-tertiary);
+}
+
+.user-leagues-manual {
+    padding-top: 0.85rem;
+    margin-top: 0.85rem;
+    border-top: 1px solid var(--color-border-light);
+}
+
+.user-leagues-manual-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.user-leagues-input {
+    padding: 0.35rem 0.6rem;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    font-size: 0.85rem;
+}
+
+.user-leagues-connect {
+    padding: 0.5rem 0;
+}
+
+.user-leagues-connect-title {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.user-leagues-connect-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.user-leagues-help {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+}
+
+.user-leagues-help h6 {
+    margin: 0.6rem 0 0.25rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.user-leagues-help ol {
+    margin: 0 0 0.5rem;
+    padding-left: 1.2rem;
+}
+
+.user-leagues-help li {
+    margin-bottom: 0.15rem;
+}
