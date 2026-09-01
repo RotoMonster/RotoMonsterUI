@@ -120,6 +120,8 @@ namespace RotoMonsterUI
 (function () {
     var TIMEOUT_MS = " + _input.TimeoutMs + @";
     var MIN_VERSION = " + min + @";
+    var LATE_TRIES = " + _input.LateTries + @";
+    var LATE_DELAY_MS = " + _input.LateDelayMs + @";
     var PREFIX = """ + id + @""";
     var settled = false;
 
@@ -147,21 +149,33 @@ namespace RotoMonsterUI
         return false;
     }
 
+    function hide(suffix) {
+        var el = document.getElementById(PREFIX + suffix);
+        if (el) el.style.display = ""none"";
+    }
+
+    // Deliberately not guarded by settled. The timeout below may already have
+    // shown the install prompt, and a late answer has to be able to take it
+    // back down - the extension runs at document_idle, so on a slow page it
+    // can easily answer after we have given up on it.
     function found(version) {
-        if (settled) return;
         settled = true;
 
+        hide(""-prompt"");
+
         if (MIN_VERSION && version && older(version, MIN_VERSION)) {
+            hide(""-installed"");
             show(""-outdated"");
             return;
         }
 
+        hide(""-outdated"");
         show(""-installed"");
     }
 
     function missing() {
         if (settled) return;
-        settled = true;
+        // Not settled - the listener stays live so a late answer still wins.
         show(""-prompt"");
     }
 
@@ -177,14 +191,38 @@ namespace RotoMonsterUI
     var marked = document.documentElement.getAttribute(""data-rm-extension"");
     if (marked) {
         found(marked);
-    } else {
-        document.dispatchEvent(new Event(""rm-extension-ping""));
-        setTimeout(function () {
-            var late = document.documentElement.getAttribute(""data-rm-extension"");
-            if (late) found(late);
-            else missing();
-        }, TIMEOUT_MS);
+        return;
     }
+
+    document.dispatchEvent(new Event(""rm-extension-ping""));
+
+    setTimeout(function () {
+        var late = document.documentElement.getAttribute(""data-rm-extension"");
+        if (late) {
+            found(late);
+            return;
+        }
+
+        // Show the prompt, but keep looking. A second ping covers an extension
+        // that loaded between the first one and now, and the marker is polled
+        // for a while after in case it never answers a ping at all.
+        missing();
+        document.dispatchEvent(new Event(""rm-extension-ping""));
+
+        var tries = 0;
+        var poll = setInterval(function () {
+            tries++;
+
+            var mark = document.documentElement.getAttribute(""data-rm-extension"");
+            if (mark) {
+                found(mark);
+                clearInterval(poll);
+                return;
+            }
+
+            if (tries >= LATE_TRIES) clearInterval(poll);
+        }, LATE_DELAY_MS);
+    }, TIMEOUT_MS);
 })();
 ";
         }
