@@ -4,8 +4,18 @@ namespace RotoMonsterUI
     {
         public string Id { get; set; } = "rmExtension";
 
+        /// <summary>
+        /// The Chrome Web Store id. Permanent once the listing is published,
+        /// so this is the one thing worth setting in one place. InstallUrl is
+        /// built from it.
+        /// </summary>
+        public string ExtensionId { get; set; }
+
+        /// <summary>
+        /// Set this to override the store link entirely, e.g. to point at a
+        /// help page instead. Otherwise it is built from ExtensionId.
+        /// </summary>
         public string InstallUrl { get; set; }
-            = "https://chromewebstore.google.com/detail/YOUR_EXTENSION_ID";
 
         public string InstallLinkText { get; set; } = "Install";
 
@@ -33,6 +43,10 @@ namespace RotoMonsterUI
         public string OutdatedHtml { get; set; }
             = "Your RotoMonster extension is out of date. Update it to import your draft.";
 
+        /// <summary>
+        /// Where Update sends them. Falls back to InstallUrl when not set,
+        /// since the store listing is where you update from anyway.
+        /// </summary>
         public string UpdateUrl { get; set; }
 
         public string UpdateLinkText { get; set; } = "Update";

@@ -53,10 +53,23 @@ namespace RotoMonsterUI
             return new HtmlTag("span").AppendHtml(html ?? "");
         }
 
+        /// <summary>
+        /// An explicit InstallUrl wins, otherwise it is built from the store
+        /// id. With neither, the prompt still renders, just without a link -
+        /// better than shipping a dead placeholder url.
+        /// </summary>
+        private string StoreUrl()
+        {
+            if (!string.IsNullOrEmpty(_input.InstallUrl)) return _input.InstallUrl;
+            if (string.IsNullOrEmpty(_input.ExtensionId)) return null;
+
+            return "https://chromewebstore.google.com/detail/" + _input.ExtensionId.Trim();
+        }
+
         private HtmlTag OutdatedBody()
         {
             var url = string.IsNullOrEmpty(_input.UpdateUrl)
-                ? _input.InstallUrl
+                ? StoreUrl()
                 : _input.UpdateUrl;
 
             return Linked(_input.OutdatedHtml, url, _input.UpdateLinkText);
@@ -64,7 +77,7 @@ namespace RotoMonsterUI
 
         private HtmlTag PromptBody()
         {
-            return Linked(_input.PromptHtml, _input.InstallUrl, _input.InstallLinkText);
+            return Linked(_input.PromptHtml, StoreUrl(), _input.InstallLinkText);
         }
 
         private static HtmlTag Linked(string html, string url, string linkText)
