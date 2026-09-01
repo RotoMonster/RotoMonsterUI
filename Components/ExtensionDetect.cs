@@ -203,10 +203,13 @@ namespace RotoMonsterUI
             return;
         }
 
-        // Show the prompt, but keep looking. A second ping covers an extension
-        // that loaded between the first one and now, and the marker is polled
-        // for a while after in case it never answers a ping at all.
-        missing();
+        // Nothing yet. Keep looking rather than showing the prompt now - the
+        // extension runs at document_idle so it commonly answers just after
+        // this point, and showing an install prompt only to replace it a
+        // moment later reads worse than showing nothing for a beat.
+        //
+        // A second ping covers an extension that loaded between the first one
+        // and now; the marker is polled after in case it never answers a ping.
         document.dispatchEvent(new Event(""rm-extension-ping""));
 
         var tries = 0;
@@ -220,7 +223,11 @@ namespace RotoMonsterUI
                 return;
             }
 
-            if (tries >= LATE_TRIES) clearInterval(poll);
+            // Out of patience. It really is not there, so say so.
+            if (tries >= LATE_TRIES) {
+                clearInterval(poll);
+                missing();
+            }
         }, LATE_DELAY_MS);
     }, TIMEOUT_MS);
 })();

@@ -29,9 +29,9 @@ namespace RotoMonsterUI
 
         public int TimeoutMs { get; set; } = 400;
 
-        public int LateTries { get; set; } = 10;
+        public int LateTries { get; set; } = 6;
 
-        public int LateDelayMs { get; set; } = 500;
+        public int LateDelayMs { get; set; } = 350;
 
         public string MinimumVersion { get; set; }
 
