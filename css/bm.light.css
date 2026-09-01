@@ -6931,3 +6931,138 @@ a.display-columns-item--membership { cursor: pointer; }
        content: "Ready";
        color: #86efac;
    }
+
+   /* live-results ----------------------------------------------------------
+   The switch comes from monster-settings.css, so this only carries what is
+   Live Results' own. */
+
+.live-results { display: block; }
+
+.lr-message {
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--brand-primary);
+}
+
+/* day bar */
+.lr-daybar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding: 0.7rem 1rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: var(--color-bg-card);
+}
+
+.lr-nav {
+    padding: 0.25rem 0.65rem;
+    border: 1px solid var(--color-border);
+    border-radius: 7px;
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+    line-height: 1.2;
+    cursor: pointer;
+}
+
+.lr-nav:hover { border-color: var(--brand-primary); }
+
+.lr-day { font-size: 0.95rem; font-weight: 700; }
+.lr-count { font-size: 0.82rem; color: var(--color-text-secondary); }
+.lr-spacer { margin-left: auto; }
+
+/* game strip */
+.lr-games {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.9rem;
+}
+
+.lr-game {
+    min-width: 104px;
+    padding: 0.4rem 0.6rem 0.45rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-bg-card);
+    color: var(--color-text-primary);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.12s ease, background 0.12s ease;
+}
+
+.lr-game:hover { border-color: var(--brand-primary); }
+
+.lr-game[aria-pressed="true"] {
+    border-color: var(--brand-primary);
+    background: rgba(var(--brand-primary-rgb), 0.12);
+}
+
+.lr-game--all {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 62px;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+/* state and the your-players count share one line, so every card is the
+   same height whatever it is showing */
+.lr-game-top {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    height: 13px;
+    margin-bottom: 0.15rem;
+    font-size: 0.63rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+}
+
+.lr-game-top.live { color: #22c55e; }
+
+.lr-game-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex: 0 0 auto;
+}
+
+.lr-game-mine {
+    margin-left: auto;
+    padding: 0 4px;
+    border-radius: 3px;
+    background: rgba(var(--brand-primary-rgb), 0.18);
+    color: var(--brand-primary);
+    font-size: 0.63rem;
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+.lr-game-side {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+}
+
+.lr-game-tm { font-weight: 700; }
+
+.lr-game-sc {
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+}
+
+.lr-game-side--lost { color: var(--color-text-tertiary); }
+.lr-game-side--lost .lr-game-tm { font-weight: 400; }
+
+.lr-content { margin-top: 0.75rem; }
