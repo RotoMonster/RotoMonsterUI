@@ -16,54 +16,31 @@ namespace RotoMonsterUI
 
             var suffix = "_" + id;
 
-            result.SelectedProjectionSourceId = Text("dmproj" + suffix, params_);
-            result.SelectedValueTypeId = Text("dmvaluetype" + suffix, params_);
-            result.ReplacementPlayers = Checked("dmreplacement" + suffix, params_);
-            result.AssumeGoodHealth = Checked("dmhealth" + suffix, params_);
+            var settings = new MonsterSettingsService().Process(id + "settings", params_);
 
-            var puntPrefix = "dmpunt" + suffix + "_";
-            var weightPrefix = "dmpuntw" + suffix + "_";
+            result.SelectedProjectionSourceId = settings.SelectedProjectionSourceId;
+            result.SelectedValueTypeId = settings.SelectedValueTypeId;
+            result.ReplacementPlayers = settings.ReplacementPlayers;
+            result.AssumeGoodHealth = settings.AssumeGoodHealth;
+            result.PuntCategoryIds = settings.PuntCategoryIds;
+            result.PuntWeights = settings.PuntWeights;
 
-            foreach (var key in params_.Keys)
-            {
-                if (key == null) continue;
+            result.ShowRotoStandings = settings.ShowRotoStandings;
+            result.ShowH2HStandings = settings.ShowH2HStandings;
+            result.UseAdvancedStandings = settings.UseAdvancedStandings;
+            result.ApplyGameLimits = settings.ApplyGameLimits;
 
-                if (key.StartsWith(weightPrefix))
-                {
-                    var wid = key.Substring(weightPrefix.Length);
-                    var wval = (params_[key] ?? "").Trim();
-                    if (wid.Length > 0 && wval.Length > 0) result.PuntWeights[wid] = wval;
-                    continue;
-                }
+            result.SelectedStatsDisplayFormatId = settings.SelectedStatsDisplayFormatId;
+            result.SelectedValueConsistencyId = settings.SelectedValueConsistencyId;
+            result.SelectedPlayerFilterId = settings.SelectedPlayerFilterId;
+            result.SelectedTeamId = settings.SelectedTeamId;
+            result.SelectedHomeAwayId = settings.SelectedHomeAwayId;
+            result.PositionIds = settings.PositionIds;
+            result.AllPositionsSelected = settings.AllPositionsSelected;
 
-                if (key.StartsWith(puntPrefix))
-                {
-                    var pid = key.Substring(puntPrefix.Length);
-                    if (pid.Length > 0) result.PuntCategoryIds.Add(pid);
-                }
-            }
-
-            result.ShowRotoStandings = Checked("dmroto" + suffix, params_);
-            result.ShowH2HStandings = Checked("dmh2h" + suffix, params_);
-            result.UseAdvancedStandings = Checked("dmadvanced" + suffix, params_);
-            result.ApplyGameLimits = Checked("dmgamelimits" + suffix, params_);
-
-            result.SelectedStatsDisplayFormatId = Text("dmstatsformat" + suffix, params_);
-            result.SelectedValueConsistencyId = Text("dmvaluec" + suffix, params_);
-            result.SelectedPlayerFilterId = Text("dmfilter" + suffix, params_);
-            result.SelectedTeamId = Text("dmteam" + suffix, params_);
-            result.SelectedHomeAwayId = Text("dmhomeaway" + suffix, params_);
-
-            var posPrefix = "dmpos" + suffix + "_";
-            foreach (var key in params_.Keys)
-            {
-                if (key == null) continue;
-                if (!key.StartsWith(posPrefix)) continue;
-
-                var posId = key.Substring(posPrefix.Length);
-                if (posId.Length > 0) result.PositionIds.Add(posId);
-            }
-            result.AllPositionsSelected = result.PositionIds.Count == 0;
+            result.ValuesExpanded = settings.ValuesExpanded;
+            result.StandingsSettingsExpanded = settings.StandingsExpanded;
+            result.TableSettingsExpanded = settings.TableExpanded;
 
             result.PickNumber = Text("dmpick" + suffix, params_);
             result.ThirdRoundReversal = Checked("dmrev3" + suffix, params_);
@@ -81,14 +58,24 @@ namespace RotoMonsterUI
 
             result.StandingsExpanded = Checked("dmopen" + suffix + "_standings", params_);
             result.TeamAnalysisExpanded = Checked("dmopen" + suffix + "_analysis", params_);
-            result.ValuesExpanded = Checked("dmopen" + suffix + "_values", params_);
-            result.StandingsSettingsExpanded = Checked("dmopen" + suffix + "_standingset", params_);
-            result.TableSettingsExpanded = Checked("dmopen" + suffix + "_table", params_);
 
             result.StandingsCompact = Checked("dmcompact" + suffix + "_standings", params_);
             result.TeamAnalysisCompact = Checked("dmcompact" + suffix + "_analysis", params_);
 
             result.ToggledSection = Value("dmtoggle" + suffix + "_", params_, eventTarget);
+
+            if (string.IsNullOrEmpty(result.ToggledSection)
+                && !string.IsNullOrEmpty(settings.ToggledPanel))
+            {
+                // the shared component names its standings panel "standings",
+                // which is our team analysis section's neighbour, so map it
+                switch (settings.ToggledPanel)
+                {
+                    case "values": result.ToggledSection = "values"; break;
+                    case "standings": result.ToggledSection = "standingset"; break;
+                    case "table": result.ToggledSection = "table"; break;
+                }
+            }
 
             return result;
         }
