@@ -34,6 +34,9 @@ namespace RotoMonsterUI
         public bool ReplacementPlayers { get; set; }
         public bool AssumeGoodHealth { get; set; }
 
+        public string ReplacementPlayersText { get; set; } = "Use Replacement Players";
+        public string AssumeGoodHealthText { get; set; } = "Assume Good Health";
+
         public List<MonsterPuntCategory> PuntCategories { get; set; }
         public string PuntHelpText { get; set; }
             = "Pick the categories you're giving up. Weight is optional, 1 is normal.";

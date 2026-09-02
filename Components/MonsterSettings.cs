@@ -88,8 +88,8 @@ namespace RotoMonsterUI
             {
                 body.Append(Row(_input.AdjustmentsLabel, new List<HtmlTag>
                 {
-                    Switch(Key("msreplacement"), "Compare to replacement players", _input.ReplacementPlayers),
-                    Switch(Key("mshealth"), "Assume good health", _input.AssumeGoodHealth)
+                    Switch(Key("msreplacement"), _input.ReplacementPlayersText, _input.ReplacementPlayers),
+                    Switch(Key("mshealth"), _input.AssumeGoodHealthText, _input.AssumeGoodHealth)
                 }));
                 any = true;
             }
@@ -327,8 +327,9 @@ namespace RotoMonsterUI
 
                 var label = new HtmlTag("label").AddClass("ms-pos").Attr("for", boxId);
 
-                if (!string.IsNullOrEmpty(pos.ColorCSS))
-                    label.Attr("style", "--ms-pos-color:" + pos.ColorCSS + ";");
+                var color = CssColor(pos.ColorCSS);
+                if (color != null)
+                    label.Attr("style", "--ms-pos-color:" + color + ";");
 
                 var box = new HtmlTag("input")
                     .Attr("type", "checkbox")
@@ -385,6 +386,24 @@ namespace RotoMonsterUI
             panel.Append(wrapper);
 
             return panel;
+        }
+
+        /// <summary>
+        /// The value goes into a css custom property, so it has to be usable
+        /// as-is. A bare variable name gets wrapped, since passing --pos-pg is
+        /// the natural thing to try and it would otherwise just silently not
+        /// apply, which is a horrible thing to debug.
+        /// </summary>
+        private static string CssColor(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return null;
+
+            var trimmed = value.Trim();
+            if (trimmed.Length == 0) return null;
+
+            if (trimmed.StartsWith("--")) return "var(" + trimmed + ")";
+
+            return trimmed;
         }
 
         private static bool Has<T>(List<T> list)
