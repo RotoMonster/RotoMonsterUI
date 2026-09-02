@@ -31,6 +31,12 @@ namespace RotoMonsterUI
 
             wrap.Attr("id", "draft-monster-" + _input.Id);
 
+            if (_input.ExtensionDetect != null)
+                wrap.AppendHtml(new ExtensionDetect(_input.ExtensionDetect).Render());
+
+            if (_input.ShowDraftPicksField)
+                wrap.Append(RenderDraftPicksField());
+
             wrap.Append(RenderConnect());
             wrap.Append(RenderDuringDraft());
 
@@ -55,11 +61,69 @@ namespace RotoMonsterUI
             return wrap.ToString();
         }
 
+        /// <summary>
+        /// The field the extension looks for, plus the listener that posts back
+        /// once it has written to it.
+        ///
+        /// The id is fixed rather than scoped to this component, because the
+        /// extension has to find it without knowing anything about the page.
+        /// That also means only one of these per page.
+        /// </summary>
+        private HtmlTag RenderDraftPicksField()
+        {
+            var fieldId = string.IsNullOrEmpty(_input.DraftPicksFieldId)
+                ? "espnDraftPicks"
+                : _input.DraftPicksFieldId;
+
+            var wrap = new HtmlTag("span").AddClass("dm-picks-field");
+
+            // name as well as id - an input with only an id never posts, which
+            // is the trap this hit the first time round.
+            wrap.Append(new HtmlTag("input")
+                .Attr("type", "hidden")
+                .Attr("id", fieldId)
+                .Attr("name", fieldId));
+
+            if (_input.DraftPicksAutoPostBack)
+                wrap.Append(new HtmlTag("script").AppendHtml(PicksScript(fieldId)));
+
+            return wrap;
+        }
+
+        private static string PicksScript(string fieldId)
+        {
+            // Bound to document rather than the field, so it survives an
+            // UpdatePanel refresh and only registers once. The extension writes
+            // the field before it fires the event, so the value is there.
+            return @"
+(function () {
+    if (window.rmDraftPicksBound) return;
+    window.rmDraftPicksBound = true;
+
+    document.addEventListener('rm-draft-imported', function () {
+        var field = document.getElementById('" + fieldId + @"');
+        if (!field || !field.value) return;
+
+        if (typeof __doPostBack === 'function') {
+            __doPostBack('" + fieldId + @"', '');
+            return;
+        }
+
+        var form = field.form;
+        if (form) form.submit();
+    });
+})();
+";
+        }
+
         // ---- connect -----------------------------------------------------
 
         private HtmlTag RenderConnect()
         {
-            var block = new HtmlTag("div").AddClass("dm-connect");
+            var block = new HtmlTag("div")
+                .AddClass("dm-connect")
+                .Attr("id", Key("dmconnectblock"));
+
             if (_input.IsConnected) block.AddClass("dm-connect--live");
 
             if (_input.IsConnected)
@@ -124,7 +188,9 @@ namespace RotoMonsterUI
 
         private HtmlTag RenderDuringDraft()
         {
-            var strip = new HtmlTag("div").AddClass("dm-during");
+            var strip = new HtmlTag("div")
+                .AddClass("dm-during")
+                .Attr("id", Key("dmduring"));
 
             strip.Append(new HtmlTag("span").AddClass("dm-strip-label").Text("During the draft"));
 
@@ -180,7 +246,6 @@ namespace RotoMonsterUI
                 SelectedValueConsistencyId = _input.SelectedValueConsistencyId,
                 SelectedPlayerFilterId = _input.SelectedPlayerFilterId,
                 SelectedTeamId = _input.SelectedTeamId,
-                SelectedHomeAwayId = _input.SelectedHomeAwayId,
                 AllPositionsSelected = _input.AllPositionsSelected,
 
                 ColumnsButtonText = _input.ColumnsButtonText,
@@ -200,7 +265,6 @@ namespace RotoMonsterUI
             settings.ValueConsistencies = _input.ValueConsistencies;
             settings.PlayerFilters = _input.PlayerFilters;
             settings.Teams = _input.Teams;
-            settings.HomeAwayOptions = _input.HomeAwayOptions;
             settings.PuntCategories = _input.PuntCategories;
             settings.Positions = _input.Positions;
 
@@ -238,6 +302,7 @@ namespace RotoMonsterUI
             var head = new HtmlTag("button")
                 .AddClass("ms-panel-head")
                 .Attr("type", "button")
+                .Attr("id", SubKey("dmpanel", name))
                 .Attr("name", toggleName)
                 .Attr("aria-expanded", expanded ? "true" : "false")
                 .Attr("onclick", "__doPostBack('" + toggleName + "','',this.form)");

@@ -16,6 +16,9 @@ namespace RotoMonsterUI
 
             if (input == null) return result;
 
+            if (!string.IsNullOrEmpty(input.DraftPicksFieldId))
+                ReadDraftPicks(result, params_, input.DraftPicksFieldId);
+
             // Only read the pickers when they were actually on screen. A closed
             // one posts no checkboxes, so reading it would come back as every
             // column unticked.
@@ -59,7 +62,6 @@ namespace RotoMonsterUI
             result.SelectedValueConsistencyId = settings.SelectedValueConsistencyId;
             result.SelectedPlayerFilterId = settings.SelectedPlayerFilterId;
             result.SelectedTeamId = settings.SelectedTeamId;
-            result.SelectedHomeAwayId = settings.SelectedHomeAwayId;
             result.ColumnsPressed = settings.ColumnsPressed;
             result.ColumnsOpen = settings.ColumnsOpen;
             result.PositionIds = settings.PositionIds;
@@ -76,6 +78,13 @@ namespace RotoMonsterUI
             result.FifthRoundReversal = Checked("dmrev5" + suffix, params_);
 
             result.ConnectPressed = Pressed("dmconnect" + suffix, params_, eventTarget);
+
+            // The extension writes into a fixed id rather than one scoped to
+            // this component, since it has to find the field without knowing
+            // anything about the page. It uses a different id per provider, so
+            // both are checked here - the three argument Process below narrows
+            // it to whichever one the page actually rendered.
+            ReadDraftPicks(result, params_, null);
             result.ChangePickPressed = Pressed("dmchangepick" + suffix, params_, eventTarget);
             result.RefreshPressed = Pressed("dmrefresh" + suffix, params_, eventTarget);
 
@@ -128,6 +137,30 @@ namespace RotoMonsterUI
         private static bool Checked(string key, Dictionary<string, string> params_)
         {
             return params_.ContainsKey(key);
+        }
+
+        /// <summary>
+        /// The extension uses espnDraftPicks or yahooDraftPicks depending on
+        /// which provider delivered. With no field id given, both are checked,
+        /// so a page that renders one or the other still reads.
+        /// </summary>
+        private static void ReadDraftPicks(DraftMonsterOptionsResult result,
+            Dictionary<string, string> params_, string fieldId)
+        {
+            var ids = string.IsNullOrEmpty(fieldId)
+                ? new[] { "espnDraftPicks", "yahooDraftPicks" }
+                : new[] { fieldId };
+
+            foreach (var id in ids)
+            {
+                string picks;
+                if (!params_.TryGetValue(id, out picks)) continue;
+                if (string.IsNullOrEmpty(picks)) continue;
+
+                result.DraftPicksJson = picks;
+                result.DraftPicksDelivered = true;
+                return;
+            }
         }
 
         private static bool Pressed(string key, Dictionary<string, string> params_, string eventTarget)

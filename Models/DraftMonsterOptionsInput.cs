@@ -31,8 +31,6 @@ namespace RotoMonsterUI
         public string SelectedPlayerFilterId { get; set; }
         public List<MonsterOption> Teams { get; set; } = new List<MonsterOption>();
         public string SelectedTeamId { get; set; }
-        public List<MonsterOption> HomeAwayOptions { get; set; } = new List<MonsterOption>();
-        public string SelectedHomeAwayId { get; set; }
         public List<MonsterPosition> Positions { get; set; } = new List<MonsterPosition>();
         public bool AllPositionsSelected { get; set; } = true;
         public string ColumnsButtonText { get; set; } = "Choose columns";
@@ -75,6 +73,29 @@ namespace RotoMonsterUI
         public bool HighlightDraftedSinceImport { get; set; }
         public bool IncludeTargetsInAnalysis { get; set; }
         public bool ShowStatFilters { get; set; }
+
+        /// <summary>
+        /// Pass this and the extension notice renders above the connect panel,
+        /// so someone without the extension is told before they try to use it.
+        /// Leave it null and nothing shows.
+        /// </summary>
+        public ExtensionDetectInput ExtensionDetect { get; set; }
+
+        /// <summary>
+        /// Emits the hidden field the extension gates on. It only injects its
+        /// Import from ESPN button on a page that has this, so rendering it
+        /// here is what makes the button appear.
+        /// </summary>
+        public bool ShowDraftPicksField { get; set; }
+
+        public string DraftPicksFieldId { get; set; } = "espnDraftPicks";
+
+        /// <summary>
+        /// Posts back on its own when the extension delivers picks, rather than
+        /// the user having to press something. The extension writes the field
+        /// then fires rm-draft-imported, so this listens for that.
+        /// </summary>
+        public bool DraftPicksAutoPostBack { get; set; } = true;
 
         public string StandingsHtml { get; set; }
         public string TeamAnalysisHtml { get; set; }

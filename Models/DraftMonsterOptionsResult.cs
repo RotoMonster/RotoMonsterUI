@@ -20,7 +20,6 @@ namespace RotoMonsterUI
         public string SelectedValueConsistencyId { get; set; }
         public string SelectedPlayerFilterId { get; set; }
         public string SelectedTeamId { get; set; }
-        public string SelectedHomeAwayId { get; set; }
         public List<string> PositionIds { get; set; } = new List<string>();
         public bool AllPositionsSelected { get; set; }
 
@@ -29,6 +28,14 @@ namespace RotoMonsterUI
         public bool SecondRoundHighToLow { get; set; }
         public bool FifthRoundReversal { get; set; }
         public bool ConnectPressed { get; set; }
+
+        /// <summary>
+        /// The picks json the extension wrote into the hidden field. Empty
+        /// unless it delivered some on this postback.
+        /// </summary>
+        public string DraftPicksJson { get; set; }
+
+        public bool DraftPicksDelivered { get; set; }
         public bool ChangePickPressed { get; set; }
 
         public bool HideDraftedPlayers { get; set; }

@@ -217,6 +217,7 @@ namespace RotoMonsterUI
                     var button = new HtmlTag("button")
                         .AddClass("ms-btn")
                         .Attr("type", "button")
+                        .Attr("id", name)
                         .Attr("name", name)
                         .Attr("onclick", "__doPostBack('" + name + "','',this.form)")
                         .Text(_input.ColumnsOpen
@@ -321,7 +322,9 @@ namespace RotoMonsterUI
 
         private HtmlTag PositionFilter()
         {
-            var wrap = new HtmlTag("div").AddClass("ms-positions");
+            var wrap = new HtmlTag("div")
+                .AddClass("ms-positions")
+                .Attr("id", Key("mspositions"));
 
             var all = new HtmlTag("button")
                 .AddClass("ms-pos ms-pos--all")
@@ -370,6 +373,7 @@ namespace RotoMonsterUI
             var head = new HtmlTag("button")
                 .AddClass("ms-panel-head")
                 .Attr("type", "button")
+                .Attr("id", SubKey("mspanel", name))
                 .Attr("name", toggleName)
                 .Attr("aria-expanded", expanded ? "true" : "false")
                 .Attr("onclick", "__doPostBack('" + toggleName + "','',this.form)");
