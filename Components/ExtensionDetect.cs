@@ -122,6 +122,7 @@ namespace RotoMonsterUI
     var MIN_VERSION = " + min + @";
     var LATE_TRIES = " + _input.LateTries + @";
     var LATE_DELAY_MS = " + _input.LateDelayMs + @";
+    var RELOAD_ON_RETURN = " + (_input.ReloadOnReturn ? "true" : "false") + @";
     var PREFIX = """ + id + @""";
     var settled = false;
 
@@ -227,9 +228,49 @@ namespace RotoMonsterUI
             if (tries >= LATE_TRIES) {
                 clearInterval(poll);
                 missing();
+                watchForInstall();
             }
         }, LATE_DELAY_MS);
     }, TIMEOUT_MS);
+
+    // Someone who follows the install link comes back to this tab expecting it
+    // to have noticed. Chrome does not inject into a page that is already open,
+    // so the marker only appears after a reload - but the pong listener is
+    // still live, and re-pinging on focus catches an extension that loaded
+    // while the tab was in the background.
+    function watchForInstall() {
+        // Only reload if they actually left. Clicking around this page should
+        // not trigger it, only coming back from somewhere else.
+        var wentAway = false;
+        var reloaded = false;
+
+        function recheck() {
+            if (settled) return;
+
+            var mark = document.documentElement.getAttribute(""data-rm-extension"");
+            if (mark) {
+                found(mark);
+                return;
+            }
+
+            // Nothing in the page to ask. Chrome does not inject into a tab
+            // that was already open, so an extension installed since this
+            // loaded is invisible here until the page reloads.
+            if (RELOAD_ON_RETURN && wentAway && !reloaded) {
+                reloaded = true;
+                location.reload();
+            }
+        }
+
+        window.addEventListener(""blur"", function () { wentAway = true; });
+
+        document.addEventListener(""visibilitychange"", function () {
+            if (document.hidden) wentAway = true;
+            else recheck();
+        });
+
+        window.addEventListener(""focus"", recheck);
+    }
 })();
 ";
         }
