@@ -16,11 +16,14 @@ namespace RotoMonsterUI
 
             if (input == null) return result;
 
-            if (input.ColumnsInput != null)
+            // Only read the pickers when they were actually on screen. A closed
+            // one posts no checkboxes, so reading it would come back as every
+            // column unticked.
+            if (input.ColumnsInput != null && input.ColumnsOpen)
                 result.Columns = new DisplayColumnsService()
                     .Process(input.ColumnsInput.Id, params_);
 
-            if (input.CustomValuesInput != null)
+            if (input.CustomValuesInput != null && input.ColumnsOpen)
                 result.CustomValues = new CustomValuesService()
                     .Process(input.CustomValuesInput.Id, params_);
 
@@ -58,6 +61,7 @@ namespace RotoMonsterUI
             result.SelectedTeamId = settings.SelectedTeamId;
             result.SelectedHomeAwayId = settings.SelectedHomeAwayId;
             result.ColumnsPressed = settings.ColumnsPressed;
+            result.ColumnsOpen = settings.ColumnsOpen;
             result.PositionIds = settings.PositionIds;
             result.AllPositionsSelected = settings.AllPositionsSelected;
 

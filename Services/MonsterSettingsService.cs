@@ -17,11 +17,14 @@ namespace RotoMonsterUI
 
             if (input == null) return result;
 
-            if (input.ColumnsInput != null)
+            // Only read the picker when it was actually on screen. A closed one
+            // posts no checkboxes, and reading that would come back as every
+            // column unticked.
+            if (input.ColumnsInput != null && input.ColumnsOpen)
                 result.Columns = new DisplayColumnsService()
                     .Process(input.ColumnsInput.Id, params_);
 
-            if (input.CustomValuesInput != null)
+            if (input.CustomValuesInput != null && input.ColumnsOpen)
                 result.CustomValues = new CustomValuesService()
                     .Process(input.CustomValuesInput.Id, params_);
 
@@ -99,6 +102,9 @@ namespace RotoMonsterUI
 
             result.ToggledPanel = Value("mstoggle" + suffix + "_", params_, eventTarget);
             result.ColumnsPressed = Pressed("mscolumns" + suffix, params_, eventTarget);
+
+            result.ColumnsOpen = Checked("mscolumnsopen" + suffix, params_);
+            if (result.ColumnsPressed) result.ColumnsOpen = !result.ColumnsOpen;
 
             // The hidden fields report the state the panel was RENDERED in, so
             // on a toggle they are already one behind. Flipping here means the

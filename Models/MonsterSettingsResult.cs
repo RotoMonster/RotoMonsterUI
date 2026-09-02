@@ -38,6 +38,12 @@ namespace RotoMonsterUI
         public bool ColumnsPressed { get; set; }
 
         /// <summary>
+        /// Whether the picker should be open now, already flipped if the
+        /// button was pressed. Assign it straight back to the input.
+        /// </summary>
+        public bool ColumnsOpen { get; set; }
+
+        /// <summary>
         /// Read for you when ColumnsInput was passed, using that input's own
         /// id, so a page does not have to call DisplayColumnsService itself.
         /// Null when no columns input was given.

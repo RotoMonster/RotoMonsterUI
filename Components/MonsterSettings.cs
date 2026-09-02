@@ -231,6 +231,19 @@ namespace RotoMonsterUI
                 if (!string.IsNullOrEmpty(_input.ColumnsSummary))
                     columns.Append(new HtmlTag("span").AddClass("ms-hint").Text(_input.ColumnsSummary));
 
+                // The open state posts with the form, same as the panels, so the
+                // service can hand it back already flipped and the caller does
+                // not have to hold it.
+                var openState = new HtmlTag("input")
+                    .Attr("type", "checkbox")
+                    .AddClass("ms-state")
+                    .Attr("name", Key("mscolumnsopen"))
+                    .Attr("value", "1")
+                    .Attr("hidden", "hidden");
+
+                if (_input.ColumnsOpen) openState.Attr("checked", "checked");
+                columns.Append(openState);
+
                 body.Append(Row(_input.ColumnsLabel, new List<HtmlTag> { columns }));
 
                 // The pickers sit in their own full-width row under the button

@@ -50,6 +50,12 @@ namespace RotoMonsterUI
         public bool ColumnsPressed { get; set; }
 
         /// <summary>
+        /// Whether the picker should be open now, already flipped if the
+        /// button was pressed. Assign it straight back to the input.
+        /// </summary>
+        public bool ColumnsOpen { get; set; }
+
+        /// <summary>
         /// Read for you when the matching input was passed, so the page does
         /// not have to call those services itself. Null otherwise.
         /// </summary>
