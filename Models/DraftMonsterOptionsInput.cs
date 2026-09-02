@@ -2,41 +2,19 @@ using System.Collections.Generic;
 
 namespace RotoMonsterUI
 {
-    public class DraftMonsterOption
-    {
-        public string Value { get; set; }
-        public string Text { get; set; }
-    }
-
-    public class DraftMonsterPuntCategory
-    {
-        public string CategoryId { get; set; }
-        public string Abbreviation { get; set; }
-        public bool IsSelected { get; set; }
-        public string Weight { get; set; }
-    }
-
-    public class DraftMonsterPosition
-    {
-        public string PositionId { get; set; }
-        public string Abbreviation { get; set; }
-        public string ColorCSS { get; set; }
-        public bool IsSelected { get; set; }
-    }
-
     public class DraftMonsterOptionsInput
     {
         public string Id { get; set; }
         public string Heading { get; set; } = "Draft Monster";
         public string Description { get; set; }
 
-        public List<DraftMonsterOption> ProjectionSources { get; set; } = new List<DraftMonsterOption>();
+        public List<MonsterOption> ProjectionSources { get; set; } = new List<MonsterOption>();
         public string SelectedProjectionSourceId { get; set; }
-        public List<DraftMonsterOption> ValueTypes { get; set; } = new List<DraftMonsterOption>();
+        public List<MonsterOption> ValueTypes { get; set; } = new List<MonsterOption>();
         public string SelectedValueTypeId { get; set; }
         public bool ReplacementPlayers { get; set; }
         public bool AssumeGoodHealth { get; set; }
-        public List<DraftMonsterPuntCategory> PuntCategories { get; set; } = new List<DraftMonsterPuntCategory>();
+        public List<MonsterPuntCategory> PuntCategories { get; set; } = new List<MonsterPuntCategory>();
         public string PuntHelpText { get; set; }
             = "Pick the categories you're giving up. Weight is optional, 1 is normal.";
 
@@ -45,17 +23,17 @@ namespace RotoMonsterUI
         public bool UseAdvancedStandings { get; set; }
         public bool ApplyGameLimits { get; set; }
 
-        public List<DraftMonsterOption> StatsDisplayFormats { get; set; } = new List<DraftMonsterOption>();
+        public List<MonsterOption> StatsDisplayFormats { get; set; } = new List<MonsterOption>();
         public string SelectedStatsDisplayFormatId { get; set; }
-        public List<DraftMonsterOption> ValueConsistencies { get; set; } = new List<DraftMonsterOption>();
+        public List<MonsterOption> ValueConsistencies { get; set; } = new List<MonsterOption>();
         public string SelectedValueConsistencyId { get; set; }
-        public List<DraftMonsterOption> PlayerFilters { get; set; } = new List<DraftMonsterOption>();
+        public List<MonsterOption> PlayerFilters { get; set; } = new List<MonsterOption>();
         public string SelectedPlayerFilterId { get; set; }
-        public List<DraftMonsterOption> Teams { get; set; } = new List<DraftMonsterOption>();
+        public List<MonsterOption> Teams { get; set; } = new List<MonsterOption>();
         public string SelectedTeamId { get; set; }
-        public List<DraftMonsterOption> HomeAwayOptions { get; set; } = new List<DraftMonsterOption>();
+        public List<MonsterOption> HomeAwayOptions { get; set; } = new List<MonsterOption>();
         public string SelectedHomeAwayId { get; set; }
-        public List<DraftMonsterPosition> Positions { get; set; } = new List<DraftMonsterPosition>();
+        public List<MonsterPosition> Positions { get; set; } = new List<MonsterPosition>();
         public bool AllPositionsSelected { get; set; } = true;
         public string ColumnsButtonText { get; set; } = "Choose columns";
         public string ColumnsUrl { get; set; }
@@ -65,6 +43,20 @@ namespace RotoMonsterUI
         /// link, so the picker can open in place. Comes back as ColumnsPressed.
         /// </summary>
         public bool ColumnsPostsBack { get; set; }
+
+        /// <summary>
+        /// The column picker and the custom value builder. Pass the inputs and
+        /// they are rendered under the Choose columns button, and read back for
+        /// you into the result.
+        /// </summary>
+        public DisplayColumnsInput ColumnsInput { get; set; }
+
+        public CustomValuesInput CustomValuesInput { get; set; }
+
+        /// <summary>Raw html, for a picker with no component yet.</summary>
+        public string ColumnsHtml { get; set; }
+
+        public bool ColumnsOpen { get; set; }
         public string ColumnsSummary { get; set; }
 
         public string PickNumber { get; set; }

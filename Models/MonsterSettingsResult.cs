@@ -36,5 +36,14 @@ namespace RotoMonsterUI
         public bool TableExpanded { get; set; }
         public string ToggledPanel { get; set; }
         public bool ColumnsPressed { get; set; }
+
+        /// <summary>
+        /// Read for you when ColumnsInput was passed, using that input's own
+        /// id, so a page does not have to call DisplayColumnsService itself.
+        /// Null when no columns input was given.
+        /// </summary>
+        public DisplayColumnsResult Columns { get; set; }
+
+        public CustomValuesResult CustomValues { get; set; }
     }
 }

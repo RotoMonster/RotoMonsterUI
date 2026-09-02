@@ -5,6 +5,28 @@ namespace RotoMonsterUI
 {
     public class DraftMonsterOptionsService
     {
+        /// <summary>
+        /// Pass the same input you rendered with and the column picker and
+        /// custom values are read too.
+        /// </summary>
+        public DraftMonsterOptionsResult Process(string id, Dictionary<string, string> params_,
+            DraftMonsterOptionsInput input)
+        {
+            var result = Process(id, params_);
+
+            if (input == null) return result;
+
+            if (input.ColumnsInput != null)
+                result.Columns = new DisplayColumnsService()
+                    .Process(input.ColumnsInput.Id, params_);
+
+            if (input.CustomValuesInput != null)
+                result.CustomValues = new CustomValuesService()
+                    .Process(input.CustomValuesInput.Id, params_);
+
+            return result;
+        }
+
         public DraftMonsterOptionsResult Process(string id, Dictionary<string, string> params_)
         {
             var result = new DraftMonsterOptionsResult();

@@ -186,64 +186,25 @@ namespace RotoMonsterUI
                 ColumnsButtonText = _input.ColumnsButtonText,
                 ColumnsUrl = _input.ColumnsUrl,
                 ColumnsPostsBack = _input.ColumnsPostsBack,
+                ColumnsInput = _input.ColumnsInput,
+                CustomValuesInput = _input.CustomValuesInput,
+                ColumnsHtml = _input.ColumnsHtml,
+                ColumnsOpen = _input.ColumnsOpen,
                 ColumnsSummary = _input.ColumnsSummary
             };
 
-            settings.ProjectionSources = Options(_input.ProjectionSources);
-            settings.ValueTypes = Options(_input.ValueTypes);
-            settings.StatsDisplayFormats = Options(_input.StatsDisplayFormats);
-            settings.ValueConsistencies = Options(_input.ValueConsistencies);
-            settings.PlayerFilters = Options(_input.PlayerFilters);
-            settings.Teams = Options(_input.Teams);
-            settings.HomeAwayOptions = Options(_input.HomeAwayOptions);
-
-            if (_input.PuntCategories != null)
-            {
-                settings.PuntCategories = new List<MonsterSettingsPuntCategory>();
-                foreach (var cat in _input.PuntCategories)
-                {
-                    if (cat == null) continue;
-                    settings.PuntCategories.Add(new MonsterSettingsPuntCategory
-                    {
-                        CategoryId = cat.CategoryId,
-                        Abbreviation = cat.Abbreviation,
-                        IsSelected = cat.IsSelected,
-                        Weight = cat.Weight
-                    });
-                }
-            }
-
-            if (_input.Positions != null)
-            {
-                settings.Positions = new List<MonsterSettingsPosition>();
-                foreach (var pos in _input.Positions)
-                {
-                    if (pos == null) continue;
-                    settings.Positions.Add(new MonsterSettingsPosition
-                    {
-                        PositionId = pos.PositionId,
-                        Abbreviation = pos.Abbreviation,
-                        ColorCSS = pos.ColorCSS,
-                        IsSelected = pos.IsSelected
-                    });
-                }
-            }
+            // The option types are shared now, so these pass straight through.
+            settings.ProjectionSources = _input.ProjectionSources;
+            settings.ValueTypes = _input.ValueTypes;
+            settings.StatsDisplayFormats = _input.StatsDisplayFormats;
+            settings.ValueConsistencies = _input.ValueConsistencies;
+            settings.PlayerFilters = _input.PlayerFilters;
+            settings.Teams = _input.Teams;
+            settings.HomeAwayOptions = _input.HomeAwayOptions;
+            settings.PuntCategories = _input.PuntCategories;
+            settings.Positions = _input.Positions;
 
             return settings;
-        }
-
-        private static List<MonsterSettingsOption> Options(List<DraftMonsterOption> source)
-        {
-            if (source == null) return null;
-
-            var list = new List<MonsterSettingsOption>();
-            foreach (var option in source)
-            {
-                if (option == null) continue;
-                list.Add(new MonsterSettingsOption { Value = option.Value, Text = option.Text });
-            }
-
-            return list;
         }
 
         // ---- output sections ---------------------------------------------
@@ -322,11 +283,11 @@ namespace RotoMonsterUI
             return row;
         }
 
-        private static HtmlTag Select(string name, List<DraftMonsterOption> options, string selected)
+        private static HtmlTag Select(string name, List<MonsterOption> options, string selected)
         {
             var dropdown = new Dropdown("Select").WithName(name);
 
-            foreach (var option in options ?? new List<DraftMonsterOption>())
+            foreach (var option in options ?? new List<MonsterOption>())
             {
                 if (option == null) continue;
                 dropdown.AddItem(option.Text, option.Value);

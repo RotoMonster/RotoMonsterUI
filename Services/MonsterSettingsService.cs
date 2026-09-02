@@ -5,6 +5,29 @@ namespace RotoMonsterUI
 {
     public class MonsterSettingsService
     {
+        /// <summary>
+        /// Reads the settings. Pass the same input you rendered with and the
+        /// nested pickers are read too, so a page does not have to call
+        /// DisplayColumnsService and CustomValuesService itself.
+        /// </summary>
+        public MonsterSettingsResult Process(string id, Dictionary<string, string> params_,
+            MonsterSettingsInput input)
+        {
+            var result = Process(id, params_);
+
+            if (input == null) return result;
+
+            if (input.ColumnsInput != null)
+                result.Columns = new DisplayColumnsService()
+                    .Process(input.ColumnsInput.Id, params_);
+
+            if (input.CustomValuesInput != null)
+                result.CustomValues = new CustomValuesService()
+                    .Process(input.CustomValuesInput.Id, params_);
+
+            return result;
+        }
+
         public MonsterSettingsResult Process(string id, Dictionary<string, string> params_)
         {
             var result = new MonsterSettingsResult();

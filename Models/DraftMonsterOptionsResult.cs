@@ -48,5 +48,13 @@ namespace RotoMonsterUI
 
         public string ToggledSection { get; set; }
         public bool ColumnsPressed { get; set; }
+
+        /// <summary>
+        /// Read for you when the matching input was passed, so the page does
+        /// not have to call those services itself. Null otherwise.
+        /// </summary>
+        public DisplayColumnsResult Columns { get; set; }
+
+        public CustomValuesResult CustomValues { get; set; }
     }
 }

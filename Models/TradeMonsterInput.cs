@@ -35,12 +35,6 @@ namespace RotoMonsterUI
         public bool IsSelected { get; set; }
     }
 
-    public class TradeMonsterOption
-    {
-        public string Value { get; set; }
-        public string Text { get; set; }
-    }
-
     public class TradeMonsterBoardInput
     {
         public TradeMonsterBoard Board { get; set; }
@@ -49,7 +43,7 @@ namespace RotoMonsterUI
         public string SelectedActionText { get; set; }
         public string ActionColorCSS { get; set; }
         public List<TradeMonsterPlayer> Players { get; set; } = new List<TradeMonsterPlayer>();
-        public List<TradeMonsterOption> TeamOptions { get; set; }
+        public List<MonsterOption> TeamOptions { get; set; }
         public string SelectedTeamValue { get; set; }
         public string TeamPlaceholder { get; set; } = "Any team";
         public string EmptyText { get; set; }

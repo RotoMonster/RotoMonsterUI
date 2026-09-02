@@ -6620,6 +6620,51 @@ a.display-columns-item--membership { cursor: pointer; }
    }
    
    /* output sections */
+   
+   /* the column picker sits in its own full-width row under the button, so a
+      wide picker is not squeezed into the controls column */
+   .ms-row--full {
+       display: block;
+       padding-top: 0;
+   }
+   
+   .ms-columns-picker {
+       display: flex;
+       align-items: flex-start;
+       gap: 0.9rem;
+       padding: 0.75rem 0 0.25rem;
+   }
+   
+   /* Each picker takes what it needs and they sit side by side, since stacking
+      two of them pushes the table a long way down. Below 1100px there is not
+      enough width for both, so they stack. */
+   .ms-columns-picker > * {
+       flex: 1 1 380px;
+       min-width: 0;
+   }
+   
+   @media (max-width: 1100px) {
+       .ms-columns-picker { flex-wrap: wrap; }
+   }
+   
+   .ms-btn--on {
+       border-color: var(--brand-primary);
+       color: var(--brand-primary);
+   }
+   
+   .ms-columns-values {
+       padding-left: 0.9rem;
+       border-left: 1px solid var(--color-border-light);
+   }
+   
+   @media (max-width: 1100px) {
+       .ms-columns-values {
+           padding-left: 0;
+           padding-top: 0.9rem;
+           border-left: none;
+           border-top: 1px solid var(--color-border-light);
+       }
+   }
 
  /* trade-monster --------------------------------------------------------- */
 

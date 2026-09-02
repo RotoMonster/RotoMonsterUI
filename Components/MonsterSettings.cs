@@ -214,18 +214,58 @@ namespace RotoMonsterUI
                 {
                     var name = Key("mscolumns");
 
-                    columns.Append(new HtmlTag("button")
+                    var button = new HtmlTag("button")
                         .AddClass("ms-btn")
                         .Attr("type", "button")
                         .Attr("name", name)
                         .Attr("onclick", "__doPostBack('" + name + "','',this.form)")
-                        .Text(_input.ColumnsButtonText));
+                        .Text(_input.ColumnsOpen
+                            ? _input.ColumnsCloseText
+                            : _input.ColumnsButtonText);
+
+                    if (_input.ColumnsOpen) button.AddClass("ms-btn--on");
+
+                    columns.Append(button);
                 }
 
                 if (!string.IsNullOrEmpty(_input.ColumnsSummary))
                     columns.Append(new HtmlTag("span").AddClass("ms-hint").Text(_input.ColumnsSummary));
 
                 body.Append(Row(_input.ColumnsLabel, new List<HtmlTag> { columns }));
+
+                // The pickers sit in their own full-width row under the button
+                // rather than inside it, so a wide picker is not squeezed into
+                // the controls column.
+                if (_input.ColumnsOpen)
+                {
+                    var picker = new HtmlTag("div").AddClass("ms-columns-picker");
+                    var anyPicker = false;
+
+                    if (_input.ColumnsInput != null)
+                    {
+                        picker.AppendHtml(new DisplayColumns(_input.ColumnsInput).Render());
+                        anyPicker = true;
+                    }
+
+                    if (_input.CustomValuesInput != null)
+                    {
+                        picker.Append(new HtmlTag("div")
+                            .AddClass("ms-columns-values")
+                            .AppendHtml(new CustomValues(_input.CustomValuesInput).Render()));
+                        anyPicker = true;
+                    }
+
+                    if (!string.IsNullOrEmpty(_input.ColumnsHtml))
+                    {
+                        picker.AppendHtml(_input.ColumnsHtml);
+                        anyPicker = true;
+                    }
+
+                    if (anyPicker)
+                        body.Append(new HtmlTag("div")
+                            .AddClass("ms-row ms-row--full").Append(picker));
+                }
+
                 any = true;
             }
 
@@ -234,7 +274,7 @@ namespace RotoMonsterUI
 
         // ---- pieces --------------------------------------------------------
 
-        private HtmlTag PuntCategory(MonsterSettingsPuntCategory cat)
+        private HtmlTag PuntCategory(MonsterPuntCategory cat)
         {
             var cell = new HtmlTag("span").AddClass("ms-punt");
 
@@ -368,7 +408,7 @@ namespace RotoMonsterUI
             return row;
         }
 
-        private static HtmlTag Select(string name, List<MonsterSettingsOption> options, string selected)
+        private static HtmlTag Select(string name, List<MonsterOption> options, string selected)
         {
             var dropdown = new Dropdown("Select").WithName(name);
 
