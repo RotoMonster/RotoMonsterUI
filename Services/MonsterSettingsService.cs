@@ -77,6 +77,24 @@ namespace RotoMonsterUI
             result.ToggledPanel = Value("mstoggle" + suffix + "_", params_, eventTarget);
             result.ColumnsPressed = Pressed("mscolumns" + suffix, params_, eventTarget);
 
+            // The hidden fields report the state the panel was RENDERED in, so
+            // on a toggle they are already one behind. Flipping here means the
+            // caller can assign these straight back and the panel opens and
+            // closes - previously they had to xor against ToggledPanel, which
+            // reads like a bug when you forget it.
+            switch (result.ToggledPanel)
+            {
+                case "values":
+                    result.ValuesExpanded = !result.ValuesExpanded;
+                    break;
+                case "standings":
+                    result.StandingsExpanded = !result.StandingsExpanded;
+                    break;
+                case "table":
+                    result.TableExpanded = !result.TableExpanded;
+                    break;
+            }
+
             return result;
         }
 

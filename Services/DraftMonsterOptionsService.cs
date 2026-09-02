@@ -39,6 +39,7 @@ namespace RotoMonsterUI
             result.PositionIds = settings.PositionIds;
             result.AllPositionsSelected = settings.AllPositionsSelected;
 
+            // Already flipped by MonsterSettingsService if one was toggled.
             result.ValuesExpanded = settings.ValuesExpanded;
             result.StandingsSettingsExpanded = settings.StandingsExpanded;
             result.TableSettingsExpanded = settings.TableExpanded;
@@ -59,6 +60,16 @@ namespace RotoMonsterUI
 
             result.StandingsExpanded = Checked("dmopen" + suffix + "_standings", params_);
             result.TeamAnalysisExpanded = Checked("dmopen" + suffix + "_analysis", params_);
+
+            // Same as the settings panels - the hidden field is the state it
+            // was rendered in, so a toggle needs flipping before the caller
+            // sees it. Assigning the result back now just works.
+            var toggledOutput = Value("dmtoggle" + suffix + "_", params_, eventTarget);
+
+            if (toggledOutput == "standings")
+                result.StandingsExpanded = !result.StandingsExpanded;
+            else if (toggledOutput == "analysis")
+                result.TeamAnalysisExpanded = !result.TeamAnalysisExpanded;
 
             result.StandingsCompact = Checked("dmcompact" + suffix + "_standings", params_);
             result.TeamAnalysisCompact = Checked("dmcompact" + suffix + "_analysis", params_);
