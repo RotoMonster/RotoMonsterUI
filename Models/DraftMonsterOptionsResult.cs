@@ -47,5 +47,6 @@ namespace RotoMonsterUI
         public bool TeamAnalysisCompact { get; set; }
 
         public string ToggledSection { get; set; }
+        public bool ColumnsPressed { get; set; }
     }
 }

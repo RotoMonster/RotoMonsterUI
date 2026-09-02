@@ -57,7 +57,7 @@ namespace RotoMonsterUI
                     .Attr("id", lockButtonId)
                     .Attr("data-collapse-lock", _input.Id)
                     .Attr("aria-pressed", _input.IsLocked ? "true" : "false")
-                    .Attr("title", _input.IsLocked ? _input.UnlockTitle : _input.LockTitle);
+                    .Attr("aria-label", _input.IsLocked ? _input.UnlockTitle : _input.LockTitle);
 
                 if (_input.IsLocked)
                     lockButton.AddClass("is-locked");
@@ -66,7 +66,13 @@ namespace RotoMonsterUI
                     lockButton.Attr("data-collapse-lock-postback", "1");
 
                 lockButton.AppendHtml(lockIcon);
-                header.Append(lockButton);
+
+                // Placed right rather than below - the cursor sits over a small
+                // icon's underside, so a below tooltip hides behind it.
+                header.Append(CustomTooltip.Wrap(
+                    lockButton,
+                    _input.IsLocked ? _input.UnlockTitle : _input.LockTitle,
+                    TooltipPlacement.Right));
 
                 var lockHidden = new HtmlTag("input")
                     .Attr("type", "hidden")

@@ -334,14 +334,19 @@ namespace RotoMonsterUI
                 .AddClass("custom-values-icon-btn")
                 .Attr("type", "button")
                 .Attr("name", name)
-                .Attr("title", title);
+                .Attr("aria-label", title);
 
             if (disabled) button.Attr("disabled", "disabled");
             else button.Attr("onclick", "__doPostBack('" + name + "','',this.form)");
 
             button.AppendHtml(new Icon(new IconInput { Type = icon, Size = 15 }).Render());
 
-            return button;
+            // A disabled button gets no tooltip - it cannot be hovered in a way
+            // that reads as interactive, and explaining a control you cannot use
+            // is noise.
+            if (disabled) return button;
+
+            return CustomTooltip.Wrap(button, title, TooltipPlacement.Above);
         }
 
         private static string TypeText(CustomValueType type)

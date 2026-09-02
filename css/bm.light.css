@@ -7066,3 +7066,21 @@ a.display-columns-item--membership { cursor: pointer; }
 .lr-game-side--lost .lr-game-tm { font-weight: 400; }
 
 .lr-content { margin-top: 0.75rem; }
+
+
+   .bm-tooltip-arrow--left {
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: 6px solid #1e293b;
+}
+
+.bm-tooltip-arrow--right {
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 6px solid #1e293b;
+}
+
+/* the wrapper CustomTooltip.Wrap adds - inline so it does not affect layout */
+.bm-tooltip-host {
+    display: contents;
+}

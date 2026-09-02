@@ -162,14 +162,14 @@ private HtmlTag RenderHeader()
                 {
                     var verified = new HtmlTag("span")
                         .AddClass("tweet-card-verified")
-                        .Attr("title", "Verified account");
+                        .Attr("aria-label", "Verified account");
                     verified.AppendHtml(new Icon(new IconInput
                     {
                         Type = IconType.Verified,
                         Size = 15,
                         Color = "#1d9bf0"
                     }).Render());
-                    header.Append(verified);
+                    header.Append(CustomTooltip.Wrap(verified, "Verified account", TooltipPlacement.Right));
                 }
             }
 
@@ -180,13 +180,13 @@ private HtmlTag RenderHeader()
                     .Attr("href", _input.TweetUrl)
                     .Attr("target", "_blank")
                     .Attr("rel", "noopener noreferrer")
-                    .Attr("title", "Open the tweet on X");
+                    .Attr("aria-label", "Open the tweet on X");
                 source.AppendHtml(new Icon(new IconInput
                 {
                     Type = IconType.ExternalLink,
                     Size = 14
                 }).Render());
-                header.Append(source);
+                header.Append(CustomTooltip.Wrap(source, "Open the tweet on X", TooltipPlacement.Right));
             }
 
             if (_input.Followers.HasValue)
@@ -205,9 +205,10 @@ private HtmlTag RenderHeader()
                     .Attr("type", "button")
                     .Attr("name", Key("tweetaitext"))
                     .Attr("onclick", "__doPostBack('" + Key("tweetaitext") + "','',this.form)")
-                    .Attr("title", "Summarize this tweet with AI");
+                    .Attr("aria-label", "Summarize this tweet with AI");
                 aiButton.AppendHtml(new Icon(new IconInput { Type = IconType.Robot, Size = 24 }).Render());
-                right.Append(aiButton);
+                right.Append(CustomTooltip.Wrap(
+                    aiButton, "Summarize this tweet with AI", TooltipPlacement.Left));
             }
 
             if (_input.TimeSinceCreated.HasValue)
@@ -267,7 +268,7 @@ private HtmlTag RenderHeader()
                 .AddClass("tweet-card-media-indicator")
                 .Attr("type", "button")
                 .Attr("aria-expanded", "false")
-                .Attr("title", "Show media");
+                .Attr("aria-label", "Show media");
             wrap.Append(new HtmlTag("span").AddClass("tweet-card-media-indicator-caret"));
             wrap.Append(new HtmlTag("span").Text(string.Join(", ", parts)));
 
@@ -280,7 +281,7 @@ private HtmlTag RenderHeader()
                 .AddClass("tweet-card-players-toggle")
                 .Attr("type", "button")
                 .Attr("aria-expanded", "false")
-                .Attr("title", "Show players");
+                .Attr("aria-label", "Show players");
 
             wrap.Append(new HtmlTag("span").AddClass("tweet-card-players-toggle-caret"));
             wrap.Append(new HtmlTag("span")

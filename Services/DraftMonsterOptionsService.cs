@@ -35,6 +35,7 @@ namespace RotoMonsterUI
             result.SelectedPlayerFilterId = settings.SelectedPlayerFilterId;
             result.SelectedTeamId = settings.SelectedTeamId;
             result.SelectedHomeAwayId = settings.SelectedHomeAwayId;
+            result.ColumnsPressed = settings.ColumnsPressed;
             result.PositionIds = settings.PositionIds;
             result.AllPositionsSelected = settings.AllPositionsSelected;
 

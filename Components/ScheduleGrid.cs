@@ -360,16 +360,16 @@ namespace RotoMonsterUI
                 .Attr("type", "submit")
                 .Attr("name", $"{_input.Id}-set-start")
                 .Attr("value", period.PeriodNumber.ToString())
-                .Attr("title", "Set as start period");
+                .Attr("aria-label", "Set as start period");
             downBtn.AppendHtml(DownArrowSvg);
             var upBtn = new HtmlTag("button").AddClass("schedule-grid-arrow-btn")
                 .Attr("type", "submit")
                 .Attr("name", $"{_input.Id}-set-end")
                 .Attr("value", period.PeriodNumber.ToString())
-                .Attr("title", "Set as end period");
+                .Attr("aria-label", "Set as end period");
             upBtn.AppendHtml(UpArrowSvg);
-            arrowsCell.Append(downBtn);
-            arrowsCell.Append(upBtn);
+            arrowsCell.Append(CustomTooltip.Wrap(downBtn, "Set as start period", TooltipPlacement.Right));
+            arrowsCell.Append(CustomTooltip.Wrap(upBtn, "Set as end period", TooltipPlacement.Right));
             row.Append(arrowsCell);
 
             var isInRange = period.PeriodNumber >= _input.StartSelectedPeriod && period.PeriodNumber <= _input.EndSelectedPeriod;
@@ -395,9 +395,12 @@ namespace RotoMonsterUI
                     .Attr("type", "submit")
                     .Attr("name", $"{_input.Id}-expand")
                     .Attr("value", isExpanded ? $"collapse-{period.PeriodNumber}" : period.PeriodNumber.ToString())
-                    .Attr("title", isExpanded ? "Collapse this period" : "Expand this period");
+                    .Attr("aria-label", isExpanded ? "Collapse this period" : "Expand this period");
                 expandBtn.AppendHtml(isExpanded ? CollapseChevronSvg : ExpandChevronSvg);
-                dateCell.Append(expandBtn);
+                dateCell.Append(CustomTooltip.Wrap(
+                    expandBtn,
+                    isExpanded ? "Collapse this period" : "Expand this period",
+                    TooltipPlacement.Right));
             }
 
             row.Append(dateCell);

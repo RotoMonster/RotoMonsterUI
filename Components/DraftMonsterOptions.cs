@@ -185,6 +185,7 @@ namespace RotoMonsterUI
 
                 ColumnsButtonText = _input.ColumnsButtonText,
                 ColumnsUrl = _input.ColumnsUrl,
+                ColumnsPostsBack = _input.ColumnsPostsBack,
                 ColumnsSummary = _input.ColumnsSummary
             };
 

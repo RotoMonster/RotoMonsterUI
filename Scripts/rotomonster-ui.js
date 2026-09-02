@@ -23,9 +23,6 @@
         closeTooltip();
 
         var rect = trigger.getBoundingClientRect();
-        var spaceAbove = rect.top;
-        var spaceBelow = window.innerHeight - rect.bottom;
-        var placeAbove = spaceAbove > 150 || spaceAbove > spaceBelow;
 
         if (tooltip.parentElement !== document.body) {
             document.body.appendChild(tooltip);
@@ -35,25 +32,70 @@
 
         var tw = tooltip.offsetWidth;
         var th = tooltip.offsetHeight;
-        var left = rect.left + rect.width / 2 - tw / 2;
-        left = Math.max(8, Math.min(left, window.innerWidth - tw - 8));
+
+        // A caller can force a side. Left and right are worth setting on small
+        // icons, since the cursor usually sits over whatever is directly below
+        // them and hides the tooltip they just opened.
+        var want = trigger.getAttribute('data-bm-placement') || 'auto';
+
+        var spaceAbove = rect.top;
+        var spaceBelow = window.innerHeight - rect.bottom;
+        var spaceLeft = rect.left;
+        var spaceRight = window.innerWidth - rect.right;
+
+        var place = want;
+
+        if (place === 'auto') {
+            place = (spaceAbove > 150 || spaceAbove > spaceBelow) ? 'above' : 'below';
+        }
+
+        // A forced side still gives way when it genuinely will not fit, since
+        // a tooltip half off the screen is worse than one on the other side.
+        if (place === 'right' && spaceRight < tw + 14 && spaceLeft > spaceRight) place = 'left';
+        else if (place === 'left' && spaceLeft < tw + 14 && spaceRight > spaceLeft) place = 'right';
+        else if (place === 'above' && spaceAbove < th + 14 && spaceBelow > spaceAbove) place = 'below';
+        else if (place === 'below' && spaceBelow < th + 14 && spaceAbove > spaceBelow) place = 'above';
 
         var arrow = document.createElement('div');
         arrow.className = 'bm-tooltip-arrow';
 
-        if (placeAbove) {
-            tooltip.style.top = (rect.top - th - 10) + 'px';
-            tooltip.style.left = left + 'px';
-            arrow.classList.add('bm-tooltip-arrow--up');
-            arrow.style.top = (rect.top - 10) + 'px';
-            arrow.style.left = (rect.left + rect.width / 2 - 6) + 'px';
+        var top;
+        var left;
+
+        if (place === 'left' || place === 'right') {
+            top = rect.top + rect.height / 2 - th / 2;
+            top = Math.max(8, Math.min(top, window.innerHeight - th - 8));
+
+            if (place === 'right') {
+                left = rect.right + 10;
+                arrow.classList.add('bm-tooltip-arrow--left');
+                arrow.style.left = (rect.right + 4) + 'px';
+            } else {
+                left = rect.left - tw - 10;
+                arrow.classList.add('bm-tooltip-arrow--right');
+                arrow.style.left = (rect.left - 10) + 'px';
+            }
+
+            arrow.style.top = (rect.top + rect.height / 2 - 6) + 'px';
         } else {
-            tooltip.style.top = (rect.bottom + 10) + 'px';
-            tooltip.style.left = left + 'px';
-            arrow.classList.add('bm-tooltip-arrow--down');
-            arrow.style.top = (rect.bottom + 4) + 'px';
+            left = rect.left + rect.width / 2 - tw / 2;
+            left = Math.max(8, Math.min(left, window.innerWidth - tw - 8));
+
+            if (place === 'above') {
+                top = rect.top - th - 10;
+                arrow.classList.add('bm-tooltip-arrow--up');
+                arrow.style.top = (rect.top - 10) + 'px';
+            } else {
+                top = rect.bottom + 10;
+                arrow.classList.add('bm-tooltip-arrow--down');
+                arrow.style.top = (rect.bottom + 4) + 'px';
+            }
+
             arrow.style.left = (rect.left + rect.width / 2 - 6) + 'px';
         }
+
+        tooltip.style.top = top + 'px';
+        tooltip.style.left = left + 'px';
 
         document.body.appendChild(arrow);
         activeTooltip = tooltip;

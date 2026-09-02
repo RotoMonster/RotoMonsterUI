@@ -59,6 +59,12 @@ namespace RotoMonsterUI
         public bool AllPositionsSelected { get; set; } = true;
         public string ColumnsButtonText { get; set; } = "Choose columns";
         public string ColumnsUrl { get; set; }
+
+        /// <summary>
+        /// Renders Choose columns as a button that posts back instead of a
+        /// link, so the picker can open in place. Comes back as ColumnsPressed.
+        /// </summary>
+        public bool ColumnsPostsBack { get; set; }
         public string ColumnsSummary { get; set; }
 
         public string PickNumber { get; set; }
