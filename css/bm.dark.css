@@ -7218,18 +7218,7 @@ a.display-columns-item--membership { cursor: pointer; }
 .bm-tooltip-host {
     display: contents;
 }
-/* tier colors ------------------------------------------------------------
-   One palette, referenced by the draft board, the tiers page, and anywhere
-   else a tier shows up, so a tier looks the same wherever you see it.
-
-   A green to red scale rather than nine separate hues. Nine colours that all
-   read on both themes and still look different from each other does not
-   exist, and green through red already says early to late.
-
-   Matt's tiers top out at nine. Anything past that gets .tier-none, which is
-   neutral rather than invisible. */
-
-   :root {
+:root {
     --tier-1: #059669;
     --tier-2: #65a30d;
     --tier-3: #ca8a04;
@@ -7242,13 +7231,8 @@ a.display-columns-item--membership { cursor: pointer; }
     --tier-none: #64748b;
 }
 
-/* Brighter on dark, since the mid greens and ambers go muddy against a dark
-   background at this size. */
 [data-theme="dark"], .dark-mode {
-    /* Wider steps at the top than a straight interpolation gives. Nine evenly
-       spaced greens through reds leaves the first three almost identical, and
-       the early tiers are the ones people actually compare. */
-    --tier-1: #34d399;
+        --tier-1: #34d399;
     --tier-2: #a3e635;
     --tier-3: #fde047;
     --tier-4: #fbbf24;
@@ -7294,9 +7278,27 @@ a.display-columns-item--membership { cursor: pointer; }
 
 .tier-name { color: var(--tier-color); }
 
-/* One rule turns the whole thing off, for someone who does not want it or
-   does not agree with the tiers. The badge keeps its number, it just stops
-   being coloured. */
+.tier-pos-badge {
+    display: inline-block;
+    min-width: 22px;
+    margin-right: 3px;
+    padding: 0 5px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: var(--pos-color, var(--tier-none));
+    color: #10201a;
+    font-size: 0.68rem;
+    font-weight: 800;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.tier-rank {
+    margin-left: 5px;
+    font-size: 0.66rem;
+    color: var(--color-text-tertiary);
+}
+
 .tier-colors-off .tier-badge {
     background: transparent;
     border-color: var(--color-border);
@@ -7304,6 +7306,12 @@ a.display-columns-item--membership { cursor: pointer; }
 }
 
 .tier-colors-off .tier-name { color: inherit; }
+
+.tier-colors-off .tier-pos-badge {
+    background: transparent;
+    border-color: var(--color-border);
+    color: var(--color-text-secondary);
+}
 
 /* drafting-tiers --------------------------------------------------------- */
 

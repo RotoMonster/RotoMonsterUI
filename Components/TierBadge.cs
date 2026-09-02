@@ -2,20 +2,8 @@ using HtmlTags;
 
 namespace RotoMonsterUI
 {
-    /// <summary>
-    /// The drafting tier as a small filled badge, so the same tier looks the
-    /// same on the draft board, the tiers page, or anywhere else it appears.
-    ///
-    /// The colour comes from --tier-1 through --tier-9 in the shared css, so
-    /// nothing here knows what any tier looks like.
-    /// </summary>
     public class TierBadge
     {
-        /// <summary>
-        /// Matt's tiers currently top out at nine. Anything past that falls
-        /// back to a neutral badge rather than rendering with no background,
-        /// which would read as broken rather than as an extra tier.
-        /// </summary>
         public const int MaxTier = 9;
 
         private readonly int _tier;
@@ -28,7 +16,6 @@ namespace RotoMonsterUI
             _tier = tier;
         }
 
-        /// <summary>What the badge reads. Defaults to the tier number.</summary>
         public TierBadge WithLabel(string label)
         {
             _label = label;
@@ -41,21 +28,12 @@ namespace RotoMonsterUI
             return this;
         }
 
-        /// <summary>
-        /// Outlined rather than filled. Worth using where a row already has a
-        /// lot going on and a solid block would shout.
-        /// </summary>
         public TierBadge WithOutline()
         {
             _outline = true;
             return this;
         }
 
-        /// <summary>
-        /// The class to put on a player's name so it takes the same colour.
-        /// A class rather than an inline style, so a page can turn the whole
-        /// thing off with one rule.
-        /// </summary>
         public static string NameCssClass(int tier)
         {
             return "tier-name " + TierClass(tier);
@@ -65,6 +43,44 @@ namespace RotoMonsterUI
         {
             if (tier < 1 || tier > MaxTier) return "tier-none";
             return "tier-" + tier;
+        }
+
+        public static string RenderPosition(string abbreviation, string colorCSS)
+        {
+            if (string.IsNullOrEmpty(abbreviation)) return "";
+
+            var badge = new HtmlTag("span").AddClass("tier-pos-badge").Text(abbreviation);
+
+            if (!string.IsNullOrEmpty(colorCSS))
+                badge.Attr("style", "--pos-color:" + CssColor(colorCSS) + ";");
+
+            return badge.ToString();
+        }
+
+        public static string RenderCell(string abbreviation, string positionColorCSS,
+            int tier, int? rankInTier = null)
+        {
+            var html = RenderPosition(abbreviation, positionColorCSS);
+
+            if (tier > 0) html += new TierBadge(tier).Render();
+
+            if (rankInTier.HasValue && rankInTier.Value > 0)
+                html += new HtmlTag("span")
+                    .AddClass("tier-rank")
+                    .Text("#" + rankInTier.Value)
+                    .ToString();
+
+            return html;
+        }
+
+        private static string CssColor(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return null;
+
+            var trimmed = value.Trim();
+            if (trimmed.Length == 0) return null;
+
+            return trimmed.StartsWith("--") ? "var(" + trimmed + ")" : trimmed;
         }
 
         public string Render()
