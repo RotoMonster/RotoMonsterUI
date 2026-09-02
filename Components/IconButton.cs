@@ -11,6 +11,7 @@ namespace RotoMonsterUI
         private string _name;
         private bool _centered;
         private bool _iconOnly;
+        private TooltipPlacement _tooltipPlacement = TooltipPlacement.Auto;
         private string _onClick;
 
         public string Id { get; private set; }
@@ -78,6 +79,17 @@ namespace RotoMonsterUI
             return this;
         }
 
+        /// <summary>
+        /// Where the icon-only tooltip sits. Right is worth setting on a small
+        /// icon, since the cursor covers whatever is directly below it.
+        /// Ignored when the button is not icon-only, because it has no tooltip.
+        /// </summary>
+        public IconButton WithTooltipPlacement(TooltipPlacement placement)
+        {
+            _tooltipPlacement = placement;
+            return this;
+        }
+
         public IconButton WithIconOnly()
         {
             _iconOnly = true;
@@ -129,7 +141,10 @@ namespace RotoMonsterUI
                 tag.Attr("aria-label", _text);
                 tag.AppendHtml(_icon);
 
-                var tooltipped = new CustomTooltip(tag.ToString(), _text).WithHoverTrigger().Render();
+                var tooltipped = new CustomTooltip(tag.ToString(), _text)
+                    .WithHoverTrigger()
+                    .WithPlacement(_tooltipPlacement)
+                    .Render();
 
                 if (_centered)
                     return $"<div style='text-align:center;'>{tooltipped}</div>";

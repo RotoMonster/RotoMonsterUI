@@ -47,6 +47,7 @@ namespace RotoMonsterUI
                     .WithName(PageTitleRowService.RefreshRostersName)
                     .WithStyle(ButtonStyle.Secondary)
                     .WithIconOnly()
+                    .WithTooltipPlacement(TooltipPlacement.Right)
                     .Render();
                 row.AppendHtml(refreshBtn);
             }
@@ -63,6 +64,7 @@ namespace RotoMonsterUI
                 // IconButton only tooltips itself in the icon-only path, so wrap it here.
                 row.AppendHtml(new CustomTooltip(refreshAllBtn, "Refresh All Rosters")
                     .WithHoverTrigger()
+                    .WithPlacement(TooltipPlacement.Right)
                     .Render());
             }
 
@@ -89,6 +91,7 @@ namespace RotoMonsterUI
                     .WithName(PageTitleRowService.DarkModeToggleName)
                     .WithStyle(ButtonStyle.Secondary)
                     .WithIconOnly()
+                    .WithTooltipPlacement(TooltipPlacement.Right)
                     .Render();
                 row.AppendHtml(darkToggle);
             }
