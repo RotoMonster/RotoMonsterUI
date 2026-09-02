@@ -7129,3 +7129,338 @@ a.display-columns-item--membership { cursor: pointer; }
 .bm-tooltip-host {
     display: contents;
 }
+/* tier colors ------------------------------------------------------------
+   One palette, referenced by the draft board, the tiers page, and anywhere
+   else a tier shows up, so a tier looks the same wherever you see it.
+
+   A green to red scale rather than nine separate hues. Nine colours that all
+   read on both themes and still look different from each other does not
+   exist, and green through red already says early to late.
+
+   Matt's tiers top out at nine. Anything past that gets .tier-none, which is
+   neutral rather than invisible. */
+
+   :root {
+    --tier-1: #059669;
+    --tier-2: #65a30d;
+    --tier-3: #ca8a04;
+    --tier-4: #d97706;
+    --tier-5: #ea580c;
+    --tier-6: #dc2626;
+    --tier-7: #b91c1c;
+    --tier-8: #991b1b;
+    --tier-9: #7f1d1d;
+    --tier-none: #64748b;
+}
+
+/* Brighter on dark, since the mid greens and ambers go muddy against a dark
+   background at this size. */
+[data-theme="dark"], .dark-mode {
+    /* Wider steps at the top than a straight interpolation gives. Nine evenly
+       spaced greens through reds leaves the first three almost identical, and
+       the early tiers are the ones people actually compare. */
+    --tier-1: #34d399;
+    --tier-2: #a3e635;
+    --tier-3: #fde047;
+    --tier-4: #fbbf24;
+    --tier-5: #fb923c;
+    --tier-6: #f87171;
+    --tier-7: #ef4444;
+    --tier-8: #dc2626;
+    --tier-9: #991b1b;
+    --tier-none: #94a3b8;
+}
+
+.tier-1 { --tier-color: var(--tier-1); }
+.tier-2 { --tier-color: var(--tier-2); }
+.tier-3 { --tier-color: var(--tier-3); }
+.tier-4 { --tier-color: var(--tier-4); }
+.tier-5 { --tier-color: var(--tier-5); }
+.tier-6 { --tier-color: var(--tier-6); }
+.tier-7 { --tier-color: var(--tier-7); }
+.tier-8 { --tier-color: var(--tier-8); }
+.tier-9 { --tier-color: var(--tier-9); }
+.tier-none { --tier-color: var(--tier-none); }
+
+.tier-badge {
+    display: inline-block;
+    min-width: 20px;
+    padding: 0 6px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    background: var(--tier-color);
+    color: #10201a;
+    font-size: 0.72rem;
+    font-weight: 800;
+    line-height: 1.5;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+.tier-badge--outline {
+    background: transparent;
+    border-color: var(--tier-color);
+    color: var(--tier-color);
+}
+
+.tier-name { color: var(--tier-color); }
+
+/* One rule turns the whole thing off, for someone who does not want it or
+   does not agree with the tiers. The badge keeps its number, it just stops
+   being coloured. */
+.tier-colors-off .tier-badge {
+    background: transparent;
+    border-color: var(--color-border);
+    color: var(--color-text-secondary);
+}
+
+.tier-colors-off .tier-name { color: inherit; }
+
+/* drafting-tiers --------------------------------------------------------- */
+
+.drafting-tiers { display: block; }
+
+.dt-intro {
+    padding: 0.55rem 0.9rem;
+    margin-bottom: 0.9rem;
+    border-left: 3px solid var(--color-border);
+    background: var(--color-bg-card);
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+}
+
+.dt-intro a { color: var(--brand-primary); font-weight: 600; }
+
+/* toolbar */
+.dt-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.9rem;
+}
+
+.dt-positions {
+    display: inline-flex;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.dt-pos {
+    padding: 0.28rem 0.95rem;
+    border: none;
+    background: none;
+    color: var(--color-text-secondary);
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.dt-pos:hover { color: var(--color-text-primary); }
+
+.dt-pos[aria-pressed="true"] {
+    background: var(--brand-primary);
+    color: var(--color-bg-primary);
+}
+
+.dt-search {
+    padding: 0.3rem 0.65rem;
+    border: 1px solid var(--color-border);
+    border-radius: 7px;
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    font-size: 0.85rem;
+    min-width: 200px;
+}
+
+.dt-jump {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+    margin-left: auto;
+}
+
+.dt-jump-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--brand-primary);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+.dt-jump-btn {
+    min-width: 26px;
+    padding: 0.1rem 0.45rem;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-bg-card);
+    color: var(--color-text-secondary);
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.dt-jump-btn:hover {
+    border-color: var(--brand-primary);
+    color: var(--color-text-primary);
+}
+
+/* the toggle */
+.dt-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    cursor: pointer;
+}
+
+.dt-switch input { display: none; }
+
+.dt-track {
+    width: 32px;
+    height: 18px;
+    border-radius: 999px;
+    background: var(--color-border);
+    position: relative;
+    transition: background 0.15s ease;
+}
+
+.dt-track::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-text-secondary);
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.dt-switch input:checked + .dt-track {
+    background: rgba(var(--brand-primary-rgb), 0.2);
+}
+
+.dt-switch input:checked + .dt-track::after {
+    transform: translateX(14px);
+    background: var(--brand-primary);
+}
+
+/* tiers */
+.dt-tier {
+    margin-bottom: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: var(--color-bg-card);
+    overflow: hidden;
+    scroll-margin-top: 0.9rem;
+}
+
+/* Outlined, which is what Ken picked - the whole tier ringed in its colour
+   rather than a fill, so a long page does not turn into a gradient.
+   --tier-color comes from the shared palette via the tier-n class. */
+.dt-tier[class*="tier-"] { border-color: var(--tier-color); }
+.dt-tier[class*="tier-"] .dt-tier-n { color: var(--tier-color); }
+
+.tier-colors-off .dt-tier { border-color: var(--color-border); }
+.tier-colors-off .dt-tier-n { color: var(--brand-primary); }
+
+/* DisplayPlayer renders the name as a link with its own colour, so the class
+   on the wrapper alone loses to it. */
+.dt-player-name.tier-name,
+.dt-player-name.tier-name a { color: var(--tier-color); }
+
+.dt-player-name.tier-name a:hover { color: var(--tier-color); opacity: 0.8; }
+
+.tier-colors-off .dt-player-name,
+.tier-colors-off .dt-player-name a { color: var(--color-text-primary); }
+
+/* With only a few tiers there is nothing to scroll, so a jump looks like it
+   did nothing. A brief flash confirms where you landed without leaving the
+   page looking filtered. */
+.dt-tier--flash { animation: dt-flash 1s ease-out; }
+
+@keyframes dt-flash {
+    0%   { border-color: var(--brand-primary); box-shadow: 0 0 0 2px rgba(var(--brand-primary-rgb), 0.14); }
+    70%  { border-color: var(--brand-primary); box-shadow: 0 0 0 2px rgba(var(--brand-primary-rgb), 0.14); }
+    100% { border-color: var(--color-border); box-shadow: 0 0 0 2px transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dt-tier--flash { animation: none; border-color: var(--brand-primary); }
+}
+
+.dt-tier-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding: 0.4rem 0.9rem;
+    border-bottom: 1px solid var(--color-border-light);
+    background: var(--color-bg-secondary);
+}
+
+.dt-tier-n {
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    color: var(--brand-primary);
+}
+
+.dt-tier-count { font-size: 0.75rem; color: var(--color-text-tertiary); }
+
+.dt-tier-note {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: var(--color-text-tertiary);
+}
+
+/* players */
+.dt-player {
+    display: grid;
+    grid-template-columns: 24px minmax(190px, 250px) 1fr;
+    gap: 0.75rem;
+    align-items: baseline;
+    padding: 0.4rem 0.9rem;
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.dt-player:last-child { border-bottom: none; }
+.dt-player:hover { background: var(--color-bg-secondary); }
+
+.dt-player-n {
+    padding-top: 1px;
+    font-size: 0.75rem;
+    color: var(--color-text-tertiary);
+    font-variant-numeric: tabular-nums;
+}
+
+/* DisplayPlayer sizes itself off the page, which is too big in a dense list
+   like this, so the size is pinned here. */
+.dt-player-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.dt-player-name a { font-size: inherit; }
+
+.dt-player-note {
+    font-size: 0.82rem;
+    color: var(--color-text-secondary);
+    max-width: 78ch;
+}
+
+.dt-empty {
+    padding: 1.6rem 0.9rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--color-text-tertiary);
+    border: 1px dashed var(--color-border);
+    border-radius: 10px;
+}
