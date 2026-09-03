@@ -6,7 +6,6 @@ namespace RotoMonsterUI
     {
         public DisplayPlayerInput DisplayPlayerInput { get; set; }
         public string NoteHtml { get; set; }
-        public List<string> FilterPositions { get; set; } = new List<string>();
     }
 
     public class DraftingTier
@@ -15,7 +14,14 @@ namespace RotoMonsterUI
         public string NoteText { get; set; }
         public List<DraftingTiersPlayer> Players { get; set; } = new List<DraftingTiersPlayer>();
 
+        /// <summary>
+        /// Which tier colour this uses, from the shared palette. Left at zero
+        /// the tier renders uncoloured, which suits a page that groups by
+        /// something other than Matt's tiers.
+        /// </summary>
         public int TierNumber { get; set; }
+
+        public string Position { get; set; }
     }
 
     public class DraftingTiersInput
@@ -25,8 +31,15 @@ namespace RotoMonsterUI
         public string IntroHtml { get; set; }
 
         public List<DraftingTier> Tiers { get; set; } = new List<DraftingTier>();
+
+        /// <summary>
+        /// The position filter. Empty renders no filter at all, which suits a
+        /// page that only has one list.
+        /// </summary>
         public List<string> Positions { get; set; } = new List<string>();
         public string AllPositionsText { get; set; } = "Overall";
+
+        public string SelectedPosition { get; set; }
 
         public bool ShowSearch { get; set; } = true;
         public string SearchPlaceholder { get; set; } = "Find a player...";
@@ -34,6 +47,11 @@ namespace RotoMonsterUI
         public bool ShowJumpToTier { get; set; } = true;
         public string JumpLabel { get; set; } = "Jump to tier";
 
+        /// <summary>
+        /// Colour the tiers and the player names from the shared tier palette.
+        /// Off leaves the grouping and the headings, which already say which
+        /// tier you are in - the colour is a shortcut, not the information.
+        /// </summary>
         public bool ColorByTier { get; set; } = true;
 
         public bool ShowColorToggle { get; set; } = true;

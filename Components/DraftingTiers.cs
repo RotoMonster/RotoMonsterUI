@@ -19,12 +19,11 @@ namespace RotoMonsterUI
 
             if (_input == null) return wrap.ToString();
 
-            // One class turns it all off, rather than every tier and name
-            // needing to know.
             if (!_input.ColorByTier) wrap.AddClass("tier-colors-off");
 
             var id = string.IsNullOrEmpty(_input.Id) ? "draftingTiers" : _input.Id;
             wrap.Attr("id", "drafting-tiers-" + id);
+            wrap.Attr("data-dt-position-default", _input.SelectedPosition ?? "");
 
             if (!string.IsNullOrEmpty(_input.IntroHtml))
                 wrap.Append(new HtmlTag("div").AddClass("dt-intro").AppendHtml(_input.IntroHtml));
@@ -44,8 +43,6 @@ namespace RotoMonsterUI
             return wrap.ToString();
         }
 
-        // ---- toolbar -------------------------------------------------------
-
         private HtmlTag RenderToolbar(string id)
         {
             var positions = _input.Positions ?? new List<string>();
@@ -60,12 +57,14 @@ namespace RotoMonsterUI
             {
                 var seg = new HtmlTag("div").AddClass("dt-positions");
 
-                seg.Append(PositionButton(_input.AllPositionsText, "all", true));
+                var selected = _input.SelectedPosition ?? "";
+
+                seg.Append(PositionButton(_input.AllPositionsText, "", selected == ""));
 
                 foreach (var pos in positions)
                 {
                     if (string.IsNullOrEmpty(pos)) continue;
-                    seg.Append(PositionButton(pos, pos, false));
+                    seg.Append(PositionButton(pos, pos, pos == selected));
                 }
 
                 bar.Append(seg);
@@ -115,7 +114,8 @@ namespace RotoMonsterUI
                         .AddClass("dt-jump-btn")
                         .Attr("type", "button")
                         .Attr("data-dt-jump", i.ToString())
-                        .Text(tier.TierLabel ?? (i + 1).ToString()));
+                        .Attr("data-dt-position", tier.Position ?? "")
+                        .Text(TierHeading(tier, i)));
                 }
 
                 bar.Append(jump);
@@ -133,8 +133,6 @@ namespace RotoMonsterUI
                 .Attr("aria-pressed", selected ? "true" : "false")
                 .Text(text);
         }
-
-        // ---- tiers ---------------------------------------------------------
 
         private HtmlTag RenderTiers(string id)
         {
@@ -160,23 +158,20 @@ namespace RotoMonsterUI
                 .Attr("id", id + "-tier-" + index)
                 .Attr("data-dt-tier", index.ToString());
 
-            // The colour comes from the shared palette, so a tier looks the
-            // same here as it does on the draft board.
             if (tier.TierNumber > 0)
                 box.AddClass(TierBadge.TierClass(tier.TierNumber));
 
+            box.Attr("data-dt-position", tier.Position ?? "");
+
             var head = new HtmlTag("div").AddClass("dt-tier-head");
 
-            // One badge on the header rather than one per row, matching the
-            // draft board's colours without repeating it a dozen times.
             if (tier.TierNumber > 0)
                 head.AppendHtml(new TierBadge(tier.TierNumber).Render());
 
             head.Append(new HtmlTag("span")
                 .AddClass("dt-tier-n")
-                .Text(tier.TierLabel ?? ("Tier " + (index + 1))));
+                .Text(TierHeading(tier, index)));
 
-            // Filled by the script, since the count changes with the filter.
             head.Append(new HtmlTag("span").AddClass("dt-tier-count"));
 
             if (!string.IsNullOrEmpty(tier.NoteText))
@@ -193,31 +188,29 @@ namespace RotoMonsterUI
             return box;
         }
 
+        private static string TierHeading(DraftingTier tier, int index)
+        {
+            if (!string.IsNullOrEmpty(tier.TierLabel)) return tier.TierLabel;
+
+            var number = tier.TierNumber > 0 ? tier.TierNumber : index + 1;
+
+            return string.IsNullOrEmpty(tier.Position)
+                ? "Tier " + number
+                : tier.Position + " " + number;
+        }
+
         private static HtmlTag RenderPlayer(DraftingTiersPlayer player, int tierNumber)
         {
             var row = new HtmlTag("div").AddClass("dt-player");
 
             var display = player.DisplayPlayerInput;
 
-            // The filter and the search both read off the row, so neither has
-            // to know anything about how the player is rendered.
-            var positions = player.FilterPositions ?? new List<string>();
-            row.Attr("data-dt-positions", string.Join(",", positions));
             row.Attr("data-dt-name", (display != null ? display.PlayerName : "") ?? "");
 
-            // Filled by the script - the number is the player's place within
-            // whatever the filter is currently showing, not a fixed rank.
-            //
-            // No tier badge per row here. Every player in a tier has the same
-            // one, so it would be the same badge repeated down the group, and
-            // the grouping already says which tier you are in. The badge earns
-            // its place on the draft board, where the rows are mixed.
             row.Append(new HtmlTag("span").AddClass("dt-player-n"));
 
             var name = new HtmlTag("div").AddClass("dt-player-name");
 
-            // The name carries the tier too, so a player still reads as theirs
-            // once the heading has scrolled off.
             if (tierNumber > 0) name.AddClass("tier-name");
 
             if (display != null) name.AppendHtml(new DisplayPlayer(display).Render());
@@ -230,12 +223,6 @@ namespace RotoMonsterUI
             return row;
         }
 
-        // ---- behaviour -----------------------------------------------------
-
-        /// <summary>
-        /// All client side. The page is static, so filtering by position or
-        /// name needs no round trip - everything is already rendered.
-        /// </summary>
         private string Script(string id)
         {
             var scope = "#drafting-tiers-" + id;
@@ -247,33 +234,31 @@ namespace RotoMonsterUI
 
     var search = document.getElementById('" + id + @"-search');
     var empty = root.querySelector('.dt-empty');
-    var pos = 'all';
+    var pos = root.getAttribute('data-dt-position-default') || '';
 
-    function matches(row) {
-        if (pos !== 'all') {
-            var list = (row.getAttribute('data-dt-positions') || '').split(',');
-            if (list.indexOf(pos) === -1) return false;
-        }
+    function nameMatches(row) {
+        if (!search) return true;
 
-        if (search) {
-            var q = (search.value || '').toLowerCase().trim();
-            if (q) {
-                var name = (row.getAttribute('data-dt-name') || '').toLowerCase();
-                if (name.indexOf(q) === -1) return false;
-            }
-        }
+        var q = (search.value || '').toLowerCase().trim();
+        if (!q) return true;
 
-        return true;
+        var name = (row.getAttribute('data-dt-name') || '').toLowerCase();
+        return name.indexOf(q) !== -1;
     }
 
     function apply() {
         var anyShown = false;
 
         root.querySelectorAll('.dt-tier').forEach(function (tier) {
+            if (pos !== (tier.getAttribute('data-dt-position') || '')) {
+                tier.hidden = true;
+                return;
+            }
+
             var shown = 0;
 
             tier.querySelectorAll('.dt-player').forEach(function (row) {
-                var ok = matches(row);
+                var ok = nameMatches(row);
                 row.hidden = !ok;
                 if (ok) {
                     shown++;
@@ -282,8 +267,6 @@ namespace RotoMonsterUI
                 }
             });
 
-            // A tier with nothing left in it goes away entirely rather than
-            // sitting there as an empty header.
             tier.hidden = shown === 0;
             if (shown) anyShown = true;
 
@@ -330,9 +313,6 @@ namespace RotoMonsterUI
 
             tier.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-            // With only a few tiers there is nothing to scroll, so the click
-            // looks like it did nothing. Removing the class first is what lets
-            // the same tier flash twice.
             tier.classList.remove('dt-tier--flash');
             void tier.offsetWidth;
             tier.classList.add('dt-tier--flash');
