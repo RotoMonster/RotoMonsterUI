@@ -7153,28 +7153,28 @@ a.display-columns-item--membership { cursor: pointer; }
     display: contents;
 }
 :root {
-    --tier-1: #059669;
-    --tier-2: #65a30d;
-    --tier-3: #ca8a04;
-    --tier-4: #d97706;
-    --tier-5: #ea580c;
-    --tier-6: #dc2626;
-    --tier-7: #b91c1c;
-    --tier-8: #991b1b;
-    --tier-9: #7f1d1d;
+    --tier-1: #047857;
+    --tier-2: #4d7c0f;
+    --tier-3: #a16207;
+    --tier-4: #c2410c;
+    --tier-5: #dc2626;
+    --tier-6: #b91c1c;
+    --tier-7: #991b1b;
+    --tier-8: #7f1d1d;
+    --tier-9: #641414;
     --tier-none: #64748b;
 }
 
 [data-theme="dark"], .dark-mode {
-        --tier-1: #34d399;
-    --tier-2: #a3e635;
-    --tier-3: #fde047;
-    --tier-4: #fbbf24;
-    --tier-5: #fb923c;
-    --tier-6: #f87171;
-    --tier-7: #ef4444;
-    --tier-8: #dc2626;
-    --tier-9: #991b1b;
+    --tier-1: #10a37f;
+    --tier-2: #5b9b1f;
+    --tier-3: #94861a;
+    --tier-4: #b5761c;
+    --tier-5: #c4611f;
+    --tier-6: #cc4a3a;
+    --tier-7: #d13a3a;
+    --tier-8: #b32d2d;
+    --tier-9: #8f2020;
     --tier-none: #94a3b8;
 }
 
@@ -7196,7 +7196,7 @@ a.display-columns-item--membership { cursor: pointer; }
     border: 1px solid transparent;
     border-radius: 5px;
     background: var(--tier-color);
-    color: #10201a;
+    color: #ffffff;
     font-size: 0.72rem;
     font-weight: 800;
     line-height: 1.5;
@@ -7220,7 +7220,7 @@ a.display-columns-item--membership { cursor: pointer; }
     border: 1px solid transparent;
     border-radius: 4px;
     background: var(--pos-color, var(--tier-none));
-    color: #10201a;
+    color: #ffffff;
     font-size: 0.68rem;
     font-weight: 800;
     line-height: 1.5;
@@ -7448,9 +7448,11 @@ a.display-columns-item--membership { cursor: pointer; }
 .dt-tier-count { font-size: 0.75rem; color: var(--color-text-tertiary); }
 
 .dt-tier-note {
-    margin-left: auto;
-    font-size: 0.75rem;
-    color: var(--color-text-tertiary);
+    padding: 0.5rem 0.9rem;
+    border-bottom: 1px solid var(--color-border-light);
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
 }
 
 /* players */

@@ -185,10 +185,10 @@ namespace RotoMonsterUI
 
             head.Append(new HtmlTag("span").AddClass("dt-tier-count"));
 
-            if (!string.IsNullOrEmpty(tier.NoteText))
-                head.Append(new HtmlTag("span").AddClass("dt-tier-note").Text(tier.NoteText));
-
             box.Append(head);
+
+            if (!string.IsNullOrEmpty(tier.NoteText))
+                box.Append(new HtmlTag("div").AddClass("dt-tier-note").Text(tier.NoteText));
 
             foreach (var player in tier.Players ?? new List<DraftingTiersPlayer>())
             {
