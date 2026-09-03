@@ -29,6 +29,9 @@ namespace RotoMonsterUI
             if (!string.IsNullOrEmpty(_input.IntroHtml))
                 wrap.Append(new HtmlTag("div").AddClass("dt-intro").AppendHtml(_input.IntroHtml));
 
+            var toolbar = RenderToolbar(id);
+            if (toolbar != null) wrap.Append(toolbar);
+
             foreach (var summary in _input.PositionSummaries ?? new List<DraftingTiersSummary>())
             {
                 if (summary == null || string.IsNullOrEmpty(summary.Html)) continue;
@@ -39,8 +42,6 @@ namespace RotoMonsterUI
                     .AppendHtml(summary.Html));
             }
 
-            var toolbar = RenderToolbar(id);
-            if (toolbar != null) wrap.Append(toolbar);
 
             wrap.Append(RenderTiers(id));
 
