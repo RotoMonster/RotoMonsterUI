@@ -84,12 +84,9 @@ namespace RotoMonsterUI
         public bool ColumnsPostsBack { get; set; }
         public string ColumnsSummary { get; set; }
 
-
         public DisplayColumnsInput ColumnsInput { get; set; }
 
-
         public CustomValuesInput CustomValuesInput { get; set; }
-
 
         public string ColumnsHtml { get; set; }
 

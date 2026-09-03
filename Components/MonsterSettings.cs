@@ -60,8 +60,6 @@ namespace RotoMonsterUI
             return wrap.ToString();
         }
 
-        // ---- panel bodies -------------------------------------------------
-
         private HtmlTag ValuesBody()
         {
             var body = new HtmlTag("div");
@@ -242,9 +240,6 @@ namespace RotoMonsterUI
                 if (!string.IsNullOrEmpty(_input.ColumnsSummary))
                     columns.Append(new HtmlTag("span").AddClass("ms-hint").Text(_input.ColumnsSummary));
 
-                // The open state posts with the form, same as the panels, so the
-                // service can hand it back already flipped and the caller does
-                // not have to hold it.
                 var openState = new HtmlTag("input")
                     .Attr("type", "checkbox")
                     .AddClass("ms-state")
@@ -257,9 +252,6 @@ namespace RotoMonsterUI
 
                 body.Append(Row(_input.ColumnsLabel, new List<HtmlTag> { columns }));
 
-                // The pickers sit in their own full-width row under the button
-                // rather than inside it, so a wide picker is not squeezed into
-                // the controls column.
                 if (_input.ColumnsOpen)
                 {
                     var picker = new HtmlTag("div").AddClass("ms-columns-picker");
@@ -295,8 +287,6 @@ namespace RotoMonsterUI
 
             return any ? body : null;
         }
-
-        // ---- pieces --------------------------------------------------------
 
         private HtmlTag PuntCategory(MonsterPuntCategory cat)
         {
@@ -378,15 +368,18 @@ namespace RotoMonsterUI
         {
             var panel = new HtmlTag("div").AddClass("ms-panel");
 
-            var toggleName = SubKey("mstoggle", name);
+            var baseId = SubKey("mspanel", name);
+            var contentId = baseId + "-content";
+            var toggleId = baseId + "-toggle";
 
             var head = new HtmlTag("button")
                 .AddClass("ms-panel-head")
                 .Attr("type", "button")
-                .Attr("id", SubKey("mspanel", name))
-                .Attr("name", toggleName)
-                .Attr("aria-expanded", expanded ? "true" : "false")
-                .Attr("onclick", "__doPostBack('" + toggleName + "','',this.form)");
+                .Attr("id", baseId)
+                .Attr("data-toggle", "collapse")
+                .Attr("data-target", "#" + contentId)
+                .Attr("aria-controls", contentId)
+                .Attr("aria-expanded", expanded ? "true" : "false");
 
             head.Append(new HtmlTag("span").AddClass("ms-caret").AppendHtml("&#9662;"));
             head.Append(new HtmlTag("span").AddClass("ms-panel-title").Text(heading));
@@ -396,31 +389,22 @@ namespace RotoMonsterUI
 
             panel.Append(head);
 
-            var state = new HtmlTag("input")
-                .Attr("type", "checkbox")
-                .AddClass("ms-state")
-                .Attr("name", SubKey("msopen", name))
-                .Attr("value", "1")
-                .Attr("hidden", "hidden");
+            panel.Append(new HtmlTag("input")
+                .Attr("type", "hidden")
+                .Attr("id", toggleId)
+                .Attr("name", toggleId)
+                .Attr("value", expanded ? "1" : "0"));
 
-            if (expanded) state.Attr("checked", "checked");
-            panel.Append(state);
+            var wrapper = new HtmlTag("div")
+                .Attr("id", contentId)
+                .AddClass(expanded ? "ms-panel-body collapse show" : "ms-panel-body collapse");
 
-            var wrapper = new HtmlTag("div").AddClass("ms-panel-body");
-            if (!expanded) wrapper.Attr("hidden", "hidden");
             wrapper.Append(body);
-
             panel.Append(wrapper);
 
             return panel;
         }
 
-        /// <summary>
-        /// The value goes into a css custom property, so it has to be usable
-        /// as-is. A bare variable name gets wrapped, since passing --pos-pg is
-        /// the natural thing to try and it would otherwise just silently not
-        /// apply, which is a horrible thing to debug.
-        /// </summary>
         private static string CssColor(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;

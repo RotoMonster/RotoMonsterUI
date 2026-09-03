@@ -61,14 +61,6 @@ namespace RotoMonsterUI
             return wrap.ToString();
         }
 
-        /// <summary>
-        /// The field the extension looks for, plus the listener that posts back
-        /// once it has written to it.
-        ///
-        /// The id is fixed rather than scoped to this component, because the
-        /// extension has to find it without knowing anything about the page.
-        /// That also means only one of these per page.
-        /// </summary>
         private HtmlTag RenderDraftPicksField()
         {
             var fieldId = string.IsNullOrEmpty(_input.DraftPicksFieldId)
@@ -77,8 +69,6 @@ namespace RotoMonsterUI
 
             var wrap = new HtmlTag("span").AddClass("dm-picks-field");
 
-            // name as well as id - an input with only an id never posts, which
-            // is the trap this hit the first time round.
             wrap.Append(new HtmlTag("input")
                 .Attr("type", "hidden")
                 .Attr("id", fieldId)
@@ -92,9 +82,6 @@ namespace RotoMonsterUI
 
         private static string PicksScript(string fieldId)
         {
-            // Bound to document rather than the field, so it survives an
-            // UpdatePanel refresh and only registers once. The extension writes
-            // the field before it fires the event, so the value is there.
             return @"
 (function () {
     if (window.rmDraftPicksBound) return;
@@ -115,8 +102,6 @@ namespace RotoMonsterUI
 })();
 ";
         }
-
-        // ---- connect -----------------------------------------------------
 
         private HtmlTag RenderConnect()
         {
@@ -184,8 +169,6 @@ namespace RotoMonsterUI
                 .Attr("value", _input.PickNumber ?? "");
         }
 
-        // ---- during the draft --------------------------------------------
-
         private HtmlTag RenderDuringDraft()
         {
             var strip = new HtmlTag("div")
@@ -207,8 +190,6 @@ namespace RotoMonsterUI
 
             return strip;
         }
-
-        // ---- settings, delegated to the shared component ------------------
 
         private string SettingsId()
         {
@@ -261,7 +242,6 @@ namespace RotoMonsterUI
                 ColumnsSummary = _input.ColumnsSummary
             };
 
-            // The option types are shared now, so these pass straight through.
             settings.ProjectionSources = _input.ProjectionSources;
             settings.ValueTypes = _input.ValueTypes;
             settings.StatsDisplayFormats = _input.StatsDisplayFormats;
@@ -273,8 +253,6 @@ namespace RotoMonsterUI
 
             return settings;
         }
-
-        // ---- output sections ---------------------------------------------
 
         private HtmlTag RenderOutput(string name, string heading, string html,
             bool expanded, bool compact, bool showCompactToggle)
@@ -294,21 +272,22 @@ namespace RotoMonsterUI
             return Panel(name, heading, null, body, expanded);
         }
 
-        // ---- building blocks ---------------------------------------------
-
         private HtmlTag Panel(string name, string heading, string when, HtmlTag body, bool expanded)
         {
             var panel = new HtmlTag("div").AddClass("ms-panel");
 
-            var toggleName = SubKey("dmtoggle", name);
+            var baseId = SubKey("dmpanel", name);
+            var contentId = baseId + "-content";
+            var toggleId = baseId + "-toggle";
 
             var head = new HtmlTag("button")
                 .AddClass("ms-panel-head")
                 .Attr("type", "button")
-                .Attr("id", SubKey("dmpanel", name))
-                .Attr("name", toggleName)
-                .Attr("aria-expanded", expanded ? "true" : "false")
-                .Attr("onclick", "__doPostBack('" + toggleName + "','',this.form)");
+                .Attr("id", baseId)
+                .Attr("data-toggle", "collapse")
+                .Attr("data-target", "#" + contentId)
+                .Attr("aria-controls", contentId)
+                .Attr("aria-expanded", expanded ? "true" : "false");
 
             head.Append(new HtmlTag("span").AddClass("ms-caret").AppendHtml("&#9662;"));
             head.Append(new HtmlTag("span").AddClass("ms-panel-title").Text(heading));
@@ -319,17 +298,16 @@ namespace RotoMonsterUI
             panel.Append(head);
 
             panel.Append(new HtmlTag("input")
-                .Attr("type", "checkbox")
-                .Attr("name", SubKey("dmopen", name))
-                .Attr("class", "ms-state")
-                .Attr("value", "1")
-                .Attr("checked", expanded ? "checked" : null)
-                .Attr("hidden", "hidden"));
+                .Attr("type", "hidden")
+                .Attr("id", toggleId)
+                .Attr("name", toggleId)
+                .Attr("value", expanded ? "1" : "0"));
 
-            var wrapper = new HtmlTag("div").AddClass("ms-panel-body");
-            if (!expanded) wrapper.Attr("hidden", "hidden");
+            var wrapper = new HtmlTag("div")
+                .Attr("id", contentId)
+                .AddClass(expanded ? "ms-panel-body collapse show" : "ms-panel-body collapse");
+
             wrapper.Append(body);
-
             panel.Append(wrapper);
 
             return panel;

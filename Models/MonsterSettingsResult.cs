@@ -37,20 +37,10 @@ namespace RotoMonsterUI
         public bool ValuesExpanded { get; set; }
         public bool StandingsExpanded { get; set; }
         public bool TableExpanded { get; set; }
-        public string ToggledPanel { get; set; }
         public bool ColumnsPressed { get; set; }
 
-        /// <summary>
-        /// Whether the picker should be open now, already flipped if the
-        /// button was pressed. Assign it straight back to the input.
-        /// </summary>
         public bool ColumnsOpen { get; set; }
 
-        /// <summary>
-        /// Read for you when ColumnsInput was passed, using that input's own
-        /// id, so a page does not have to call DisplayColumnsService itself.
-        /// Null when no columns input was given.
-        /// </summary>
         public DisplayColumnsResult Columns { get; set; }
 
         public CustomValuesResult CustomValues { get; set; }

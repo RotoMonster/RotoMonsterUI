@@ -5,11 +5,6 @@ namespace RotoMonsterUI
 {
     public class MonsterSettingsService
     {
-        /// <summary>
-        /// Reads the settings. Pass the same input you rendered with and the
-        /// nested pickers are read too, so a page does not have to call
-        /// DisplayColumnsService and CustomValuesService itself.
-        /// </summary>
         public MonsterSettingsResult Process(string id, Dictionary<string, string> params_,
             MonsterSettingsInput input)
         {
@@ -17,9 +12,6 @@ namespace RotoMonsterUI
 
             if (input == null) return result;
 
-            // Only read the picker when it was actually on screen. A closed one
-            // posts no checkboxes, and reading that would come back as every
-            // column unticked.
             if (input.ColumnsInput != null && input.ColumnsOpen)
                 result.Columns = new DisplayColumnsService()
                     .Process(input.ColumnsInput.Id, params_);
@@ -99,33 +91,13 @@ namespace RotoMonsterUI
             result.ShowTierColumn = Checked("mstiercol" + suffix, params_);
             result.ColorByTier = Checked("mstiercolor" + suffix, params_);
 
-            result.ValuesExpanded = Checked("msopen" + suffix + "_values", params_);
-            result.StandingsExpanded = Checked("msopen" + suffix + "_standings", params_);
-            result.TableExpanded = Checked("msopen" + suffix + "_table", params_);
-
-            result.ToggledPanel = Value("mstoggle" + suffix + "_", params_, eventTarget);
+            result.ValuesExpanded = Flag("mspanel" + suffix + "_values-toggle", params_);
+            result.StandingsExpanded = Flag("mspanel" + suffix + "_standings-toggle", params_);
+            result.TableExpanded = Flag("mspanel" + suffix + "_table-toggle", params_);
             result.ColumnsPressed = Pressed("mscolumns" + suffix, params_, eventTarget);
 
             result.ColumnsOpen = Checked("mscolumnsopen" + suffix, params_);
             if (result.ColumnsPressed) result.ColumnsOpen = !result.ColumnsOpen;
-
-            // The hidden fields report the state the panel was RENDERED in, so
-            // on a toggle they are already one behind. Flipping here means the
-            // caller can assign these straight back and the panel opens and
-            // closes - previously they had to xor against ToggledPanel, which
-            // reads like a bug when you forget it.
-            switch (result.ToggledPanel)
-            {
-                case "values":
-                    result.ValuesExpanded = !result.ValuesExpanded;
-                    break;
-                case "standings":
-                    result.StandingsExpanded = !result.StandingsExpanded;
-                    break;
-                case "table":
-                    result.TableExpanded = !result.TableExpanded;
-                    break;
-            }
 
             return result;
         }
@@ -135,6 +107,13 @@ namespace RotoMonsterUI
             string value;
             if (!params_.TryGetValue(key, out value)) return null;
             return (value ?? "").Trim();
+        }
+
+        private static bool Flag(string key, Dictionary<string, string> params_)
+        {
+            string value;
+            if (!params_.TryGetValue(key, out value)) return false;
+            return value == "1";
         }
 
         private static bool Checked(string key, Dictionary<string, string> params_)

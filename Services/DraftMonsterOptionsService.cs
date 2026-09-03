@@ -5,10 +5,6 @@ namespace RotoMonsterUI
 {
     public class DraftMonsterOptionsService
     {
-        /// <summary>
-        /// Pass the same input you rendered with and the column picker and
-        /// custom values are read too.
-        /// </summary>
         public DraftMonsterOptionsResult Process(string id, Dictionary<string, string> params_,
             DraftMonsterOptionsInput input)
         {
@@ -19,9 +15,6 @@ namespace RotoMonsterUI
             if (!string.IsNullOrEmpty(input.DraftPicksFieldId))
                 ReadDraftPicks(result, params_, input.DraftPicksFieldId);
 
-            // Only read the pickers when they were actually on screen. A closed
-            // one posts no checkboxes, so reading it would come back as every
-            // column unticked.
             if (input.ColumnsInput != null && input.ColumnsOpen)
                 result.Columns = new DisplayColumnsService()
                     .Process(input.ColumnsInput.Id, params_);
@@ -69,7 +62,6 @@ namespace RotoMonsterUI
             result.ShowTierColumn = settings.ShowTierColumn;
             result.ColorByTier = settings.ColorByTier;
 
-            // Already flipped by MonsterSettingsService if one was toggled.
             result.ValuesExpanded = settings.ValuesExpanded;
             result.StandingsSettingsExpanded = settings.StandingsExpanded;
             result.TableSettingsExpanded = settings.TableExpanded;
@@ -81,11 +73,6 @@ namespace RotoMonsterUI
 
             result.ConnectPressed = Pressed("dmconnect" + suffix, params_, eventTarget);
 
-            // The extension writes into a fixed id rather than one scoped to
-            // this component, since it has to find the field without knowing
-            // anything about the page. It uses a different id per provider, so
-            // both are checked here - the three argument Process below narrows
-            // it to whichever one the page actually rendered.
             ReadDraftPicks(result, params_, null);
             result.ChangePickPressed = Pressed("dmchangepick" + suffix, params_, eventTarget);
             result.RefreshPressed = Pressed("dmrefresh" + suffix, params_, eventTarget);
@@ -95,36 +82,11 @@ namespace RotoMonsterUI
             result.IncludeTargetsInAnalysis = Checked("dmtargets" + suffix, params_);
             result.ShowStatFilters = Checked("dmstatfilters" + suffix, params_);
 
-            result.StandingsExpanded = Checked("dmopen" + suffix + "_standings", params_);
-            result.TeamAnalysisExpanded = Checked("dmopen" + suffix + "_analysis", params_);
-
-            // Same as the settings panels - the hidden field is the state it
-            // was rendered in, so a toggle needs flipping before the caller
-            // sees it. Assigning the result back now just works.
-            var toggledOutput = Value("dmtoggle" + suffix + "_", params_, eventTarget);
-
-            if (toggledOutput == "standings")
-                result.StandingsExpanded = !result.StandingsExpanded;
-            else if (toggledOutput == "analysis")
-                result.TeamAnalysisExpanded = !result.TeamAnalysisExpanded;
+            result.StandingsExpanded = Flag("dmpanel" + suffix + "_standings-toggle", params_);
+            result.TeamAnalysisExpanded = Flag("dmpanel" + suffix + "_analysis-toggle", params_);
 
             result.StandingsCompact = Checked("dmcompact" + suffix + "_standings", params_);
             result.TeamAnalysisCompact = Checked("dmcompact" + suffix + "_analysis", params_);
-
-            result.ToggledSection = Value("dmtoggle" + suffix + "_", params_, eventTarget);
-
-            if (string.IsNullOrEmpty(result.ToggledSection)
-                && !string.IsNullOrEmpty(settings.ToggledPanel))
-            {
-                // the shared component names its standings panel "standings",
-                // which is our team analysis section's neighbour, so map it
-                switch (settings.ToggledPanel)
-                {
-                    case "values": result.ToggledSection = "values"; break;
-                    case "standings": result.ToggledSection = "standingset"; break;
-                    case "table": result.ToggledSection = "table"; break;
-                }
-            }
 
             return result;
         }
@@ -136,16 +98,18 @@ namespace RotoMonsterUI
             return (value ?? "").Trim();
         }
 
+        private static bool Flag(string key, Dictionary<string, string> params_)
+        {
+            string value;
+            if (!params_.TryGetValue(key, out value)) return false;
+            return value == "1";
+        }
+
         private static bool Checked(string key, Dictionary<string, string> params_)
         {
             return params_.ContainsKey(key);
         }
 
-        /// <summary>
-        /// The extension uses espnDraftPicks or yahooDraftPicks depending on
-        /// which provider delivered. With no field id given, both are checked,
-        /// so a page that renders one or the other still reads.
-        /// </summary>
         private static void ReadDraftPicks(DraftMonsterOptionsResult result,
             Dictionary<string, string> params_, string fieldId)
         {

@@ -32,10 +32,6 @@ namespace RotoMonsterUI
         public bool FifthRoundReversal { get; set; }
         public bool ConnectPressed { get; set; }
 
-        /// <summary>
-        /// The picks json the extension wrote into the hidden field. Empty
-        /// unless it delivered some on this postback.
-        /// </summary>
         public string DraftPicksJson { get; set; }
 
         public bool DraftPicksDelivered { get; set; }
@@ -56,19 +52,10 @@ namespace RotoMonsterUI
         public bool StandingsCompact { get; set; }
         public bool TeamAnalysisCompact { get; set; }
 
-        public string ToggledSection { get; set; }
         public bool ColumnsPressed { get; set; }
 
-        /// <summary>
-        /// Whether the picker should be open now, already flipped if the
-        /// button was pressed. Assign it straight back to the input.
-        /// </summary>
         public bool ColumnsOpen { get; set; }
 
-        /// <summary>
-        /// Read for you when the matching input was passed, so the page does
-        /// not have to call those services itself. Null otherwise.
-        /// </summary>
         public DisplayColumnsResult Columns { get; set; }
 
         public CustomValuesResult CustomValues { get; set; }
