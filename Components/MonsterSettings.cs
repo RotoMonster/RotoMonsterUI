@@ -76,6 +76,10 @@ namespace RotoMonsterUI
             if (Has(_input.ValueTypes))
                 projections.Add(Labelled(_input.ValueTypeLabel,
                     Select(Key("msvaluetype"), _input.ValueTypes, _input.SelectedValueTypeId)));
+
+            if (Has(_input.ValueConsistencies))
+                projections.Add(Labelled(_input.ValueConsistencyLabel,
+                    Select(Key("msvaluec"), _input.ValueConsistencies, _input.SelectedValueConsistencyId)));
             if (_input.ShowRestOfSeason)
                 projections.Add(Switch(Key("msros"), "Rest of season", _input.RestOfSeason));
 
@@ -171,9 +175,6 @@ namespace RotoMonsterUI
             if (Has(_input.StatsDisplayFormats))
                 stats.Add(Labelled(_input.StatsFormatControlLabel,
                     Select(Key("msstatsformat"), _input.StatsDisplayFormats, _input.SelectedStatsDisplayFormatId)));
-            if (Has(_input.ValueConsistencies))
-                stats.Add(Labelled(_input.ValueConsistencyLabel,
-                    Select(Key("msvaluec"), _input.ValueConsistencies, _input.SelectedValueConsistencyId)));
             if (_input.ShowMonsterBarToggle)
                 stats.Add(Switch(Key("msmonsterbar"), "Show Monster Bar", _input.ShowMonsterBar));
 
