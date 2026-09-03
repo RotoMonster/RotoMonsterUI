@@ -86,6 +86,8 @@
         Robot,
         WandMagic,
         Lock,
+        Pin, 
+        PinOff,
         Envelope,
         Twitter,
         UserGear,

@@ -66,6 +66,8 @@ namespace RotoMonsterUI
             result.ColumnsOpen = settings.ColumnsOpen;
             result.PositionIds = settings.PositionIds;
             result.AllPositionsSelected = settings.AllPositionsSelected;
+            result.ShowTierColumn = settings.ShowTierColumn;
+            result.ColorByTier = settings.ColorByTier;
 
             // Already flipped by MonsterSettingsService if one was toggled.
             result.ValuesExpanded = settings.ValuesExpanded;

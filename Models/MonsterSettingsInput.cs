@@ -71,29 +71,26 @@ namespace RotoMonsterUI
         public List<MonsterPosition> Positions { get; set; }
         public bool AllPositionsSelected { get; set; } = true;
 
+        public bool ShowTiersRow { get; set; }
+        public bool ShowTierColumn { get; set; }
+        public bool ColorByTier { get; set; }
+        public string TiersLabel { get; set; } = "Tiers";
+        public string ShowTierColumnText { get; set; } = "Show tier column";
+        public string ColorByTierText { get; set; } = "Color rows by tier";
+
         public bool ShowColumnsRow { get; set; } = true;
         public string ColumnsButtonText { get; set; } = "Choose columns";
         public string ColumnsUrl { get; set; }
         public bool ColumnsPostsBack { get; set; }
         public string ColumnsSummary { get; set; }
 
-        /// <summary>
-        /// The column picker. Pass the input and this renders it, so the page
-        /// does not have to call DisplayColumns itself. Its own Id is used, so
-        /// read it back with DisplayColumnsService using that same id.
-        /// </summary>
+
         public DisplayColumnsInput ColumnsInput { get; set; }
 
-        /// <summary>
-        /// The custom value builder, shown under the columns picker. Same deal
-        /// - pass the input, read it back with CustomValuesService.
-        /// </summary>
+
         public CustomValuesInput CustomValuesInput { get; set; }
 
-        /// <summary>
-        /// Raw html instead of, or as well as, the two above. Useful for a
-        /// picker that has no component yet.
-        /// </summary>
+
         public string ColumnsHtml { get; set; }
 
         public bool ColumnsOpen { get; set; }

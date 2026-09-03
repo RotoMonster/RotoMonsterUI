@@ -349,7 +349,12 @@ case IconType.Newspaper:
                               fill=""none"" stroke=""{_input.Color}"" stroke-width=""2.4"" stroke-linecap=""round""/>
                         <circle cx=""12.1"" cy=""18.4"" r=""1.6"" fill=""{_input.Color}""/>
                     </svg>";
+                
+                case IconType.Pin:
+                    return WrapSvg(@"<path d=""M12 21v-7""/><path d=""M9 3h6l-1 5 3 3v3H7v-3l3-3-1-5z""/>");
 
+                case IconType.PinOff:
+                    return WrapSvg(@"<path d=""M12 21v-7""/><path d=""M9 3h6l-1 5 3 3v3H7v-3l3-3-1-5z""/><path d=""m3 3 18 18""/>");
                 case IconType.MainValue:
                     return WrapSvg(@"<polygon points=""12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2""/>");
 

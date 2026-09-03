@@ -199,6 +199,16 @@ namespace RotoMonsterUI
                 any = true;
             }
 
+            if (_input.ShowTiersRow)
+            {
+                body.Append(Row(_input.TiersLabel, new List<HtmlTag>
+                {
+                    Switch(Key("mstiercol"), _input.ShowTierColumnText, _input.ShowTierColumn),
+                    Switch(Key("mstiercolor"), _input.ColorByTierText, _input.ColorByTier)
+                }));
+                any = true;
+            }
+
             if (_input.ShowColumnsRow)
             {
                 var columns = new HtmlTag("div").AddClass("ms-controls");

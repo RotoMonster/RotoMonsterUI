@@ -164,11 +164,6 @@ document.addEventListener('click', function (e) {
     if (field) field.value = locked ? '1' : '0';
     btn.setAttribute('aria-pressed', locked ? 'true' : 'false');
 
-    var shackle = btn.querySelector('svg path');
-    if (shackle) {
-        shackle.setAttribute('d', locked ? 'M7 11V7a5 5 0 0 1 10 0v4' : 'M7 11V7a5 5 0 0 1 9.9-1');
-    }
-
     if (btn.getAttribute('data-collapse-lock-postback') === '1') {
         __doPostBack(controlId + '-lock-btn', '', btn.form);
     }

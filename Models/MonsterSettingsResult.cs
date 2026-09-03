@@ -31,6 +31,9 @@ namespace RotoMonsterUI
         public List<string> PositionIds { get; set; } = new List<string>();
         public bool AllPositionsSelected { get; set; }
 
+        public bool ShowTierColumn { get; set; }
+        public bool ColorByTier { get; set; }
+
         public bool ValuesExpanded { get; set; }
         public bool StandingsExpanded { get; set; }
         public bool TableExpanded { get; set; }

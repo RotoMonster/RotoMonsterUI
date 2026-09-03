@@ -55,6 +55,10 @@ namespace RotoMonsterUI
         public string ColumnsHtml { get; set; }
 
         public bool ColumnsOpen { get; set; }
+
+        public bool ShowTiersRow { get; set; }
+        public bool ShowTierColumn { get; set; }
+        public bool ColorByTier { get; set; }
         public string ColumnsSummary { get; set; }
 
         public string PickNumber { get; set; }

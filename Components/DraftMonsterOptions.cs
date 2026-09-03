@@ -255,6 +255,9 @@ namespace RotoMonsterUI
                 CustomValuesInput = _input.CustomValuesInput,
                 ColumnsHtml = _input.ColumnsHtml,
                 ColumnsOpen = _input.ColumnsOpen,
+                ShowTiersRow = _input.ShowTiersRow,
+                ShowTierColumn = _input.ShowTierColumn,
+                ColorByTier = _input.ColorByTier,
                 ColumnsSummary = _input.ColumnsSummary
             };
 

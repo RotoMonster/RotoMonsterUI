@@ -11,7 +11,7 @@ namespace RotoMonsterUI
         public bool ShowLock { get; set; } = false;
         public bool IsLocked { get; set; } = false;
         public bool LockPostsBack { get; set; } = true;
-        public string LockTitle { get; set; } = "Keep this open by default";
-        public string UnlockTitle { get; set; } = "Stop keeping this open by default";
+        public string LockTitle { get; set; } = "Pin this open";
+        public string UnlockTitle { get; set; } = "Unpin";
     }
 }

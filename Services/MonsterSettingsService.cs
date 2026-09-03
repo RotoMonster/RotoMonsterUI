@@ -96,6 +96,9 @@ namespace RotoMonsterUI
             }
             result.AllPositionsSelected = result.PositionIds.Count == 0;
 
+            result.ShowTierColumn = Checked("mstiercol" + suffix, params_);
+            result.ColorByTier = Checked("mstiercolor" + suffix, params_);
+
             result.ValuesExpanded = Checked("msopen" + suffix + "_values", params_);
             result.StandingsExpanded = Checked("msopen" + suffix + "_standings", params_);
             result.TableExpanded = Checked("msopen" + suffix + "_table", params_);

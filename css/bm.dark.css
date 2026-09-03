@@ -5826,17 +5826,20 @@ a.display-columns-item--membership { cursor: pointer; }
     flex-wrap: wrap;
 }
 .collapse-control-lock {
-    width: 32px;
-    height: 32px;
+    color: var(--color-text-tertiary);
 }
+
+.collapse-control-lock:hover {
+    color: var(--brand-primary);
+}
+
 .collapse-control-lock.is-locked {
-    background: var(--brand-primary);
     border-color: var(--brand-primary);
-    color: #ffffff;
+    color: var(--brand-primary);
 }
-.collapse-control-lock.is-locked:hover {
-    border-color: var(--brand-primary);
-    color: #ffffff;
+
+.collapse-control-lock.is-locked svg {
+    fill: currentColor;
 }
 
 /* ---------------- NBA lineup card ---------------- */
