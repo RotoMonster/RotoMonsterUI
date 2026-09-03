@@ -7260,6 +7260,8 @@ a.display-columns-item--membership { cursor: pointer; }
     color: var(--color-text-secondary);
 }
 
+.dt-intro p { margin: 0; }
+
 .dt-intro a { color: var(--brand-primary); font-weight: 600; }
 
 /* toolbar */
@@ -7495,3 +7497,18 @@ a.display-columns-item--membership { cursor: pointer; }
     border: 1px dashed var(--color-border);
     border-radius: 10px;
 }
+
+.dt-summary {
+    padding: 0.7rem 1rem;
+    margin-bottom: 0.9rem;
+    border-left: 3px solid var(--brand-primary);
+    background: var(--color-bg-card);
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+}
+
+.dt-summary p { margin: 0; }
+.dt-summary p + p { margin-top: 0.6rem; }
+
+.dt-summary[hidden] { display: none; }

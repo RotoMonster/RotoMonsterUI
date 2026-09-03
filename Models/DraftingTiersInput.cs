@@ -6,6 +6,18 @@ namespace RotoMonsterUI
     {
         public DisplayPlayerInput DisplayPlayerInput { get; set; }
         public string NoteHtml { get; set; }
+
+        /// <summary>
+        /// Slots this player counts for in the position filter, e.g. PG and SG.
+        /// Left empty, the player only shows under Overall.
+        /// </summary>
+        public List<string> FilterPositions { get; set; } = new List<string>();
+    }
+
+    public class DraftingTiersSummary
+    {
+        public string Position { get; set; }
+        public string Html { get; set; }
     }
 
     public class DraftingTier
@@ -29,6 +41,9 @@ namespace RotoMonsterUI
         public string Id { get; set; }
 
         public string IntroHtml { get; set; }
+
+        public List<DraftingTiersSummary> PositionSummaries { get; set; }
+            = new List<DraftingTiersSummary>();
 
         public List<DraftingTier> Tiers { get; set; } = new List<DraftingTier>();
 

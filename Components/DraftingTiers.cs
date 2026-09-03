@@ -28,6 +28,16 @@ namespace RotoMonsterUI
             if (!string.IsNullOrEmpty(_input.IntroHtml))
                 wrap.Append(new HtmlTag("div").AddClass("dt-intro").AppendHtml(_input.IntroHtml));
 
+            foreach (var summary in _input.PositionSummaries ?? new List<DraftingTiersSummary>())
+            {
+                if (summary == null || string.IsNullOrEmpty(summary.Html)) continue;
+
+                wrap.Append(new HtmlTag("div")
+                    .AddClass("dt-summary")
+                    .Attr("data-dt-summary", summary.Position ?? "")
+                    .AppendHtml(summary.Html));
+            }
+
             var toolbar = RenderToolbar(id);
             if (toolbar != null) wrap.Append(toolbar);
 
@@ -248,6 +258,10 @@ namespace RotoMonsterUI
 
     function apply() {
         var anyShown = false;
+
+        root.querySelectorAll('.dt-summary').forEach(function (summary) {
+            summary.hidden = pos !== (summary.getAttribute('data-dt-summary') || '');
+        });
 
         root.querySelectorAll('.dt-tier').forEach(function (tier) {
             if (pos !== (tier.getAttribute('data-dt-position') || '')) {
