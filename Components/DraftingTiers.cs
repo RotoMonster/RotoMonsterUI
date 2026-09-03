@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HtmlTags;
@@ -23,7 +24,7 @@ namespace RotoMonsterUI
 
             var id = string.IsNullOrEmpty(_input.Id) ? "draftingTiers" : _input.Id;
             wrap.Attr("id", "drafting-tiers-" + id);
-            wrap.Attr("data-dt-position-default", _input.SelectedPosition ?? "");
+            wrap.Attr("data-dt-position-default", PositionKey(_input.SelectedPosition));
 
             if (!string.IsNullOrEmpty(_input.IntroHtml))
                 wrap.Append(new HtmlTag("div").AddClass("dt-intro").AppendHtml(_input.IntroHtml));
@@ -34,7 +35,7 @@ namespace RotoMonsterUI
 
                 wrap.Append(new HtmlTag("div")
                     .AddClass("dt-summary")
-                    .Attr("data-dt-summary", summary.Position ?? "")
+                    .Attr("data-dt-summary", PositionKey(summary.Position))
                     .AppendHtml(summary.Html));
             }
 
@@ -67,14 +68,18 @@ namespace RotoMonsterUI
             {
                 var seg = new HtmlTag("div").AddClass("dt-positions");
 
-                var selected = _input.SelectedPosition ?? "";
+                var selected = PositionKey(_input.SelectedPosition);
+                var seen = new List<string>();
 
                 seg.Append(PositionButton(_input.AllPositionsText, "", selected == ""));
 
                 foreach (var pos in positions)
                 {
-                    if (string.IsNullOrEmpty(pos)) continue;
-                    seg.Append(PositionButton(pos, pos, pos == selected));
+                    var key = PositionKey(pos);
+                    if (key.Length == 0 || seen.Contains(key)) continue;
+
+                    seen.Add(key);
+                    seg.Append(PositionButton(pos, key, key == selected));
                 }
 
                 bar.Append(seg);
@@ -108,23 +113,24 @@ namespace RotoMonsterUI
                     .Attr("placeholder", _input.SearchPlaceholder)
                     .Attr("aria-label", _input.SearchPlaceholder));
 
-            if (_input.ShowJumpToTier && (_input.Tiers ?? new List<DraftingTier>()).Any())
+            if (_input.ShowJumpToTier && SortedTiers().Any())
             {
                 var jump = new HtmlTag("div").AddClass("dt-jump");
 
                 if (!string.IsNullOrEmpty(_input.JumpLabel))
                     jump.Append(new HtmlTag("span").AddClass("dt-jump-label").Text(_input.JumpLabel));
 
-                for (var i = 0; i < _input.Tiers.Count; i++)
+                var jumpTiers = SortedTiers();
+
+                for (var i = 0; i < jumpTiers.Count; i++)
                 {
-                    var tier = _input.Tiers[i];
-                    if (tier == null) continue;
+                    var tier = jumpTiers[i];
 
                     jump.Append(new HtmlTag("button")
                         .AddClass("dt-jump-btn")
                         .Attr("type", "button")
                         .Attr("data-dt-jump", i.ToString())
-                        .Attr("data-dt-position", tier.Position ?? "")
+                        .Attr("data-dt-position", PositionKey(tier.Position))
                         .Text(TierHeading(tier, i)));
                 }
 
@@ -148,15 +154,10 @@ namespace RotoMonsterUI
         {
             var list = new HtmlTag("div").AddClass("dt-tiers");
 
-            var tiers = _input.Tiers ?? new List<DraftingTier>();
+            var tiers = SortedTiers();
 
             for (var i = 0; i < tiers.Count; i++)
-            {
-                var tier = tiers[i];
-                if (tier == null) continue;
-
-                list.Append(RenderTier(id, tier, i));
-            }
+                list.Append(RenderTier(id, tiers[i], i));
 
             return list;
         }
@@ -171,7 +172,7 @@ namespace RotoMonsterUI
             if (tier.TierNumber > 0)
                 box.AddClass(TierBadge.TierClass(tier.TierNumber));
 
-            box.Attr("data-dt-position", tier.Position ?? "");
+            box.Attr("data-dt-position", PositionKey(tier.Position));
 
             var head = new HtmlTag("div").AddClass("dt-tier-head");
 
@@ -198,15 +199,57 @@ namespace RotoMonsterUI
             return box;
         }
 
-        private static string TierHeading(DraftingTier tier, int index)
+        private string OverallKey()
+        {
+            return (_input.AllPositionsText ?? "Overall").Trim();
+        }
+
+        private string PositionKey(string position)
+        {
+            var value = (position ?? "").Trim();
+
+            if (value.Length == 0) return "";
+            if (string.Equals(value, OverallKey(), StringComparison.OrdinalIgnoreCase)) return "";
+
+            return value;
+        }
+
+        private List<DraftingTier> SortedTiers()
+        {
+            var tiers = (_input.Tiers ?? new List<DraftingTier>())
+                .Where(t => t != null)
+                .ToList();
+
+            if (!_input.SortTiers) return tiers;
+
+            var order = new List<string> { "" };
+
+            foreach (var pos in _input.Positions ?? new List<string>())
+            {
+                var key = PositionKey(pos);
+                if (key.Length > 0 && !order.Contains(key)) order.Add(key);
+            }
+
+            return tiers
+                .OrderBy(t =>
+                {
+                    var at = order.IndexOf(PositionKey(t.Position));
+                    return at == -1 ? order.Count : at;
+                })
+                .ThenBy(t => t.TierNumber > 0 ? t.TierNumber : int.MaxValue)
+                .ToList();
+        }
+
+        private string TierHeading(DraftingTier tier, int index)
         {
             if (!string.IsNullOrEmpty(tier.TierLabel)) return tier.TierLabel;
 
             var number = tier.TierNumber > 0 ? tier.TierNumber : index + 1;
+            var position = PositionKey(tier.Position);
 
-            return string.IsNullOrEmpty(tier.Position)
-                ? "Tier " + number
-                : tier.Position + " " + number;
+            return position.Length == 0
+                ? _input.OverallTierWord + " " + number
+                : position + " " + number;
         }
 
         private static HtmlTag RenderPlayer(DraftingTiersPlayer player, int tierNumber)
@@ -232,7 +275,6 @@ namespace RotoMonsterUI
 
             return row;
         }
-
         private string Script(string id)
         {
             var scope = "#drafting-tiers-" + id;

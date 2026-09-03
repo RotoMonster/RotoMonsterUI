@@ -56,6 +56,10 @@ namespace RotoMonsterUI
 
         public string SelectedPosition { get; set; }
 
+        public bool SortTiers { get; set; } = true;
+
+        public string OverallTierWord { get; set; } = "Tier";
+
         public bool ShowSearch { get; set; } = true;
         public string SearchPlaceholder { get; set; } = "Find a player...";
 
