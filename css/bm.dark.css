@@ -6740,10 +6740,15 @@ a.display-columns-item--membership { cursor: pointer; }
        .ms-columns-picker { flex-wrap: wrap; }
    }
    
-   .ms-btn--on {
-       border-color: var(--brand-primary);
-       color: var(--brand-primary);
+   .ms-btn--collapse {
+       display: inline-flex;
+       align-items: center;
+       gap: 0.35rem;
    }
+   
+   .ms-btn--collapse .ms-caret { transition: transform 0.15s ease; }
+   .ms-btn--collapse[aria-expanded="true"] { border-color: var(--brand-primary); }
+   .ms-btn--collapse[aria-expanded="true"] .ms-caret { transform: rotate(180deg); }
    
    .ms-columns-values {
        padding-left: 0.9rem;
@@ -6758,7 +6763,22 @@ a.display-columns-item--membership { cursor: pointer; }
            border-top: 1px solid var(--color-border-light);
        }
    }
-   /* output sections */
+   
+   .ms-labelled {
+       display: flex;
+       flex-direction: column;
+       gap: 0.2rem;
+   }
+   
+   .ms-control-label {
+       font-size: 0.66rem;
+       font-weight: 700;
+       color: var(--color-text-tertiary);
+       text-transform: uppercase;
+       letter-spacing: 0.4px;
+   }
+   
+   .ms-row .ms-controls { align-items: flex-end; }
  /* trade-monster --------------------------------------------------------- */
 
 .trade-monster { display: block; }

@@ -12,11 +12,11 @@ namespace RotoMonsterUI
 
             if (input == null) return result;
 
-            if (input.ColumnsInput != null && input.ColumnsOpen)
+            if (input.ColumnsInput != null)
                 result.Columns = new DisplayColumnsService()
                     .Process(input.ColumnsInput.Id, params_);
 
-            if (input.CustomValuesInput != null && input.ColumnsOpen)
+            if (input.CustomValuesInput != null)
                 result.CustomValues = new CustomValuesService()
                     .Process(input.CustomValuesInput.Id, params_);
 
@@ -94,10 +94,7 @@ namespace RotoMonsterUI
             result.ValuesExpanded = Flag("mspanel" + suffix + "_values-toggle", params_);
             result.StandingsExpanded = Flag("mspanel" + suffix + "_standings-toggle", params_);
             result.TableExpanded = Flag("mspanel" + suffix + "_table-toggle", params_);
-            result.ColumnsPressed = Pressed("mscolumns" + suffix, params_, eventTarget);
-
-            result.ColumnsOpen = Checked("mscolumnsopen" + suffix, params_);
-            if (result.ColumnsPressed) result.ColumnsOpen = !result.ColumnsOpen;
+            result.ColumnsOpen = Flag("mscolumns" + suffix + "-toggle", params_);
 
             return result;
         }

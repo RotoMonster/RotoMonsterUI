@@ -15,11 +15,11 @@ namespace RotoMonsterUI
             if (!string.IsNullOrEmpty(input.DraftPicksFieldId))
                 ReadDraftPicks(result, params_, input.DraftPicksFieldId);
 
-            if (input.ColumnsInput != null && input.ColumnsOpen)
+            if (input.ColumnsInput != null)
                 result.Columns = new DisplayColumnsService()
                     .Process(input.ColumnsInput.Id, params_);
 
-            if (input.CustomValuesInput != null && input.ColumnsOpen)
+            if (input.CustomValuesInput != null)
                 result.CustomValues = new CustomValuesService()
                     .Process(input.CustomValuesInput.Id, params_);
 
@@ -55,7 +55,6 @@ namespace RotoMonsterUI
             result.SelectedValueConsistencyId = settings.SelectedValueConsistencyId;
             result.SelectedPlayerFilterId = settings.SelectedPlayerFilterId;
             result.SelectedTeamId = settings.SelectedTeamId;
-            result.ColumnsPressed = settings.ColumnsPressed;
             result.ColumnsOpen = settings.ColumnsOpen;
             result.PositionIds = settings.PositionIds;
             result.AllPositionsSelected = settings.AllPositionsSelected;

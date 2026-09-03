@@ -91,7 +91,18 @@ namespace RotoMonsterUI
         public string ColumnsHtml { get; set; }
 
         public bool ColumnsOpen { get; set; }
-        public string ColumnsCloseText { get; set; } = "Done";
+
+        public bool ShowControlLabels { get; set; } = true;
+
+        public string DateRangeLabel { get; set; } = "Date range";
+        public string ProjectionSourceLabel { get; set; } = "Source";
+        public string ValueTypeLabel { get; set; } = "Value type";
+        public string LineupPriorityLabel { get; set; } = "Lineup priority";
+        public string BenchHandlingLabel { get; set; } = "Bench";
+        public string StatsFormatControlLabel { get; set; } = "Stats";
+        public string ValueConsistencyLabel { get; set; } = "Value consistency";
+        public string PlayerFilterLabel { get; set; } = "Filter";
+        public string TeamLabel { get; set; } = "Team";
 
         public string ProjectionsLabel { get; set; } = "Projections";
         public string AdjustmentsLabel { get; set; } = "Adjustments";

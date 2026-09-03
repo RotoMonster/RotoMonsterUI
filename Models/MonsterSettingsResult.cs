@@ -37,8 +37,6 @@ namespace RotoMonsterUI
         public bool ValuesExpanded { get; set; }
         public bool StandingsExpanded { get; set; }
         public bool TableExpanded { get; set; }
-        public bool ColumnsPressed { get; set; }
-
         public bool ColumnsOpen { get; set; }
 
         public DisplayColumnsResult Columns { get; set; }

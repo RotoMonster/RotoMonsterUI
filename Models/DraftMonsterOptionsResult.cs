@@ -52,8 +52,6 @@ namespace RotoMonsterUI
         public bool StandingsCompact { get; set; }
         public bool TeamAnalysisCompact { get; set; }
 
-        public bool ColumnsPressed { get; set; }
-
         public bool ColumnsOpen { get; set; }
 
         public DisplayColumnsResult Columns { get; set; }

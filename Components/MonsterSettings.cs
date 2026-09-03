@@ -68,11 +68,14 @@ namespace RotoMonsterUI
             var projections = new List<HtmlTag>();
 
             if (Has(_input.DateRanges))
-                projections.Add(Select(Key("msdate"), _input.DateRanges, _input.SelectedDateRangeId));
+                projections.Add(Labelled(_input.DateRangeLabel,
+                    Select(Key("msdate"), _input.DateRanges, _input.SelectedDateRangeId)));
             if (Has(_input.ProjectionSources))
-                projections.Add(Select(Key("msproj"), _input.ProjectionSources, _input.SelectedProjectionSourceId));
+                projections.Add(Labelled(_input.ProjectionSourceLabel,
+                    Select(Key("msproj"), _input.ProjectionSources, _input.SelectedProjectionSourceId)));
             if (Has(_input.ValueTypes))
-                projections.Add(Select(Key("msvaluetype"), _input.ValueTypes, _input.SelectedValueTypeId));
+                projections.Add(Labelled(_input.ValueTypeLabel,
+                    Select(Key("msvaluetype"), _input.ValueTypes, _input.SelectedValueTypeId)));
             if (_input.ShowRestOfSeason)
                 projections.Add(Switch(Key("msros"), "Rest of season", _input.RestOfSeason));
 
@@ -133,9 +136,11 @@ namespace RotoMonsterUI
             var lineups = new List<HtmlTag>();
 
             if (Has(_input.LineupPriorities))
-                lineups.Add(Select(Key("mslineup"), _input.LineupPriorities, _input.SelectedLineupPriorityId));
+                lineups.Add(Labelled(_input.LineupPriorityLabel,
+                    Select(Key("mslineup"), _input.LineupPriorities, _input.SelectedLineupPriorityId)));
             if (Has(_input.BenchHandling))
-                lineups.Add(Select(Key("msbench"), _input.BenchHandling, _input.SelectedBenchHandlingId));
+                lineups.Add(Labelled(_input.BenchHandlingLabel,
+                    Select(Key("msbench"), _input.BenchHandling, _input.SelectedBenchHandlingId)));
 
             if (lineups.Count > 0)
             {
@@ -164,9 +169,11 @@ namespace RotoMonsterUI
             var stats = new List<HtmlTag>();
 
             if (Has(_input.StatsDisplayFormats))
-                stats.Add(Select(Key("msstatsformat"), _input.StatsDisplayFormats, _input.SelectedStatsDisplayFormatId));
+                stats.Add(Labelled(_input.StatsFormatControlLabel,
+                    Select(Key("msstatsformat"), _input.StatsDisplayFormats, _input.SelectedStatsDisplayFormatId)));
             if (Has(_input.ValueConsistencies))
-                stats.Add(Select(Key("msvaluec"), _input.ValueConsistencies, _input.SelectedValueConsistencyId));
+                stats.Add(Labelled(_input.ValueConsistencyLabel,
+                    Select(Key("msvaluec"), _input.ValueConsistencies, _input.SelectedValueConsistencyId)));
             if (_input.ShowMonsterBarToggle)
                 stats.Add(Switch(Key("msmonsterbar"), "Show Monster Bar", _input.ShowMonsterBar));
 
@@ -179,11 +186,14 @@ namespace RotoMonsterUI
             var shown = new List<HtmlTag>();
 
             if (Has(_input.PlayerFilters))
-                shown.Add(Select(Key("msfilter"), _input.PlayerFilters, _input.SelectedPlayerFilterId));
+                shown.Add(Labelled(_input.PlayerFilterLabel,
+                    Select(Key("msfilter"), _input.PlayerFilters, _input.SelectedPlayerFilterId)));
             if (Has(_input.Teams))
-                shown.Add(Select(Key("msteam"), _input.Teams, _input.SelectedTeamId));
+                shown.Add(Labelled(_input.TeamLabel,
+                    Select(Key("msteam"), _input.Teams, _input.SelectedTeamId)));
             if (Has(_input.HomeAwayOptions))
-                shown.Add(Select(Key("mshomeaway"), _input.HomeAwayOptions, _input.SelectedHomeAwayId));
+                shown.Add(Labelled("Home and away",
+                    Select(Key("mshomeaway"), _input.HomeAwayOptions, _input.SelectedHomeAwayId)));
 
             if (shown.Count > 0)
             {
@@ -211,6 +221,10 @@ namespace RotoMonsterUI
             {
                 var columns = new HtmlTag("div").AddClass("ms-controls");
 
+                var baseId = Key("mscolumns");
+                var contentId = baseId + "-content";
+                var toggleId = baseId + "-toggle";
+
                 if (!string.IsNullOrEmpty(_input.ColumnsUrl) && !_input.ColumnsPostsBack)
                 {
                     columns.Append(new HtmlTag("a")
@@ -220,19 +234,17 @@ namespace RotoMonsterUI
                 }
                 else
                 {
-                    var name = Key("mscolumns");
-
                     var button = new HtmlTag("button")
-                        .AddClass("ms-btn")
+                        .AddClass("ms-btn ms-btn--collapse")
                         .Attr("type", "button")
-                        .Attr("id", name)
-                        .Attr("name", name)
-                        .Attr("onclick", "__doPostBack('" + name + "','',this.form)")
-                        .Text(_input.ColumnsOpen
-                            ? _input.ColumnsCloseText
-                            : _input.ColumnsButtonText);
+                        .Attr("id", baseId)
+                        .Attr("data-toggle", "collapse")
+                        .Attr("data-target", "#" + contentId)
+                        .Attr("aria-controls", contentId)
+                        .Attr("aria-expanded", _input.ColumnsOpen ? "true" : "false");
 
-                    if (_input.ColumnsOpen) button.AddClass("ms-btn--on");
+                    button.Append(new HtmlTag("span").Text(_input.ColumnsButtonText));
+                    button.Append(new HtmlTag("span").AddClass("ms-caret").AppendHtml("&#9662;"));
 
                     columns.Append(button);
                 }
@@ -240,46 +252,47 @@ namespace RotoMonsterUI
                 if (!string.IsNullOrEmpty(_input.ColumnsSummary))
                     columns.Append(new HtmlTag("span").AddClass("ms-hint").Text(_input.ColumnsSummary));
 
-                var openState = new HtmlTag("input")
-                    .Attr("type", "checkbox")
-                    .AddClass("ms-state")
-                    .Attr("name", Key("mscolumnsopen"))
-                    .Attr("value", "1")
-                    .Attr("hidden", "hidden");
-
-                if (_input.ColumnsOpen) openState.Attr("checked", "checked");
-                columns.Append(openState);
+                columns.Append(new HtmlTag("input")
+                    .Attr("type", "hidden")
+                    .Attr("id", toggleId)
+                    .Attr("name", toggleId)
+                    .Attr("value", _input.ColumnsOpen ? "1" : "0"));
 
                 body.Append(Row(_input.ColumnsLabel, new List<HtmlTag> { columns }));
 
-                if (_input.ColumnsOpen)
+                var picker = new HtmlTag("div").AddClass("ms-columns-picker");
+                var anyPicker = false;
+
+                if (_input.ColumnsInput != null)
                 {
-                    var picker = new HtmlTag("div").AddClass("ms-columns-picker");
-                    var anyPicker = false;
+                    picker.AppendHtml(new DisplayColumns(_input.ColumnsInput).Render());
+                    anyPicker = true;
+                }
 
-                    if (_input.ColumnsInput != null)
-                    {
-                        picker.AppendHtml(new DisplayColumns(_input.ColumnsInput).Render());
-                        anyPicker = true;
-                    }
+                if (_input.CustomValuesInput != null)
+                {
+                    picker.Append(new HtmlTag("div")
+                        .AddClass("ms-columns-values")
+                        .AppendHtml(new CustomValues(_input.CustomValuesInput).Render()));
+                    anyPicker = true;
+                }
 
-                    if (_input.CustomValuesInput != null)
-                    {
-                        picker.Append(new HtmlTag("div")
-                            .AddClass("ms-columns-values")
-                            .AppendHtml(new CustomValues(_input.CustomValuesInput).Render()));
-                        anyPicker = true;
-                    }
+                if (!string.IsNullOrEmpty(_input.ColumnsHtml))
+                {
+                    picker.AppendHtml(_input.ColumnsHtml);
+                    anyPicker = true;
+                }
 
-                    if (!string.IsNullOrEmpty(_input.ColumnsHtml))
-                    {
-                        picker.AppendHtml(_input.ColumnsHtml);
-                        anyPicker = true;
-                    }
+                if (anyPicker)
+                {
+                    var wrap = new HtmlTag("div")
+                        .Attr("id", contentId)
+                        .AddClass(_input.ColumnsOpen
+                            ? "ms-row ms-row--full collapse show"
+                            : "ms-row ms-row--full collapse");
 
-                    if (anyPicker)
-                        body.Append(new HtmlTag("div")
-                            .AddClass("ms-row ms-row--full").Append(picker));
+                    wrap.Append(picker);
+                    body.Append(wrap);
                 }
 
                 any = true;
@@ -436,6 +449,17 @@ namespace RotoMonsterUI
 
             row.Append(wrap);
             return row;
+        }
+
+        private HtmlTag Labelled(string label, HtmlTag control)
+        {
+            if (!_input.ShowControlLabels || string.IsNullOrEmpty(label)) return control;
+
+            var wrap = new HtmlTag("div").AddClass("ms-labelled");
+            wrap.Append(new HtmlTag("span").AddClass("ms-control-label").Text(label));
+            wrap.Append(control);
+
+            return wrap;
         }
 
         private static HtmlTag Select(string name, List<MonsterOption> options, string selected)
