@@ -7535,3 +7535,194 @@ a.display-columns-item--membership { cursor: pointer; }
 .dt-summary p + p { margin-top: 0.6rem; }
 
 .dt-summary[hidden] { display: none; }
+
+.player-profile { display: block; }
+
+.pp-message {
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--brand-primary);
+}
+
+.pp-cols {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.pp-left { flex: 1 1 auto; min-width: 0; }
+
+.pp-right {
+    flex: 0 0 340px;
+    position: sticky;
+    top: 0.9rem;
+}
+
+@media (max-width: 1250px) {
+    .pp-cols { flex-wrap: wrap; }
+    .pp-right { flex: 1 1 100%; position: static; }
+}
+
+.pp-card {
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: var(--color-bg-card);
+    margin-bottom: 0.9rem;
+    overflow: hidden;
+}
+
+.pp-right .pp-card { margin-bottom: 0; }
+
+.pp-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.9rem;
+    border-bottom: 1px solid var(--color-border-light);
+    background: var(--color-bg-secondary);
+}
+
+.pp-head-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1 1 auto;
+    padding: 0;
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.pp-caret {
+    color: var(--color-text-tertiary);
+    font-size: 0.7rem;
+    transition: transform 0.15s ease;
+}
+
+.pp-head-btn[aria-expanded="true"] .pp-caret { transform: rotate(180deg); }
+
+.pp-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--brand-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.pp-count { font-size: 0.75rem; color: var(--color-text-tertiary); }
+
+.pp-seeall {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: var(--color-text-tertiary);
+}
+
+.pp-pin {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.15rem 0.35rem;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: none;
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+}
+
+.pp-pin:hover { color: var(--brand-primary); }
+
+.pp-pin.is-locked {
+    border-color: var(--brand-primary);
+    color: var(--brand-primary);
+}
+
+.pp-pin.is-locked svg { fill: currentColor; }
+
+.pp-body { padding: 0.75rem 0.9rem; }
+.pp-body-plain { padding: 0; }
+
+.pp-facts { padding: 0.75rem 0.9rem; }
+.pp-badges { margin-bottom: 0.6rem; }
+.pp-badges:last-child { margin-bottom: 0; }
+
+.pp-links {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--color-border-light);
+}
+
+.pp-link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    padding: 0.2rem 0.65rem;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.pp-link:hover {
+    border-color: var(--brand-primary);
+    color: var(--color-text-primary);
+    text-decoration: none;
+}
+
+.pp-link-count { font-size: 0.7rem; color: var(--color-text-tertiary); }
+
+.pp-comment {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+}
+
+.pp-comment p { margin: 0; }
+.pp-comment p + p { margin-top: 0.6rem; }
+
+.pp-by {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.72rem;
+    color: var(--color-text-tertiary);
+}
+
+.pp-news {
+    padding: 0.6rem 0.9rem;
+    overflow: hidden;
+}
+
+.pp-news .news-card {
+    margin-bottom: 0.5rem;
+    max-width: 100%;
+}
+
+.pp-news .news-card:last-child { margin-bottom: 0; }
+
+.pp-news .news-card:hover { transform: none; }
+
+.pp-addcomment {
+    padding: 0.6rem 0.9rem;
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.pp-comment-list { overflow-y: auto; }
+
+.pp-comment-list { padding: 0.6rem 0.9rem; }
+.pp-comment-list .comment-card:last-child { margin-bottom: 0; }
+
+.pp-nocomments {
+    padding: 1.2rem 0.9rem;
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--color-text-tertiary);
+}
+
+.pp-below { margin-top: 0.9rem; }
