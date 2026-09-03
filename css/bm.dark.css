@@ -7242,41 +7242,63 @@ a.display-columns-item--membership { cursor: pointer; }
     display: contents;
 }
 :root {
-    --tier-1: #047857;
-    --tier-2: #4d7c0f;
-    --tier-3: #a16207;
-    --tier-4: #c2410c;
-    --tier-5: #dc2626;
-    --tier-6: #b91c1c;
-    --tier-7: #991b1b;
-    --tier-8: #7f1d1d;
-    --tier-9: #641414;
+    --tier-1: #0f8a51;
+    --tier-2: #248a0f;
+    --tier-3: #658a0f;
+    --tier-4: #8a790f;
+    --tier-5: #8a590f;
+    --tier-6: #8a3c0f;
+    --tier-7: #8a240f;
+    --tier-8: #8a0f0f;
+    --tier-9: #96101a;
     --tier-none: #64748b;
+
+    --tier-1-text: #1a935b;
+    --tier-2-text: #2e931a;
+    --tier-3-text: #6f931a;
+    --tier-4-text: #93831a;
+    --tier-5-text: #93631a;
+    --tier-6-text: #93471a;
+    --tier-7-text: #932e1a;
+    --tier-8-text: #931a1a;
+    --tier-9-text: #b91c1c;
+    --tier-none-text: #64748b;
 }
 
 [data-theme="dark"], .dark-mode {
-    --tier-1: #10a37f;
-    --tier-2: #5b9b1f;
-    --tier-3: #94861a;
-    --tier-4: #b5761c;
-    --tier-5: #c4611f;
-    --tier-6: #cc4a3a;
-    --tier-7: #d13a3a;
-    --tier-8: #b32d2d;
-    --tier-9: #8f2020;
+    --tier-1: #218c5a;
+    --tier-2: #338c21;
+    --tier-3: #6c8c21;
+    --tier-4: #8c7e21;
+    --tier-5: #8c6121;
+    --tier-6: #8c4821;
+    --tier-7: #8c3321;
+    --tier-8: #8c2121;
+    --tier-9: #a32020;
     --tier-none: #94a3b8;
+
+    --tier-1-text: #51eca3;
+    --tier-2-text: #6aec51;
+    --tier-3-text: #bdec51;
+    --tier-4-text: #ecd751;
+    --tier-5-text: #ecae51;
+    --tier-6-text: #ec8951;
+    --tier-7-text: #ec6a51;
+    --tier-8-text: #ec5151;
+    --tier-9-text: #ff5a5a;
+    --tier-none-text: #94a3b8;
 }
 
-.tier-1 { --tier-color: var(--tier-1); }
-.tier-2 { --tier-color: var(--tier-2); }
-.tier-3 { --tier-color: var(--tier-3); }
-.tier-4 { --tier-color: var(--tier-4); }
-.tier-5 { --tier-color: var(--tier-5); }
-.tier-6 { --tier-color: var(--tier-6); }
-.tier-7 { --tier-color: var(--tier-7); }
-.tier-8 { --tier-color: var(--tier-8); }
-.tier-9 { --tier-color: var(--tier-9); }
-.tier-none { --tier-color: var(--tier-none); }
+.tier-1 { --tier-color: var(--tier-1); --tier-text: var(--tier-1-text); }
+.tier-2 { --tier-color: var(--tier-2); --tier-text: var(--tier-2-text); }
+.tier-3 { --tier-color: var(--tier-3); --tier-text: var(--tier-3-text); }
+.tier-4 { --tier-color: var(--tier-4); --tier-text: var(--tier-4-text); }
+.tier-5 { --tier-color: var(--tier-5); --tier-text: var(--tier-5-text); }
+.tier-6 { --tier-color: var(--tier-6); --tier-text: var(--tier-6-text); }
+.tier-7 { --tier-color: var(--tier-7); --tier-text: var(--tier-7-text); }
+.tier-8 { --tier-color: var(--tier-8); --tier-text: var(--tier-8-text); }
+.tier-9 { --tier-color: var(--tier-9); --tier-text: var(--tier-9-text); }
+.tier-none { --tier-color: var(--tier-none); --tier-text: var(--tier-none-text); }
 
 .tier-badge {
     display: inline-block;
@@ -7295,11 +7317,11 @@ a.display-columns-item--membership { cursor: pointer; }
 
 .tier-badge--outline {
     background: transparent;
-    border-color: var(--tier-color);
-    color: var(--tier-color);
+    border-color: var(--tier-text, var(--tier-color));
+    color: var(--tier-text, var(--tier-color));
 }
 
-.tier-name { color: var(--tier-color); }
+.tier-name { color: var(--tier-text, var(--tier-color)); }
 
 .tier-pos-badge {
     display: inline-block;
@@ -7485,8 +7507,8 @@ a.display-columns-item--membership { cursor: pointer; }
 /* Outlined, which is what Ken picked - the whole tier ringed in its colour
    rather than a fill, so a long page does not turn into a gradient.
    --tier-color comes from the shared palette via the tier-n class. */
-.dt-tier[class*="tier-"] { border-color: var(--tier-color); }
-.dt-tier[class*="tier-"] .dt-tier-n { color: var(--tier-color); }
+.dt-tier[class*="tier-"] { border-color: var(--tier-text, var(--tier-color)); }
+.dt-tier[class*="tier-"] .dt-tier-n { color: var(--tier-text, var(--tier-color)); }
 
 .tier-colors-off .dt-tier { border-color: var(--color-border); }
 .tier-colors-off .dt-tier-n { color: var(--brand-primary); }
@@ -7494,9 +7516,9 @@ a.display-columns-item--membership { cursor: pointer; }
 /* DisplayPlayer renders the name as a link with its own colour, so the class
    on the wrapper alone loses to it. */
 .dt-player-name.tier-name,
-.dt-player-name.tier-name a { color: var(--tier-color); }
+.dt-player-name.tier-name a { color: var(--tier-text, var(--tier-color)); }
 
-.dt-player-name.tier-name a:hover { color: var(--tier-color); opacity: 0.8; }
+.dt-player-name.tier-name a:hover { color: var(--tier-text, var(--tier-color)); opacity: 0.8; }
 
 .tier-colors-off .dt-player-name,
 .tier-colors-off .dt-player-name a { color: var(--color-text-primary); }
