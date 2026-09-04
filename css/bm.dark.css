@@ -7852,3 +7852,70 @@ a.display-columns-item--membership { cursor: pointer; }
 
 a.display-username { text-decoration: none; }
 a.display-username:hover { text-decoration: underline; }
+
+.nba-lineups { display: block; }
+
+.nl-message {
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--brand-primary);
+}
+
+.nl-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding: 0.7rem 1rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: var(--color-bg-card);
+}
+
+.nl-nav {
+    padding: 0.25rem 0.65rem;
+    border: 1px solid var(--color-border);
+    border-radius: 7px;
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+    line-height: 1.2;
+    cursor: pointer;
+}
+
+.nl-nav:hover { border-color: var(--brand-primary); }
+
+.nl-day { font-size: 0.95rem; font-weight: 700; }
+.nl-count { font-size: 0.82rem; color: var(--color-text-secondary); }
+.nl-spacer { margin-left: auto; }
+
+.nl-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--nl-columns, 2), minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+@media (max-width: 1100px) {
+    .nl-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+.nl-game { min-width: 0; }
+
+.nl-empty {
+    padding: 2rem 1rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--color-text-tertiary);
+    border: 1px dashed var(--color-border);
+    border-radius: 10px;
+}
+
+.nl-hide-bench .nba-lineup-bench,
+.nl-hide-bench [data-nba-bench] { display: none; }
+
+.nl-hide-mins .nba-lineup-mins { visibility: hidden; }
+
+.nl-only-mine .nba-lineup-row:not(.nba-lineup-row--owned) { display: none; }
+
+.display-player-name:hover { text-decoration: underline; }
