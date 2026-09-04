@@ -156,14 +156,16 @@ namespace RotoMonsterUI
             var list = new HtmlTag("div").AddClass("dt-tiers");
 
             var tiers = SortedTiers();
+            var borrowed = BorrowedNotes();
 
             for (var i = 0; i < tiers.Count; i++)
-                list.Append(RenderTier(id, tiers[i], i));
+                list.Append(RenderTier(id, tiers[i], i, borrowed));
 
             return list;
         }
 
-        private HtmlTag RenderTier(string id, DraftingTier tier, int index)
+        private HtmlTag RenderTier(string id, DraftingTier tier, int index,
+            Dictionary<string, string> borrowed)
         {
             var box = new HtmlTag("div")
                 .AddClass("dt-tier")
@@ -194,7 +196,7 @@ namespace RotoMonsterUI
             foreach (var player in tier.Players ?? new List<DraftingTiersPlayer>())
             {
                 if (player == null) continue;
-                box.Append(RenderPlayer(player, tier.TierNumber));
+                box.Append(RenderPlayer(player, tier.TierNumber, borrowed));
             }
 
             return box;
@@ -241,6 +243,34 @@ namespace RotoMonsterUI
                 .ToList();
         }
 
+        private Dictionary<string, string> BorrowedNotes()
+        {
+            var notes = new Dictionary<string, string>();
+
+            if (!_input.BorrowNotesForOverall) return notes;
+
+            foreach (var tier in _input.Tiers ?? new List<DraftingTier>())
+            {
+                if (tier == null) continue;
+                if (PositionKey(tier.Position).Length == 0) continue;
+
+                foreach (var player in tier.Players ?? new List<DraftingTiersPlayer>())
+                {
+                    if (player == null) continue;
+                    if (string.IsNullOrEmpty(player.NoteHtml)) continue;
+                    if (player.DisplayPlayerInput == null) continue;
+
+                    var key = player.DisplayPlayerInput.PlayerId.ToString();
+                    if (key == "0") continue;
+                    if (notes.ContainsKey(key)) continue;
+
+                    notes[key] = player.NoteHtml;
+                }
+            }
+
+            return notes;
+        }
+
         private string TierHeading(DraftingTier tier, int index)
         {
             if (!string.IsNullOrEmpty(tier.TierLabel)) return tier.TierLabel;
@@ -253,7 +283,8 @@ namespace RotoMonsterUI
                 : position + " " + number;
         }
 
-        private static HtmlTag RenderPlayer(DraftingTiersPlayer player, int tierNumber)
+        private static HtmlTag RenderPlayer(DraftingTiersPlayer player, int tierNumber,
+            Dictionary<string, string> borrowed)
         {
             var row = new HtmlTag("div").AddClass("dt-player");
 
@@ -270,8 +301,17 @@ namespace RotoMonsterUI
             if (display != null) name.AppendHtml(new DisplayPlayer(display).Render());
             row.Append(name);
 
+            var noteHtml = player.NoteHtml;
+
+            if (string.IsNullOrEmpty(noteHtml) && borrowed != null && display != null)
+            {
+                string found;
+                if (borrowed.TryGetValue(display.PlayerId.ToString(), out found))
+                    noteHtml = found;
+            }
+
             var note = new HtmlTag("div").AddClass("dt-player-note");
-            if (!string.IsNullOrEmpty(player.NoteHtml)) note.AppendHtml(player.NoteHtml);
+            if (!string.IsNullOrEmpty(noteHtml)) note.AppendHtml(noteHtml);
             row.Append(note);
 
             return row;

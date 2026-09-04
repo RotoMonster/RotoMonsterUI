@@ -60,6 +60,8 @@ namespace RotoMonsterUI
 
         public string OverallTierWord { get; set; } = "Tier";
 
+        public bool BorrowNotesForOverall { get; set; } = true;
+
         public bool ShowSearch { get; set; } = true;
         public string SearchPlaceholder { get; set; } = "Find a player...";
 
