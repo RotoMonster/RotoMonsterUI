@@ -7829,3 +7829,395 @@ a.display-username:hover { text-decoration: underline; }
 .nl-only-mine .nba-lineup-row:not(.nba-lineup-row--owned) { display: none; }
 
 .display-player-name:hover { text-decoration: underline; }
+
+.schedule-analyzer {
+    display: block;
+}
+
+.sa-daybar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding: 0.7rem 1rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: var(--color-bg-card);
+}
+
+.sa-presets {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+}
+
+.sa-preset {
+    padding: 0.35rem 0.7rem;
+    border: 1px solid var(--color-border);
+    border-radius: 7px;
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.sa-preset:hover {
+    border-color: var(--brand-primary);
+}
+
+.sa-preset[aria-pressed="true"] {
+    border-color: var(--brand-primary);
+    background: rgba(var(--brand-primary-rgb), 0.14);
+    color: var(--brand-primary);
+}
+
+.sa-calwrap {
+    position: relative;
+}
+
+.sa-day {
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.sa-count {
+    font-size: 0.82rem;
+    color: var(--color-text-secondary);
+}
+
+.sa-spacer {
+    margin-left: auto;
+}
+
+.sa-empty {
+    padding: 1.5rem 1rem;
+    color: var(--color-text-secondary);
+}
+
+.sa-table-wrapper {
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    overflow: auto;
+    max-height: 74vh;
+}
+
+.sa-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.82rem;
+}
+
+.sa-table thead th {
+    position: sticky;
+    background: var(--table-header-bg);
+    color: #ffffff;
+    padding: 0.4rem 0.55rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.sa-table thead tr.sa-groups th {
+    top: 0;
+    height: 1.6rem;
+    letter-spacing: 0.3px;
+    text-align: center;
+}
+
+.sa-table thead tr.sa-cols th {
+    top: 1.6rem;
+}
+
+.sa-table tbody td {
+    padding: 0.35rem 0.55rem;
+    border-bottom: 1px solid var(--color-border-light);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.sa-table tbody tr.sa-row:hover td {
+    background: var(--color-bg-secondary);
+}
+
+.sa-num {
+    text-align: right;
+}
+
+.sa-mid {
+    text-align: center;
+}
+
+.sa-plain {
+    color: var(--color-text-secondary);
+}
+
+.sa-zero {
+    color: var(--color-text-tertiary);
+}
+
+.sa-table thead th.sa-sep {
+    border-left: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.sa-table tbody td.sa-sep {
+    border-left: 1px solid var(--color-border);
+}
+
+.sa-team-col {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    text-align: left;
+    min-width: 96px;
+}
+
+.sa-table thead .sa-team-col {
+    z-index: 4;
+}
+
+.sa-table tbody .sa-team-col {
+    background: var(--color-bg-card);
+    font-weight: 700;
+    border-right: 1px solid var(--color-border);
+}
+
+.sa-table tbody tr.sa-row:hover .sa-team-col {
+    background: var(--color-bg-secondary);
+}
+
+.sa-rowtog {
+    background: none;
+    border: none;
+    color: var(--color-text-tertiary);
+    font: inherit;
+    font-size: 0.68rem;
+    cursor: pointer;
+    padding: 0 0.35rem 0 0;
+}
+
+.sa-rowtog:hover {
+    color: var(--brand-primary);
+}
+
+.sa-team-code {
+    border-left: 3px solid var(--team-color, transparent);
+    padding-left: 0.35rem;
+}
+
+.sa-mine-count {
+    display: inline-block;
+    margin-left: 0.3rem;
+    padding: 0 0.35rem;
+    border-radius: 4px;
+    background: rgba(var(--brand-primary-rgb), 0.14);
+    color: var(--brand-primary);
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.sa-games b {
+    font-weight: 700;
+}
+
+.sa-b2b-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--brand-primary);
+    margin-left: 0.3rem;
+    vertical-align: 1px;
+}
+
+.sa-abbr {
+    border-bottom: 1px dotted rgba(255, 255, 255, 0.55);
+    cursor: help;
+}
+
+.sa-day-count {
+    display: block;
+    margin-top: 1px;
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.62);
+}
+
+.sa-cat {
+    background: var(--ease-color);
+    color: #10201a;
+    font-weight: 600;
+}
+
+.ease-badge {
+    display: inline-block;
+    min-width: 44px;
+    padding: 0.05rem 0.4rem;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    background: var(--ease-color);
+    color: #10201a;
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.ease-badge--outline {
+    background: transparent;
+    border-color: var(--ease-color);
+    color: var(--ease-color);
+}
+
+.ease-badge--quality {
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+
+.ease-badge-at {
+    color: rgba(0, 0, 0, 0.45);
+    margin-right: 1px;
+}
+
+.sa-dot {
+    display: none;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    margin-right: 0.35rem;
+    vertical-align: -1px;
+    background: var(--ease-color);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.22);
+}
+
+.sa-off {
+    color: var(--color-text-tertiary);
+}
+
+.sa-ease-dot .ease-badge {
+    background: transparent;
+    color: inherit;
+    min-width: 0;
+    padding: 0;
+    font-weight: 600;
+}
+
+.sa-ease-dot .ease-badge-at {
+    color: var(--color-text-tertiary);
+}
+
+.sa-ease-dot td.sa-has .sa-dot {
+    display: inline-block;
+}
+
+.sa-ease-bg .ease-badge {
+    background: transparent;
+    color: inherit;
+    min-width: 0;
+    padding: 0;
+    font-weight: 600;
+}
+
+.sa-ease-bg td.sa-has,
+.sa-ease-bg tbody tr.sa-row:hover td.sa-has {
+    background: var(--ease-color);
+    color: #10201a;
+}
+
+.sa-ease-bg td.sa-has .ease-badge-at {
+    color: rgba(0, 0, 0, 0.45);
+}
+
+.sa-ease-outline .ease-badge {
+    background: transparent;
+    border-color: var(--ease-color);
+    color: var(--ease-color);
+}
+
+.sa-ease-outline .ease-badge-at {
+    color: inherit;
+    opacity: 0.6;
+}
+
+.sa-ease-text .ease-badge {
+    background: transparent;
+    color: var(--ease-color);
+    min-width: 0;
+    padding: 0;
+}
+
+.sa-ease-text .ease-badge-at {
+    color: inherit;
+    opacity: 0.6;
+}
+
+.sa-ease-none .ease-badge {
+    background: transparent;
+    color: inherit;
+    min-width: 0;
+    padding: 0;
+    font-weight: 600;
+}
+
+.sa-ease-none .ease-badge-at {
+    color: var(--color-text-tertiary);
+}
+
+.sa-colors-off .ease-badge,
+.sa-colors-off .sa-cat {
+    background: transparent;
+    border-color: var(--color-border);
+    color: inherit;
+}
+
+.sa-colors-off .sa-dot {
+    display: none;
+}
+
+.sa-roster td {
+    background: var(--color-bg-secondary);
+    padding: 0.75rem 1rem;
+    white-space: normal;
+}
+
+.sa-rgrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    max-width: 900px;
+}
+
+.sa-rgrid h4 {
+    margin: 0 0 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--brand-primary);
+    letter-spacing: 0.2px;
+}
+
+.sa-plist {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.sa-pill {
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    padding: 0.1rem 0.6rem;
+    font-size: 0.76rem;
+}
+
+.sa-hint {
+    font-size: 0.76rem;
+    color: var(--color-text-tertiary);
+}
+
+@media (max-width: 820px) {
+    .sa-rgrid {
+        grid-template-columns: 1fr;
+    }
+}
