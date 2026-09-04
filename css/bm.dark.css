@@ -8311,3 +8311,29 @@ a.display-username:hover { text-decoration: underline; }
         grid-template-columns: 1fr;
     }
 }
+
+.sa-coltoggles {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+    padding: 0.6rem 1rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: var(--color-bg-card);
+}
+
+.sa-coltoggles-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--brand-primary);
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+}
+
+.sa-hide-qg [data-sa-col="qg"],
+.sa-hide-cats [data-sa-col="cats"],
+.sa-hide-days [data-sa-col="days"] { display: none; }
+
+.sa-sep-none { border-left: none; }

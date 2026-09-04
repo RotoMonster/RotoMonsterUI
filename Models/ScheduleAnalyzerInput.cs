@@ -92,6 +92,12 @@ namespace RotoMonsterUI
         public ScheduleAnalyzerSortBy SortBy { get; set; } = ScheduleAnalyzerSortBy.GamesThenEase;
         public ScheduleAnalyzerEaseDisplay EaseDisplay { get; set; } = ScheduleAnalyzerEaseDisplay.Badge;
 
+        public bool ShowColumnToggles { get; set; } = true;
+        public string ColumnsLabel { get; set; } = "Columns";
+        public string QualityToggleText { get; set; } = "Quality games and back-to-backs";
+        public string CategoryToggleText { get; set; } = "Ease by category";
+        public string DayToggleText { get; set; } = "Daily opponents";
+
         public bool ShowQualityColumns { get; set; } = true;
         public bool ShowCategoryColumns { get; set; } = true;
         public bool ShowDayColumns { get; set; } = true;

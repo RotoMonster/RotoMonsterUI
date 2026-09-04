@@ -8,6 +8,9 @@ namespace RotoMonsterUI
         public string SelectedRangeKey { get; set; }
         public string SelectedTeamValue { get; set; }
         public bool IsAnalyzeRequested { get; set; }
+        public bool ShowQualityColumns { get; set; }
+        public bool ShowCategoryColumns { get; set; }
+        public bool ShowDayColumns { get; set; }
     }
 
     public class ScheduleAnalyzerService
@@ -27,12 +30,25 @@ namespace RotoMonsterUI
             if (formValues.ContainsKey("saanalyze_" + controlId))
                 result.IsAnalyzeRequested = true;
 
+            result.ShowQualityColumns = formValues.ContainsKey("saqg_" + controlId);
+            result.ShowCategoryColumns = formValues.ContainsKey("sacats_" + controlId);
+            result.ShowDayColumns = formValues.ContainsKey("sadays_" + controlId);
+
             var rangePrefix = "sarangepick_" + controlId + "_";
 
-            foreach (var key in formValues.Keys)
+            if (formValues.TryGetValue("__EVENTTARGET", out var eventTarget)
+                && !string.IsNullOrEmpty(eventTarget)
+                && eventTarget.StartsWith(rangePrefix, StringComparison.Ordinal))
             {
-                if (key.StartsWith(rangePrefix, StringComparison.Ordinal))
-                    result.SelectedRangeKey = key.Substring(rangePrefix.Length);
+                result.SelectedRangeKey = eventTarget.Substring(rangePrefix.Length);
+            }
+            else
+            {
+                foreach (var key in formValues.Keys)
+                {
+                    if (key.StartsWith(rangePrefix, StringComparison.Ordinal))
+                        result.SelectedRangeKey = key.Substring(rangePrefix.Length);
+                }
             }
 
             return result;

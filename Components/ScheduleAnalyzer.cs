@@ -55,6 +55,10 @@ namespace RotoMonsterUI
         private bool ShowCategories => _input.ShowCategoryColumns && _input.CategoryLabels.Count > 0;
         private bool ShowDays => _input.ShowDayColumns && _input.DayColumns.Count > 0;
 
+        private bool HasQuality => true;
+        private bool HasCategories => _input.CategoryLabels.Count > 0;
+        private bool HasDays => _input.DayColumns.Count > 0;
+
         private string RosterRowId(string teamCode)
         {
             return "sa-roster-" + _input.Id + "-" + teamCode;
@@ -73,7 +77,7 @@ namespace RotoMonsterUI
             if (ShowQuality) count += 2;
             count += 1;
             if (ShowCategories) count += _input.CategoryLabels.Count;
-            if (ShowDays) count += _input.DayColumns.Count;
+            if (HasDays) count += _input.DayColumns.Count;
             return count;
         }
 
@@ -88,12 +92,19 @@ namespace RotoMonsterUI
 
             if (!_input.ColorNumbers) wrap.AddClass("sa-colors-off");
 
+            if (!ShowQuality) wrap.AddClass("sa-hide-qg");
+            if (!ShowCategories) wrap.AddClass("sa-hide-cats");
+            if (!ShowDays) wrap.AddClass("sa-hide-days");
+
             wrap.Append(new HtmlTag("input")
                 .Attr("type", "hidden")
+                .Attr("id", Key("sarange"))
                 .Attr("name", Key("sarange"))
                 .Attr("value", _input.SelectedRangeKey ?? ""));
 
             wrap.Append(RenderRangeBar());
+
+            if (_input.ShowColumnToggles) wrap.Append(RenderColumnToggles());
 
             if (!string.IsNullOrEmpty(_input.SettingsHtml))
                 wrap.AppendHtml(_input.SettingsHtml);
@@ -105,6 +116,7 @@ namespace RotoMonsterUI
             }
 
             wrap.Append(RenderTable());
+            wrap.Append(new HtmlTag("script").AppendHtml(ColumnScript()));
 
             return wrap.ToString();
         }
@@ -186,6 +198,7 @@ namespace RotoMonsterUI
                 .Attr("type", "button")
                 .Attr("name", name)
                 .Attr("aria-pressed", selected ? "true" : "false")
+                .Attr("data-sa-range", range.Key)
                 .Attr("onclick", "__doPostBack('" + name + "','',this.form)")
                 .Text(range.Text ?? range.Key);
         }
@@ -242,23 +255,30 @@ namespace RotoMonsterUI
 
             row.Append(new HtmlTag("th").AddClass("sa-team-col"));
 
-            var scheduleSpan = ShowQuality ? 5 : 3;
             row.Append(new HtmlTag("th")
                 .AddClass("sa-sep")
-                .Attr("colspan", scheduleSpan.ToString())
+                .Attr("colspan", "3")
                 .Text(_input.ScheduleGroupText));
+
+            if (HasQuality)
+                row.Append(new HtmlTag("th")
+                    .AddClass("sa-sep-none")
+                    .Attr("data-sa-col", "qg")
+                    .Attr("colspan", "2"));
 
             row.Append(new HtmlTag("th").AddClass("sa-sep").Text(_input.OverallGroupText));
 
-            if (ShowCategories)
+            if (HasCategories)
                 row.Append(new HtmlTag("th")
                     .AddClass("sa-sep")
+                    .Attr("data-sa-col", "cats")
                     .Attr("colspan", _input.CategoryLabels.Count.ToString())
                     .Text(_input.CategoryGroupText));
 
-            if (ShowDays)
+            if (HasDays)
                 row.Append(new HtmlTag("th")
                     .AddClass("sa-sep")
+                    .Attr("data-sa-col", "days")
                     .Attr("colspan", _input.DayColumns.Count.ToString())
                     .Text(_input.RangeText ?? ""));
 
@@ -275,30 +295,34 @@ namespace RotoMonsterUI
             row.Append(new HtmlTag("th").AddClass("sa-num").Text(_input.HomeHeaderText));
             row.Append(new HtmlTag("th").AddClass("sa-num").Text(_input.AwayHeaderText));
 
-            if (ShowQuality)
+            if (HasQuality)
             {
-                row.Append(HeaderWithTooltip(_input.QualityHeaderText, _input.QualityTooltip));
-                row.Append(HeaderWithTooltip(_input.BackToBackHeaderText, _input.BackToBackTooltip));
+                row.Append(HeaderWithTooltip(_input.QualityHeaderText, _input.QualityTooltip)
+                    .Attr("data-sa-col", "qg"));
+                row.Append(HeaderWithTooltip(_input.BackToBackHeaderText, _input.BackToBackTooltip)
+                    .Attr("data-sa-col", "qg"));
             }
 
             row.Append(new HtmlTag("th").AddClass("sa-sep sa-num").Text(_input.EaseHeaderText));
 
-            if (ShowCategories)
+            if (HasCategories)
             {
                 for (var i = 0; i < _input.CategoryLabels.Count; i++)
                 {
-                    var th = new HtmlTag("th").AddClass("sa-num").Text(_input.CategoryLabels[i]);
+                    var th = new HtmlTag("th").AddClass("sa-num")
+                        .Attr("data-sa-col", "cats")
+                        .Text(_input.CategoryLabels[i]);
                     if (i == 0) th.AddClass("sa-sep");
                     row.Append(th);
                 }
             }
 
-            if (ShowDays)
+            if (HasDays)
             {
                 for (var i = 0; i < _input.DayColumns.Count; i++)
                 {
                     var column = _input.DayColumns[i];
-                    var th = new HtmlTag("th").AddClass("sa-mid");
+                    var th = new HtmlTag("th").AddClass("sa-mid").Attr("data-sa-col", "days");
                     if (i == 0) th.AddClass("sa-sep");
 
                     th.Append(new HtmlTag("span").Text(column.Label ?? column.Date.ToString("ddd")));
@@ -351,30 +375,31 @@ namespace RotoMonsterUI
             row.Append(new HtmlTag("td").AddClass("sa-num sa-plain").Text(team.HomeGames.ToString()));
             row.Append(new HtmlTag("td").AddClass("sa-num sa-plain").Text(team.AwayGames.ToString()));
 
-            if (ShowQuality)
+            if (HasQuality)
             {
-                row.Append(CountCell(team.QualityGames));
-                row.Append(CountCell(team.BackToBacks));
+                row.Append(CountCell(team.QualityGames).Attr("data-sa-col", "qg"));
+                row.Append(CountCell(team.BackToBacks).Attr("data-sa-col", "qg"));
             }
 
             row.Append(EaseCell(EaseFor(team), true));
 
-            if (ShowCategories)
+            if (HasCategories)
             {
                 for (var i = 0; i < _input.CategoryLabels.Count; i++)
                 {
                     var value = i < team.CategoryEase.Count ? team.CategoryEase[i] : 0;
-                    var cell = EaseCell(value, false);
+                    var cell = EaseCell(value, false).Attr("data-sa-col", "cats");
                     if (i == 0) cell.AddClass("sa-sep");
                     row.Append(cell);
                 }
             }
 
-            if (ShowDays)
+            if (HasDays)
             {
                 for (var i = 0; i < _input.DayColumns.Count; i++)
                 {
-                    var cell = RenderDayCell(team, _input.DayColumns[i]);
+                    var cell = RenderDayCell(team, _input.DayColumns[i])
+                        .Attr("data-sa-col", "days");
                     if (i == 0) cell.AddClass("sa-sep");
                     row.Append(cell);
                 }
@@ -563,6 +588,65 @@ namespace RotoMonsterUI
 
             column.Append(list);
             return column;
+        }
+
+        private HtmlTag RenderColumnToggles()
+        {
+            var row = new HtmlTag("div").AddClass("sa-coltoggles");
+
+            row.Append(new HtmlTag("span").AddClass("sa-coltoggles-label").Text(_input.ColumnsLabel));
+
+            if (HasQuality)
+                row.Append(ColumnSwitch("saqg", "qg", _input.QualityToggleText, ShowQuality));
+
+            if (HasCategories)
+                row.Append(ColumnSwitch("sacats", "cats", _input.CategoryToggleText, ShowCategories));
+
+            if (HasDays)
+                row.Append(ColumnSwitch("sadays", "days", _input.DayToggleText, ShowDays));
+
+            return row;
+        }
+
+        private HtmlTag ColumnSwitch(string prefix, string col, string text, bool on)
+        {
+            var name = Key(prefix);
+            var label = new HtmlTag("label").AddClass("ms-switch").Attr("for", name);
+
+            var box = new HtmlTag("input")
+                .Attr("type", "checkbox")
+                .Attr("id", name)
+                .Attr("name", name)
+                .Attr("value", "1")
+                .Attr("data-sa-toggle", col);
+
+            if (on) box.Attr("checked", "checked");
+
+            label.Append(box);
+            label.Append(new HtmlTag("span").AddClass("ms-track"));
+            label.Append(new HtmlTag("span").Text(text));
+
+            return label;
+        }
+
+        private string ColumnScript()
+        {
+            var scope = "#schedule-analyzer-" + _input.Id;
+
+            return @"
+(function () {
+    var root = document.querySelector('" + scope + @"');
+    if (!root) return;
+
+    root.querySelectorAll('[data-sa-toggle]').forEach(function (box) {
+        box.addEventListener('change', function () {
+            root.classList.toggle('sa-hide-' + box.getAttribute('data-sa-toggle'),
+                !box.checked);
+        });
+    });
+
+})();
+";
         }
     }
 }
