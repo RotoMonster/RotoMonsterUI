@@ -7726,3 +7726,6 @@ a.display-columns-item--membership { cursor: pointer; }
 }
 
 .pp-below { margin-top: 0.9rem; }
+
+a.display-username { text-decoration: none; }
+a.display-username:hover { text-decoration: underline; }
