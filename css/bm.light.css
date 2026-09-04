@@ -6333,6 +6333,39 @@ a.display-columns-item--membership { cursor: pointer; }
    .dm-connect-status { font-size: 0.9rem; }
    
    .dm-input--pick { width: 84px; }
+   .dm-input--league { width: 132px; }
+   
+   .dm-field {
+       display: flex;
+       flex-direction: column;
+       gap: 0.2rem;
+   }
+   
+   .dm-field-label {
+       font-size: 0.66rem;
+       font-weight: 700;
+       color: var(--color-text-tertiary);
+       text-transform: uppercase;
+       letter-spacing: 0.4px;
+   }
+   
+   .dm-connect-row { align-items: flex-end; }
+   
+   .dm-connect-auth {
+       display: flex;
+       align-items: center;
+       gap: 0.4rem;
+       margin-top: 0.7rem;
+       padding-top: 0.6rem;
+       border-top: 1px solid rgba(var(--brand-primary-rgb), 0.2);
+       font-size: 0.78rem;
+       color: var(--color-text-tertiary);
+   }
+   
+   .dm-connect-auth a {
+       color: var(--brand-primary);
+       font-weight: 600;
+   }
    
    .dm-live-pick { font-size: 1.05rem; font-weight: 700; margin-right: 0.9rem; }
    .dm-live-meta { font-size: 0.82rem; color: var(--color-text-secondary); margin-right: 0.9rem; }

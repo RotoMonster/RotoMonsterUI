@@ -66,6 +66,8 @@ namespace RotoMonsterUI
             result.TableSettingsExpanded = settings.TableExpanded;
 
             result.PickNumber = Text("dmpick" + suffix, params_);
+            result.LeagueId = Text("dmleague" + suffix, params_);
+            result.SelectedDraftingTeamId = Text("dmteampick" + suffix, params_);
             result.ThirdRoundReversal = Checked("dmrev3" + suffix, params_);
             result.SecondRoundHighToLow = Checked("dmrev2" + suffix, params_);
             result.FifthRoundReversal = Checked("dmrev5" + suffix, params_);

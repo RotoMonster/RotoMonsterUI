@@ -138,14 +138,38 @@ namespace RotoMonsterUI
 
             var controls = new HtmlTag("div").AddClass("dm-connect-row");
 
-            controls.Append(new HtmlTag("input")
-                .AddClass("ms-input dm-input--pick")
-                .Attr("type", "text")
-                .Attr("id", Key("dmpick"))
-                .Attr("name", Key("dmpick"))
-                .Attr("placeholder", "Pick #")
-                .Attr("aria-label", "Your pick number")
-                .Attr("value", _input.PickNumber ?? ""));
+            if (_input.ShowLeagueId)
+            {
+                var value = string.IsNullOrEmpty(_input.LeagueId)
+                    ? _input.DefaultLeagueId
+                    : _input.LeagueId;
+
+                controls.Append(Field(
+                    _input.LeagueIdLabel,
+                    new HtmlTag("input")
+                        .AddClass("ms-input dm-input--league")
+                        .Attr("type", "text")
+                        .Attr("id", Key("dmleague"))
+                        .Attr("name", Key("dmleague"))
+                        .Attr("placeholder", _input.LeagueIdPlaceholder)
+                        .Attr("value", value ?? "")));
+            }
+
+            controls.Append(Field(
+                _input.PickNumberLabel,
+                new HtmlTag("input")
+                    .AddClass("ms-input dm-input--pick")
+                    .Attr("type", "text")
+                    .Attr("id", Key("dmpick"))
+                    .Attr("name", Key("dmpick"))
+                    .Attr("placeholder", _input.PickNumberPlaceholder)
+                    .Attr("value", _input.PickNumber ?? "")));
+
+            if (_input.DraftingTeams != null && _input.DraftingTeams.Count > 0)
+                controls.Append(Field(
+                    _input.DraftingTeamLabel,
+                    Select(Key("dmteampick"), _input.DraftingTeams,
+                        _input.SelectedDraftingTeamId)));
 
             controls.AppendHtml(new Button(_input.ConnectButtonText)
                 .WithStyle(ButtonStyle.Primary)
@@ -158,15 +182,57 @@ namespace RotoMonsterUI
             controls.Append(Switch(Key("dmrev5"), "5th round reversal", _input.FifthRoundReversal));
 
             block.Append(controls);
+
+            if (!string.IsNullOrEmpty(_input.AuthenticationUrl))
+            {
+                var auth = new HtmlTag("div").AddClass("dm-connect-auth");
+
+                if (!string.IsNullOrEmpty(_input.AuthenticationHintText))
+                    auth.Append(new HtmlTag("span").Text(_input.AuthenticationHintText));
+
+                auth.Append(new HtmlTag("a")
+                    .Attr("href", _input.AuthenticationUrl)
+                    .Text(_input.AuthenticationText));
+
+                block.Append(auth);
+            }
+
             return block;
+        }
+
+        private static HtmlTag Field(string label, HtmlTag control)
+        {
+            if (string.IsNullOrEmpty(label)) return control;
+
+            var wrap = new HtmlTag("div").AddClass("dm-field");
+            wrap.Append(new HtmlTag("span").AddClass("dm-field-label").Text(label));
+            wrap.Append(control);
+
+            return wrap;
         }
 
         private HtmlTag HiddenPick()
         {
-            return new HtmlTag("input")
+            var hidden = new HtmlTag("span");
+
+            hidden.Append(new HtmlTag("input")
                 .Attr("type", "hidden")
                 .Attr("name", Key("dmpick"))
-                .Attr("value", _input.PickNumber ?? "");
+                .Attr("value", _input.PickNumber ?? ""));
+
+            if (_input.ShowLeagueId)
+                hidden.Append(new HtmlTag("input")
+                    .Attr("type", "hidden")
+                    .Attr("name", Key("dmleague"))
+                    .Attr("value", _input.LeagueId ?? _input.DefaultLeagueId ?? ""));
+
+            if (_input.DraftingTeams != null && _input.DraftingTeams.Count > 0)
+                hidden.Append(new HtmlTag("input")
+                    .Attr("type", "hidden")
+                    .Attr("name", Key("dmteampick"))
+                    .Attr("value", _input.SelectedDraftingTeamId ?? ""));
+
+            return hidden;
         }
 
         private HtmlTag RenderDuringDraft()

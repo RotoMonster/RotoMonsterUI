@@ -27,6 +27,8 @@ namespace RotoMonsterUI
         public bool ColorByTier { get; set; }
 
         public string PickNumber { get; set; }
+        public string LeagueId { get; set; }
+        public string SelectedDraftingTeamId { get; set; }
         public bool ThirdRoundReversal { get; set; }
         public bool SecondRoundHighToLow { get; set; }
         public bool FifthRoundReversal { get; set; }

@@ -52,6 +52,23 @@ namespace RotoMonsterUI
         public string ColumnsSummary { get; set; }
 
         public string PickNumber { get; set; }
+        public string PickNumberLabel { get; set; } = "Your pick";
+        public string PickNumberPlaceholder { get; set; } = "Pick #";
+
+        public bool ShowLeagueId { get; set; }
+        public string LeagueId { get; set; }
+        public string LeagueIdLabel { get; set; } = "League ID";
+        public string LeagueIdPlaceholder { get; set; } = "League ID";
+        public string DefaultLeagueId { get; set; }
+
+        public List<MonsterOption> DraftingTeams { get; set; }
+        public string SelectedDraftingTeamId { get; set; }
+        public string DraftingTeamLabel { get; set; } = "Your team";
+
+        public string AuthenticationUrl { get; set; }
+        public string AuthenticationText { get; set; } = "Set up authentication";
+        public string AuthenticationHintText { get; set; }
+            = "Not connected to your provider?";
         public bool ThirdRoundReversal { get; set; }
         public bool SecondRoundHighToLow { get; set; }
         public bool FifthRoundReversal { get; set; }
