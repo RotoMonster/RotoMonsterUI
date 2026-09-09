@@ -63,19 +63,30 @@ namespace RotoMonsterUI
             if (_input.ShowAvatar)
                 wrapper.AppendHtml(RenderAvatar());
 
-            var tag = href == null
-                ? new HtmlTag("span").AddClass("display-username")
-                : new HtmlTag("a").AddClass("display-username").Attr("href", href);
-
-            if (href != null && !string.IsNullOrEmpty(_input.ProfileTarget))
-                tag.Attr("target", _input.ProfileTarget).Attr("rel", "noopener");
+            var name = new HtmlTag("span").AddClass("display-username");
 
             if (!string.IsNullOrEmpty(_input.CssClass))
-                tag.AddClass(_input.CssClass);
+                name.AddClass(_input.CssClass);
             else
-                tag.AddClass("display-username--default-color");
+                name.AddClass("display-username--default-color");
 
-            tag.Text(displayText);
+            name.Text(displayText);
+
+            HtmlTag tag;
+
+            if (href == null)
+            {
+                tag = name;
+            }
+            else
+            {
+                tag = new HtmlTag("a").AddClass("display-username-link").Attr("href", href);
+
+                if (!string.IsNullOrEmpty(_input.ProfileTarget))
+                    tag.Attr("target", _input.ProfileTarget).Attr("rel", "noopener");
+
+                tag.Append(name);
+            }
 
             if (!_input.ShowAvatar && !_input.TotalPostCount.HasValue)
                 return tag.ToString();
