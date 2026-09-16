@@ -8584,3 +8584,20 @@ a.display-username-link:hover .display-username { text-decoration: underline; }
     border: 1px solid rgba(0, 0, 0, 0.35);
     vertical-align: -2px;
 }
+
+.range-badge--stacked {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+}
+
+.range-badge--stacked .monster-bar-header-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 16px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--monster-bar-header-text);
+}

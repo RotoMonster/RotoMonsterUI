@@ -75,7 +75,12 @@ namespace RotoMonsterUI
             var wrap = new HtmlTag("div").AddClass("range-badge range-badge--monster range-badge--header");
 
             if (!string.IsNullOrEmpty(label))
-                wrap.Append(new HtmlTag("span").AddClass("range-badge-label").Text(label));
+            {
+                wrap.AddClass("range-badge--stacked");
+                wrap.Append(new HtmlTag("div")
+                    .AddClass("monster-bar-header-title")
+                    .Text(DecodeLabel(label)));
+            }
 
             var cells = new HtmlTag("div").AddClass("range-badge-cells");
 
