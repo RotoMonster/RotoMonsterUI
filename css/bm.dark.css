@@ -8694,3 +8694,9 @@ a.display-username-link:hover .display-username { text-decoration: underline; }
     letter-spacing: 0.02em;
     color: var(--monster-bar-header-label);
 }
+
+.modern-stats-table th.monster-bar-th,
+.rankings-table th.monster-bar-th {
+    padding-top: 0;
+    padding-bottom: 0;
+}
