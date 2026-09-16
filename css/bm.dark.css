@@ -8689,5 +8689,5 @@ a.display-username-link:hover .display-username { text-decoration: underline; }
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.02em;
-    color: var(--monster-bar-header-text);
+    color: var(--monster-bar-header-label);
 }
