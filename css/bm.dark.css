@@ -8678,15 +8678,18 @@ a.display-username-link:hover .display-username { text-decoration: underline; }
 .range-badge--stacked {
     flex-direction: column;
     align-items: stretch;
-    gap: 2px;
+    gap: 0;
+    padding-top: 0;
 }
 
 .range-badge--stacked .monster-bar-header-title {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 16px;
-    font-size: 10px;
+    line-height: 1;
+    padding: 0;
+    margin: 0;
+    font-size: 9px;
     font-weight: 700;
     letter-spacing: 0.02em;
     color: var(--monster-bar-header-label);
