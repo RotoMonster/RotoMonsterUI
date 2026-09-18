@@ -8705,3 +8705,23 @@ a.display-username-link:hover .display-username { text-decoration: underline; }
     padding-top: 0;
     padding-bottom: 0;
 }
+
+@media (max-width: 520px) {
+    .news-card-test-corner-group {
+        position: static;
+        margin: -0.75rem -1rem 0.6rem -1rem;
+        gap: 8px;
+    }
+    .news-card-test-status-corner {
+        border-radius: 10px 0 10px 0;
+        padding: 6px 14px;
+    }
+    .news-card-test-header {
+        padding-left: 0;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .news-card-test-header-left {
+        flex-wrap: wrap;
+    }
+}
