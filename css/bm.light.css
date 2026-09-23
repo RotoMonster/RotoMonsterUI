@@ -8636,3 +8636,103 @@ a.display-username-link:hover .display-username { text-decoration: underline; }
         flex-wrap: wrap;
     }
 }
+
+.player-shape-radar {
+    max-width: 420px;
+}
+.player-shape-radar-svg {
+    display: block;
+    overflow: visible;
+}
+.player-shape-radar-ring {
+    fill: none;
+    stroke: var(--color-border);
+    stroke-width: 1;
+}
+.player-shape-radar-axis {
+    stroke: var(--color-border);
+    stroke-width: 1;
+}
+.player-shape-radar-label {
+    fill: var(--color-text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+}
+.player-shape-radar-shape {
+    fill-opacity: 0.08;
+    stroke-width: 1.5;
+    stroke-opacity: 0.85;
+}
+.player-shape-radar-shape--selected {
+    fill-opacity: 0.2;
+    stroke-width: 2.5;
+    stroke-opacity: 1;
+}
+.player-shape-radar-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+}
+.player-shape-radar-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.player-shape-radar-legend-item--selected {
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+.player-shape-radar-swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+.player-shape-matches-wrap {
+    overflow-x: auto;
+}
+.player-shape-matches {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+.player-shape-matches th {
+    text-align: left;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--color-text-tertiary);
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--color-border);
+    white-space: nowrap;
+}
+.player-shape-matches td {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--color-border-light);
+    white-space: nowrap;
+}
+.player-shape-matches-rank {
+    display: flex;
+    align-items: center;
+}
+.player-shape-matches-name {
+    font-weight: 600;
+}
+.player-shape-matches-match {
+    font-weight: 700;
+}
+
+.player-shape-radar-dot {
+    stroke: var(--color-bg-card, #fff);
+    stroke-width: 1;
+}
+.player-shape-radar-dot:hover {
+    r: 6;
+}
+.player-shape-matches-tip {
+    border-bottom: 1px dotted currentColor;
+}
