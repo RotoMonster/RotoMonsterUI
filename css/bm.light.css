@@ -8736,3 +8736,53 @@ a.display-username-link:hover .display-username { text-decoration: underline; }
 .player-shape-matches-tip {
     border-bottom: 1px dotted currentColor;
 }
+
+.bm-native-select {
+    position: relative;
+    display: inline-block;
+    min-width: 200px;
+}
+.bm-native-select--wide {
+    min-width: 300px;
+}
+.bm-native-select-input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    padding: 7px 36px 7px 12px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    line-height: 1.3;
+    color: var(--color-text-primary);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    cursor: pointer;
+    color-scheme: light dark;
+    text-overflow: ellipsis;
+}
+.bm-native-select-input:hover {
+    border-color: var(--color-border-hover, var(--color-border));
+}
+.bm-native-select-input:focus {
+    outline: none;
+    border-color: var(--color-brand, #f97316);
+    box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+}
+.bm-native-select-arrow {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    width: 0;
+    height: 0;
+    margin-top: -2px;
+    pointer-events: none;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid var(--color-text-secondary);
+}
+.bm-native-select-input option {
+    color: var(--color-text-primary);
+    background: var(--color-bg-card);
+}

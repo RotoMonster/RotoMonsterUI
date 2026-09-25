@@ -14,6 +14,7 @@ namespace RotoMonsterUI
         private bool _showLabel;
         private bool _autoPostBack = true;
         private bool _wide;
+        private bool _noJs;
 
         public Dropdown(string label, BootstrapVersion version = BootstrapVersion.V4)
         {
@@ -64,9 +65,15 @@ namespace RotoMonsterUI
             return this;
         }
 
+        public Dropdown WithNoJS()
+        {
+            _noJs = true;
+            return this;
+        }
+
         public string Id => _id ?? _name ?? "";
         public string SelectedValue => _selectedValue;
-
+        public bool IsNoJS => _noJs;
 
         public string Render()
         {
@@ -76,6 +83,12 @@ namespace RotoMonsterUI
             {
                 var label = new HtmlTag("div").AddClass("modern-filter-label").Text(_label);
                 outerWrapper.Append(label);
+            }
+
+            if (_noJs)
+            {
+                outerWrapper.Append(BuildNativeWrapper());
+                return outerWrapper.ToString();
             }
 
             var wrapper = new HtmlTag("div").AddClass("bm-custom-select");
@@ -117,7 +130,38 @@ namespace RotoMonsterUI
                 options.Append(option);
             }
 
+            wrapper.Append(trigger);
+            wrapper.Append(options);
+            wrapper.Append(BuildSelect());
+
+            outerWrapper.Append(wrapper);
+            return outerWrapper.ToString();
+        }
+
+        private HtmlTag BuildNativeWrapper()
+        {
+            var wrapper = new HtmlTag("div").AddClass("bm-native-select");
+            if (_wide) wrapper.AddClass("bm-native-select--wide");
+
+            if (!string.IsNullOrEmpty(_id))
+                wrapper.Attr("id", _id);
+
+            if (!string.IsNullOrEmpty(_name))
+                wrapper.Attr("data-name", _name);
+
+            wrapper.Append(BuildSelect());
+            wrapper.Append(new HtmlTag("span").AddClass("bm-native-select-arrow"));
+
+            return wrapper;
+        }
+
+        private HtmlTag BuildSelect()
+        {
             var select = new HtmlTag("select");
+
+            if (_noJs)
+                select.AddClass("bm-native-select-input");
+
             if (!string.IsNullOrEmpty(_name))
             {
                 select.Attr("name", _name);
@@ -128,6 +172,16 @@ namespace RotoMonsterUI
                     select.Attr("onchange", $"__doPostBack('{_name}','',this.form)");
                     select.Attr("language", "javascript");
                 }
+            }
+
+            if (_noJs && _showLabel == false && !string.IsNullOrEmpty(_label) && string.IsNullOrEmpty(_selectedValue))
+            {
+                var placeholder = new HtmlTag("option")
+                    .Attr("value", "")
+                    .Attr("disabled", "disabled")
+                    .Attr("selected", "selected")
+                    .Text(_label);
+                select.Append(placeholder);
             }
 
             foreach (var item in _items)
@@ -142,12 +196,7 @@ namespace RotoMonsterUI
                 select.Append(selectOption);
             }
 
-            wrapper.Append(trigger);
-            wrapper.Append(options);
-            wrapper.Append(select);
-
-            outerWrapper.Append(wrapper);
-            return outerWrapper.ToString();
+            return select;
         }
     }
 }
