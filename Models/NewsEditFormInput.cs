@@ -35,6 +35,8 @@ namespace RotoMonsterUI
 
         public bool IsUnofficial { get; set; }
 
+        public bool UseNoJsDropdowns { get; set; }
+
         public NewsLevel NewsLevel { get; set; } = NewsLevel.Low;
 
         public List<string> StatusTypeOptions { get; set; } = new List<string>();

@@ -33,6 +33,7 @@ namespace RotoMonsterUI
 
             // Status
             var statusDropdown = new Dropdown("Status").WithName(Key("status")).WithoutPostBack();
+            if (_input.UseNoJsDropdowns) statusDropdown.WithNoJS();
             foreach (var opt in _input.StatusTypeOptions)
                 statusDropdown.AddItem(opt, opt);
             statusDropdown.WithSelectedValue(_input.StatusTypeText);
@@ -40,6 +41,7 @@ namespace RotoMonsterUI
 
             // Tag + Set
             var tagDropdown = new Dropdown("Tag").WithName(Key("tag")).WithoutPostBack();
+            if (_input.UseNoJsDropdowns) tagDropdown.WithNoJS();
             foreach (var opt in _input.StatusTypeTagOptions)
                 tagDropdown.AddItem(opt, opt);
             tagDropdown.WithSelectedValue(_input.StatusTypeTag);

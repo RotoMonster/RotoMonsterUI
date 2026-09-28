@@ -496,6 +496,7 @@ private HtmlTag RenderHeader()
             {
                 KeyPrefix = "tweet",
                 KeyId = _input.TweetId.ToString(),
+                UseNoJsDropdowns = true,
                 Buttons = new List<NewsEditFormButton>
                 {
                     new NewsEditFormButton { Text = "Post", Style = ButtonStyle.Primary, Name = Key("tweetpost"), UsePostBack = true },
