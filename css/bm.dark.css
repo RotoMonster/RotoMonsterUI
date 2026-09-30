@@ -5523,12 +5523,7 @@ a.modern-filter-btn:hover {
     font-size: 0.66rem; color: var(--color-text-light);
     font-variant-numeric: tabular-nums;
 }
-.display-columns-group-all {
-    margin-left: auto; opacity: 0; transition: opacity 0.15s ease;
-    background: none; border: 0; padding: 0; cursor: pointer;
-    font-size: 0.66rem; color: var(--brand-primary);
-}
-.display-columns-group:hover .display-columns-group-all { opacity: 1; }
+
 .display-columns-item {
     display: flex; align-items: center; gap: 8px;
     padding: 4px 7px; margin: 0 -7px;

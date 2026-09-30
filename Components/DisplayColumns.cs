@@ -53,7 +53,7 @@ namespace RotoMonsterUI
 
         private HtmlTag RenderSearchBar()
         {
-            if (!_input.ShowSearch && !_input.ShowSelectAll
+            if (!_input.ShowSearch && !_input.ShowClearAll
                 && string.IsNullOrEmpty(_input.CopyToAllButtonText)
                 && !(_input.ShowDefaults && HasDefaults())) return null;
 
@@ -79,11 +79,8 @@ namespace RotoMonsterUI
 
             bar.Append(new HtmlTag("span").AddClass("display-columns-bar-spacer"));
 
-            if (_input.ShowSelectAll)
-            {
-                bar.Append(BarLink("Select all", "all"));
+            if (_input.ShowClearAll)
                 bar.Append(BarLink("Clear all", "none"));
-            }
 
             if (_input.ShowDefaults && HasDefaults() && !string.IsNullOrEmpty(_input.UseDefaultsText))
                 bar.Append(BarLink(_input.UseDefaultsText, "default"));
@@ -150,13 +147,6 @@ namespace RotoMonsterUI
                 head.Append(new HtmlTag("span")
                     .AddClass("display-columns-group-count")
                     .Text(selectable.Count(i => i.IsChecked) + "/" + selectable.Count));
-
-            if (_input.ShowSelectAll && selectable.Count > 0)
-                head.Append(new HtmlTag("button")
-                    .Attr("type", "button")
-                    .AddClass("display-columns-group-all")
-                    .Attr("data-dc-groupall", "1")
-                    .Text("all"));
 
             block.Append(head);
 

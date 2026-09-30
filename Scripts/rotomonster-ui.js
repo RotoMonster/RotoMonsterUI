@@ -1396,9 +1396,6 @@ document.addEventListener('click', function (e) {
                 var count = group.querySelector('.display-columns-group-count');
                 if (count) count.textContent = checked + '/' + boxes.length;
 
-                var all = group.querySelector('.display-columns-group-all');
-                if (all) all.textContent = (boxes.length && checked === boxes.length) ? 'none' : 'all';
-
                 boxes.forEach(function (b) {
                     var row = b.closest('.display-columns-item');
                     if (row) row.classList.toggle('display-columns-item--on', b.checked);
@@ -1476,17 +1473,6 @@ document.addEventListener('click', function (e) {
             return;
         }
 
-        var groupAll = e.target.closest('[data-dc-groupall]');
-        if (groupAll) {
-            e.preventDefault();
-            var group = groupAll.closest('.display-columns-group');
-            var boxes = boxesIn(group);
-            var allOn = boxes.length > 0 && boxes.every(function (b) { return b.checked; });
-            boxes.forEach(function (b) { b.checked = !allOn; });
-            refresh(wrapOf(group));
-            return;
-        }
-
         var setAll = e.target.closest('[data-dc-setall]');
         if (setAll) {
             e.preventDefault();
@@ -1494,9 +1480,8 @@ document.addEventListener('click', function (e) {
             if (!target) return;
             var mode = setAll.getAttribute('data-dc-setall');
             boxesIn(target).forEach(function (b) {
-                b.checked = mode === 'all' ? true
-                    : mode === 'none' ? false
-                    : b.hasAttribute('data-dc-default');
+                if (mode === 'none') b.checked = false;
+                else if (mode === 'default' && b.hasAttribute('data-dc-default')) b.checked = true;
             });
             refresh(target);
         }

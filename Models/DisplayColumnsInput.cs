@@ -26,7 +26,7 @@ namespace RotoMonsterUI
         public bool ShowSearch { get; set; } = true;
         public string SearchPlaceholder { get; set; } = "Find a column...";
 
-        public bool ShowSelectAll { get; set; } = true;
+        public bool ShowClearAll { get; set; } = true;
         public bool ShowGroupCounts { get; set; } = true;
 
         public bool ShowFooter { get; set; } = true;
