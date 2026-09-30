@@ -9,6 +9,7 @@ namespace RotoMonsterUI
         public bool IsChecked { get; set; }
         public string Tooltip { get; set; }
         public bool IsMembership { get; set; }
+        public bool IsDefault { get; set; }
     }
 
     public class ColumnGroup
@@ -32,6 +33,13 @@ namespace RotoMonsterUI
         public string ApplyButtonText { get; set; } = "Apply";
         public string ResetButtonText { get; set; } = "Reset";
         public string SaveButtonText { get; set; } = "Save";
+
+        public string CopyToAllButtonText { get; set; } = "Copy to all leagues";
+        public string CopyToAllConfirmText { get; set; } = "Copy these columns to all of your leagues? This replaces the columns saved for each league.";
+
+        public bool ShowDefaults { get; set; } = true;
+        public string UseDefaultsText { get; set; } = "Use defaults";
+        public string DefaultTagText { get; set; } = "default";
 
         public int ColumnCount { get; set; } = 3;
 

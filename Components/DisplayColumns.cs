@@ -53,7 +53,9 @@ namespace RotoMonsterUI
 
         private HtmlTag RenderSearchBar()
         {
-            if (!_input.ShowSearch && !_input.ShowSelectAll) return null;
+            if (!_input.ShowSearch && !_input.ShowSelectAll
+                && string.IsNullOrEmpty(_input.CopyToAllButtonText)
+                && !(_input.ShowDefaults && HasDefaults())) return null;
 
             var bar = new HtmlTag("div").AddClass("display-columns-bar");
 
@@ -83,7 +85,26 @@ namespace RotoMonsterUI
                 bar.Append(BarLink("Clear all", "none"));
             }
 
+            if (_input.ShowDefaults && HasDefaults() && !string.IsNullOrEmpty(_input.UseDefaultsText))
+                bar.Append(BarLink(_input.UseDefaultsText, "default"));
+
+            if (!string.IsNullOrEmpty(_input.CopyToAllButtonText))
+                bar.AppendHtml(new Button(_input.CopyToAllButtonText)
+                    .WithStyle(ButtonStyle.Secondary)
+                    .WithName(Key("dccopyall"))
+                    .WithPostBack()
+                    .WithConfirm(_input.CopyToAllConfirmText)
+                    .Render());
+
             return bar;
+        }
+
+        private bool HasDefaults()
+        {
+            return (_input.Groups ?? new List<ColumnGroup>())
+                .Where(g => g != null)
+                .SelectMany(g => g.Items ?? new List<ColumnItem>())
+                .Any(i => i != null && !i.IsMembership && i.IsDefault);
         }
 
         private HtmlTag BarLink(string text, string mode)
@@ -161,12 +182,18 @@ namespace RotoMonsterUI
                 .Attr("value", "1");
 
             if (item.IsChecked) box.Attr("checked", "checked");
+            if (item.IsDefault) box.Attr("data-dc-default", "1");
 
             row.Append(box);
 
             row.Append(new HtmlTag("span")
                 .AddClass("display-columns-item-text")
                 .Text(item.Label ?? ""));
+
+            if (_input.ShowDefaults && item.IsDefault && !string.IsNullOrEmpty(_input.DefaultTagText))
+                row.Append(new HtmlTag("span")
+                    .AddClass("display-columns-default-tag")
+                    .Text(_input.DefaultTagText));
 
             var tip = RenderTooltip(item);
             if (tip != null) row.Append(tip);

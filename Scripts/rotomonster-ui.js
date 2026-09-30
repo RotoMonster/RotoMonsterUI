@@ -1492,8 +1492,12 @@ document.addEventListener('click', function (e) {
             e.preventDefault();
             var target = document.getElementById(setAll.getAttribute('data-dc-target'));
             if (!target) return;
-            var on = setAll.getAttribute('data-dc-setall') === 'all';
-            boxesIn(target).forEach(function (b) { b.checked = on; });
+            var mode = setAll.getAttribute('data-dc-setall');
+            boxesIn(target).forEach(function (b) {
+                b.checked = mode === 'all' ? true
+                    : mode === 'none' ? false
+                    : b.hasAttribute('data-dc-default');
+            });
             refresh(target);
         }
     });

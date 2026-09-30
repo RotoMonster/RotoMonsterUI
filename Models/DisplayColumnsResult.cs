@@ -8,5 +8,6 @@ namespace RotoMonsterUI
         public bool ApplyPressed { get; set; }
         public bool ResetPressed { get; set; }
         public bool SavePressed { get; set; }
+        public bool CopyToAllPressed { get; set; }
     }
 }

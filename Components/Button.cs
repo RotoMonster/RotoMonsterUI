@@ -68,6 +68,14 @@ namespace RotoMonsterUI
             return this;
         }
 
+        private string _confirm;
+
+        public Button WithConfirm(string message)
+        {
+            _confirm = message;
+            return this;
+        }
+
         public string Render()
         {
             var tag = new HtmlTag("button").AddClass("modern-filter-btn");
@@ -98,6 +106,9 @@ namespace RotoMonsterUI
                     tag.Attr("onclick", "__doPostBack('" + _name + "','',this.form)");
                 }
             }
+
+            if (!string.IsNullOrEmpty(_confirm))
+                tag.Attr("data-bm-confirm", _confirm);
 
             return tag.Text(_text).ToString();
         }

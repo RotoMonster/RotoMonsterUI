@@ -8786,3 +8786,20 @@ a.display-username-link:hover .display-username { text-decoration: underline; }
     color: var(--color-text-primary);
     background: var(--color-bg-card);
 }
+
+.display-columns-default-tag {
+    margin-left: 6px;
+    padding: 0 5px;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    line-height: 1.5;
+}
+.display-columns-bar .modern-filter-btn {
+    padding: 5px 12px;
+    font-size: 0.78rem;
+}
