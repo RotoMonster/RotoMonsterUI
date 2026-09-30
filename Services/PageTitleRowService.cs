@@ -14,43 +14,40 @@ namespace RotoMonsterUI
         private readonly PlayerSearchService _playerSearchService = new PlayerSearchService();
         private readonly FavoritesToolbarService _favoritesToolbarService = new FavoritesToolbarService();
 
-        public PageTitleRowResult Process(Dictionary<string, string> formValues)
-        {
-            var result = new PageTitleRowResult();
+public PageTitleRowResult Process(Dictionary<string, string> formValues)
+{
+    var result = new PageTitleRowResult();
 
-            if (formValues == null)
-                return result;
+    if (formValues == null)
+        return result;
 
-            // League selection.
-            if (formValues.TryGetValue(LeagueDropdownName, out var leagueValue)
-                && !string.IsNullOrEmpty(leagueValue))
-            {
-                result.SelectedLeagueValue = leagueValue;
-            }
+    formValues.TryGetValue("__EVENTTARGET", out var eventTarget);
 
-            // Refresh rosters
-            formValues.TryGetValue("__EVENTTARGET", out var eventTarget);
-            if (formValues.ContainsKey(RefreshRostersName) || eventTarget == RefreshRostersName)
-                result.RefreshRostersClicked = true;
+    if (eventTarget == LeagueDropdownName
+        && formValues.TryGetValue(LeagueDropdownName, out var leagueValue)
+        && !string.IsNullOrEmpty(leagueValue))
+    {
+        result.SelectedLeagueValue = leagueValue;
+    }
 
-            if (formValues.ContainsKey(RefreshAllRostersName) || eventTarget == RefreshAllRostersName)
-                result.RefreshAllRostersClicked = true;
+    if (formValues.ContainsKey(RefreshRostersName) || eventTarget == RefreshRostersName)
+        result.RefreshRostersClicked = true;
 
-            // Dark mode toggle 
-            if (formValues.ContainsKey(DarkModeToggleName) || eventTarget == DarkModeToggleName)
-                result.DarkModeTogglePressed = true;
+    if (formValues.ContainsKey(RefreshAllRostersName) || eventTarget == RefreshAllRostersName)
+        result.RefreshAllRostersClicked = true;
 
-            // Player search 
-            var playerResult = _playerSearchService.Process(PlayerSearchId, formValues);
-            result.SelectedPlayerId = playerResult.SelectedPlayerId;
+    if (formValues.ContainsKey(DarkModeToggleName) || eventTarget == DarkModeToggleName)
+        result.DarkModeTogglePressed = true;
 
-            // Favorites toolbar 
-            var favResult = _favoritesToolbarService.Process(FavoritesId, formValues);
-            result.AddFavoritePageId = favResult.AddPageId;
-            result.HideFavoritePageId = favResult.HidePageId;
-            result.ReorderedFavoritePageIds = favResult.ReorderedPageIds;
+    var playerResult = _playerSearchService.Process(PlayerSearchId, formValues);
+    result.SelectedPlayerId = playerResult.SelectedPlayerId;
 
-            return result;
-        }
+    var favResult = _favoritesToolbarService.Process(FavoritesId, formValues);
+    result.AddFavoritePageId = favResult.AddPageId;
+    result.HideFavoritePageId = favResult.HidePageId;
+    result.ReorderedFavoritePageIds = favResult.ReorderedPageIds;
+
+    return result;
+}
     }
 }
