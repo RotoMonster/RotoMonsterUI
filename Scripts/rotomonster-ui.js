@@ -873,6 +873,9 @@ document.addEventListener('input', function (e) {
     var resultsEl = document.getElementById(baseId + '-results');
     if (!dataEl || !resultsEl) return;
 
+    var typedSelected = document.getElementById(baseId + '-selected');
+    if (typedSelected) typedSelected.value = '';
+
     var query = e.target.value.trim().toLowerCase();
     resultsEl.innerHTML = '';
     if (!query) { resultsEl.style.display = 'none'; return; }
@@ -883,7 +886,6 @@ document.addEventListener('input', function (e) {
     var max = parseInt(wrapper.getAttribute('data-maxresults'), 10) || 8;
     var urlFormat = wrapper.getAttribute('data-urlformat');
 
-    // Match on player name first, then on any alias (aliases are searchable but never shown).
     var nameMatches = [];
     var aliasMatches = [];
     for (var pi = 0; pi < players.length; pi++) {
@@ -919,6 +921,7 @@ document.addEventListener('input', function (e) {
             if (searchInput) searchInput.value = p.name;
             resultsEl.innerHTML = '';
             resultsEl.style.display = 'none';
+            if (wrapper.getAttribute('data-postback') === '0') return;
             if (typeof __doPostBack === 'function') __doPostBack(baseId + '-selected', '');
         });
         resultsEl.appendChild(li);

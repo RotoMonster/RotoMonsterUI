@@ -66,10 +66,20 @@ namespace RotoMonsterUI
 
             wrapper.Attr("data-maxresults", _input.MaxResults.ToString());
 
+            var noPostBack = !_input.PostBackOnSelect && string.IsNullOrEmpty(_input.UrlFormat);
+            if (noPostBack)
+                wrapper.Attr("data-postback", "0");
+
+            var selected = _input.SelectedPlayerId.HasValue
+                ? (_input.AvailablePlayers ?? new System.Collections.Generic.List<DisplayPlayerInput>())
+                    .Find(p => p.PlayerId == _input.SelectedPlayerId.Value)
+                : null;
+
             var searchBox = new SearchBox()
                 .WithId($"{_input.Id}-search")
                 .WithName($"{_input.Id}-search")
                 .WithPlaceholder(_input.Placeholder)
+                .WithValue(selected != null ? selected.PlayerName : "")
                 .Render();
             wrapper.AppendHtml(searchBox);
 
@@ -77,6 +87,8 @@ namespace RotoMonsterUI
                 .Attr("type", "hidden")
                 .Attr("id", $"{_input.Id}-selected")
                 .Attr("name", $"{_input.Id}-selected");
+            if (selected != null)
+                hiddenSelected.Attr("value", selected.PlayerId.ToString());
             wrapper.Append(hiddenSelected);
 
             var resultsList = new HtmlTag("ul")
@@ -84,6 +96,13 @@ namespace RotoMonsterUI
                 .Attr("id", $"{_input.Id}-results")
                 .Attr("style", "display:none;");
             wrapper.Append(resultsList);
+
+            if (noPostBack && _input.ShowSelectButton && !string.IsNullOrEmpty(_input.SelectButtonText))
+                wrapper.AppendHtml(new Button(_input.SelectButtonText)
+                    .WithStyle(ButtonStyle.Secondary)
+                    .WithName($"{_input.Id}-select")
+                    .WithPostBack()
+                    .Render());
 
             wrapper.AppendHtml($"<script type=\"application/json\" id=\"{_input.Id}-data\">{SerializePlayersJson()}</script>");
 
