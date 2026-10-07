@@ -43,6 +43,22 @@ namespace RotoMonsterUI
                     result.UserComment = params_[key];
             }
 
+            foreach (var key in params_.Keys)
+            {
+                if (key.StartsWith("replysubmit_") && int.TryParse(key.Substring("replysubmit_".Length), out var replyId))
+                {
+                    params_.TryGetValue("reply_" + replyId, out var text);
+                    text = (text ?? "").Trim();
+                    if (text.Length > 0)
+                    {
+                        result.ReplyPressed = true;
+                        result.ReplyCommentId = replyId;
+                        result.ReplyText = text;
+                    }
+                    break;
+                }
+            }
+
             return result;
         }
     }

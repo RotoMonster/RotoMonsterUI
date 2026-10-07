@@ -8825,3 +8825,41 @@ a.display-username-link:hover .display-username { text-decoration: underline; }
 .player-search-chip-clear:hover { opacity: 1; }
 .player-search:has(> .modern-filter-btn) { display: inline-flex; align-items: center; gap: 8px; }
 .player-search > .modern-filter-btn { flex: 0 0 auto; }
+
+.comment-card-btn-reply {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    color: var(--color-text-secondary, #64748b);
+}
+
+.comment-card-btn-reply:hover,
+.comment-card-btn-reply[aria-expanded="true"] {
+    color: var(--brand-primary, #2563eb);
+}
+
+.comment-card-reply {
+    margin-top: 8px;
+    display: grid;
+    gap: 6px;
+}
+
+.comment-card-reply[hidden] {
+    display: none;
+}
+
+.comment-card-reply-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+}
+
+.comment-card-btn-cancel {
+    font-size: 0.8rem;
+}
+
+.comment-card-btn-post:disabled {
+    opacity: 0.5;
+    cursor: default;
+}

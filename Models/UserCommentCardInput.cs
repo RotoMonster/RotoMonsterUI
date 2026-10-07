@@ -26,5 +26,12 @@ namespace RotoMonsterUI
 
         public NewsCardSport Sport { get; set; } = NewsCardSport.NBA;
         public bool IsDarkMode { get; set; }
+
+        public bool ShowReply { get; set; } = false;
+        public string ReplyButtonText { get; set; } = "Reply";
+        public string ReplyPlaceholder { get; set; } = "Write a reply...";
+        public string ReplySubmitText { get; set; } = "Submit";
+        public string ReplyCancelText { get; set; } = "Cancel";
+        public int ReplyMaxLength { get; set; } = 1000;
     }
 }

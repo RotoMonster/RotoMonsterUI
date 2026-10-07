@@ -10,5 +10,9 @@ namespace RotoMonsterUI
         public bool PostPressed { get; set; } = false;
         public string UserComment { get; set; }
         public int? PostCommentId { get; set; }
+
+        public bool ReplyPressed { get; set; } = false;
+        public int? ReplyCommentId { get; set; }
+        public string ReplyText { get; set; }
     }
 }

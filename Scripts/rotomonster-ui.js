@@ -1518,3 +1518,42 @@ document.addEventListener('click', function (e) {
     btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
 });
  
+document.addEventListener('click', function (e) {
+    var toggle = e.target.closest('[data-cc-reply-toggle]');
+    if (toggle) {
+        e.preventDefault();
+        var id = toggle.getAttribute('data-cc-reply-toggle');
+        var area = document.querySelector('[data-cc-reply="' + id + '"]');
+        if (!area) return;
+        var open = area.hasAttribute('hidden');
+        if (open) area.removeAttribute('hidden'); else area.setAttribute('hidden', 'hidden');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open) {
+            var box = area.querySelector('textarea');
+            if (box) box.focus();
+        }
+        return;
+    }
+
+    var cancel = e.target.closest('[data-cc-reply-cancel]');
+    if (cancel) {
+        e.preventDefault();
+        var cid = cancel.getAttribute('data-cc-reply-cancel');
+        var carea = document.querySelector('[data-cc-reply="' + cid + '"]');
+        if (!carea) return;
+        var cbox = carea.querySelector('textarea');
+        if (cbox) cbox.value = '';
+        var csubmit = carea.querySelector('button[type="submit"]');
+        if (csubmit) csubmit.disabled = true;
+        carea.setAttribute('hidden', 'hidden');
+        var ctoggle = document.querySelector('[data-cc-reply-toggle="' + cid + '"]');
+        if (ctoggle) ctoggle.setAttribute('aria-expanded', 'false');
+    }
+});
+
+document.addEventListener('input', function (e) {
+    if (!e.target.classList || !e.target.classList.contains('comment-card-reply-text')) return;
+    var area = e.target.closest('.comment-card-reply');
+    var submit = area ? area.querySelector('button[type="submit"]') : null;
+    if (submit) submit.disabled = e.target.value.trim().length === 0;
+});

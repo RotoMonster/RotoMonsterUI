@@ -22,7 +22,6 @@ namespace RotoMonsterUI
             if (_input.ShowPlayerInfo && _input.DisplayPlayerInput != null
                 && string.IsNullOrEmpty(_input.DisplayPlayerInput.TeamColor))
             {
-
                 _input.DisplayPlayerInput.TeamColor = _input.Sport == NewsCardSport.NBA
                     ? TeamColorHelper.GetNbaTeamColorVar(_input.DisplayPlayerInput.TeamCode)
                     : TeamColorHelper.GetTeamColorVar(_input.DisplayPlayerInput.TeamCode);
@@ -32,23 +31,18 @@ namespace RotoMonsterUI
 
             var ageShadeColor = ColorHelper.GetAgeShadeHex(_input.TimeSinceCreated);
             bool isShaded = ageShadeColor != null;
-            // Width lives in CSS so it's one place to adjust; only the color changes here.
-            // Only override while it's shaded - once it expires the card's normal border comes back.
             if (isShaded)
             {
                 card.AddClass("card-age-shade");
                 card.Attr("style", $"border-color:{ageShadeColor};");
             }
 
-            // Player title row
             if (_input.ShowPlayerInfo && _input.DisplayPlayerInput != null)
             {
                 var titleRow = new HtmlTag("div").AddClass("comment-card-title-row d-flex justify-content-between align-items-center");
 
                 var displayPlayerInput = _input.DisplayPlayerInput;
                 var playerDisplay = new DisplayPlayer(displayPlayerInput).Render();
-                // Badge goes inside the player group, not as its own flex child - a third
-                // child would break justify-content-between and center the player name.
                 var playerTitle = new HtmlTag("span").AddClass("comment-card-player d-flex align-items-center gap-2");
                 if (_input.IsNew) playerTitle.AppendHtml(NewBadgeHtml());
                 playerTitle.AppendHtml(playerDisplay);
@@ -75,10 +69,9 @@ namespace RotoMonsterUI
 
                 card.Append(titleRow);
             }
-           
+
             var usernameRow = new HtmlTag("div").AddClass("comment-card-username d-flex align-items-center gap-2");
 
-            // Badge keeps its own background/text color regardless of shading - it already has enough contrast on its own.
             if (_input.IsNew && !(_input.ShowPlayerInfo && _input.DisplayPlayerInput != null))
                 usernameRow.AppendHtml(NewBadgeHtml());
 
@@ -92,11 +85,9 @@ namespace RotoMonsterUI
 
             card.Append(usernameRow);
 
-            // Comment text
             var commentText = new HtmlTag("div").AddClass("comment-card-text").Text(_input.CommentText);
             card.Append(commentText);
 
-            // Actions row - vote buttons and delete icon keep their own styling (borders/explicit colors already read fine on yellow)
             var actionsRow = new HtmlTag("div").AddClass("comment-card-actions");
 
             if (_input.ShowUpDownControls)
@@ -113,6 +104,18 @@ namespace RotoMonsterUI
                     ForceDarkText = false
                 }).Render();
                 actionsRow.Append(new HtmlTag("span").AppendHtml(voteControl));
+            }
+
+            if (_input.ShowReply)
+            {
+                var replyBtn = new HtmlTag("button")
+                    .AddClass("comment-card-btn comment-card-btn-reply")
+                    .Attr("type", "button")
+                    .Attr("data-cc-reply-toggle", _input.CommentId.ToString())
+                    .Attr("aria-expanded", "false");
+                replyBtn.AppendHtml("<i class='fas fa-reply'></i>");
+                replyBtn.Append(new HtmlTag("span").Text(_input.ReplyButtonText));
+                actionsRow.Append(replyBtn);
             }
 
             if (_input.UserCanDelete)
@@ -137,7 +140,38 @@ namespace RotoMonsterUI
 
             card.Append(actionsRow);
 
-            // Comment input area (if expanded)
+            if (_input.ShowReply)
+            {
+                var replyArea = new HtmlTag("div")
+                    .AddClass("comment-card-reply")
+                    .Attr("data-cc-reply", _input.CommentId.ToString())
+                    .Attr("hidden", "hidden");
+
+                var replyText = new HtmlTag("textarea")
+                    .AddClass("comment-card-textarea comment-card-reply-text")
+                    .Attr("name", $"reply_{_input.CommentId}")
+                    .Attr("rows", "3")
+                    .Attr("maxlength", _input.ReplyMaxLength.ToString())
+                    .Attr("placeholder", _input.ReplyPlaceholder);
+
+                var buttons = new HtmlTag("div").AddClass("comment-card-reply-buttons");
+                buttons.Append(new HtmlTag("button")
+                    .AddClass("comment-card-btn comment-card-btn-cancel")
+                    .Attr("type", "button")
+                    .Attr("data-cc-reply-cancel", _input.CommentId.ToString())
+                    .Text(_input.ReplyCancelText));
+                buttons.Append(new HtmlTag("button")
+                    .AddClass("comment-card-btn comment-card-btn-post")
+                    .Attr("type", "submit")
+                    .Attr("name", $"replysubmit_{_input.CommentId}")
+                    .Attr("disabled", "disabled")
+                    .Text(_input.ReplySubmitText));
+
+                replyArea.Append(replyText);
+                replyArea.Append(buttons);
+                card.Append(replyArea);
+            }
+
             if (_input.IsCommentExpanded)
             {
                 var expandedArea = new HtmlTag("div").AddClass("comment-card-expanded");
