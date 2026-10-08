@@ -18,6 +18,7 @@ namespace RotoMonsterUI
         public string ErrorMessage { get; set; }
         public List<SupportTicketLink> MyTickets { get; set; } = new List<SupportTicketLink>();
         public string SubmitText { get; set; } = "Send request";
+        public bool ShowSubject { get; set; } = false;
     }
 
     public class SupportTicketLink

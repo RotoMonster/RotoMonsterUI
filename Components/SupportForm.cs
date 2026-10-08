@@ -63,7 +63,8 @@ namespace RotoMonsterUI
             AppendError(categoryGroup, "category");
             body.Append(categoryGroup);
 
-            body.Append(Field("Subject", id + "_subject", "text", _input.Subject, "subject", 150));
+            if (_input.ShowSubject)
+                body.Append(Field("Subject", id + "_subject", "text", _input.Subject, "subject", 150));
 
             var detailsGroup = new HtmlTag("div").AddClass("support-field");
             detailsGroup.Append(new HtmlTag("label").AddClass("support-label").Attr("for", id + "_description").Text("Details"));

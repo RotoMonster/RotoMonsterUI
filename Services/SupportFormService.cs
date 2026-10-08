@@ -49,14 +49,34 @@ namespace RotoMonsterUI
 
             if (!allowed.Contains(result.Category)) result.Errors["category"] = "Pick a category.";
 
-            if (result.Subject.Length == 0) result.Errors["subject"] = "Enter a subject.";
-            else if (result.Subject.Length > 150) result.Errors["subject"] = "Keep the subject under 150 characters.";
+            var subjectShown = params_.ContainsKey(id + "_subject");
+            if (subjectShown)
+            {
+                if (result.Subject.Length == 0) result.Errors["subject"] = "Enter a subject.";
+                else if (result.Subject.Length > 150) result.Errors["subject"] = "Keep the subject under 150 characters.";
+            }
+            else
+            {
+                result.Subject = BuildSubject(result.Category, result.Description);
+            }
 
             if (result.Description.Length < 10) result.Errors["description"] = "Tell us a little more (at least 10 characters).";
             else if (result.Description.Length > 5000) result.Errors["description"] = "Keep the details under 5000 characters.";
 
             result.IsValid = result.Errors.Count == 0;
             return result;
+        }
+
+        public static string BuildSubject(string category, string description)
+        {
+            var text = Regex.Replace(description ?? "", @"\s+", " ").Trim();
+            if (text.Length > 80)
+            {
+                var cut = text.LastIndexOf(' ', 80);
+                text = (cut > 40 ? text.Substring(0, cut) : text.Substring(0, 80)).TrimEnd(',', '.', ';', ':', ' ') + "…";
+            }
+            var subject = string.IsNullOrEmpty(category) ? text : category + ": " + text;
+            return subject.Length > 150 ? subject.Substring(0, 150) : subject;
         }
 
         private static string Read(Dictionary<string, string> params_, string key)
