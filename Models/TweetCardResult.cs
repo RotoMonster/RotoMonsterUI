@@ -13,6 +13,8 @@ namespace RotoMonsterUI
 
         public string SelectedTeamCode { get; set; }
 
+        public bool TeamSelectionChanged { get; set; }
+
         public bool PostPressed { get; set; }
 
         public bool AutoFillPressed { get; set; }

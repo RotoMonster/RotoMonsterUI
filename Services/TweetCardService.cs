@@ -120,9 +120,13 @@ namespace RotoMonsterUI
                 result.SelectedPlayerId = null;
             }
 
+            var teamKey = "tweetteam_" + tweetId;
             string selectedTeam;
-            if (params_.TryGetValue("tweetteam_" + tweetId, out selectedTeam))
+            if (params_.TryGetValue(teamKey, out selectedTeam))
                 result.SelectedTeamCode = selectedTeam;
+
+            if (eventTarget == teamKey)
+                result.TeamSelectionChanged = true;
 
             string status;
             if (params_.TryGetValue("tweetstatus_" + tweetId, out status))
