@@ -12,11 +12,14 @@ namespace RotoMonsterUI
         public bool InsertTeamAnalysis { get; set; }
         public int? DeleteMessageId { get; set; }
         public string PostedMessageHtml { get; set; }
+        public bool StartChatPressed { get; set; }
+        public bool EndChatPressed { get; set; }
+        public bool PublishChatPressed { get; set; }
+        public int? SelectedMessageId { get; set; }
     }
 
     public class ChatRoomService
     {
-
         private static readonly Regex TrailingEmptyDiv = new Regex(
             @"(<div>\s*(<br\s*/?>)?\s*</div>\s*)+$",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -40,6 +43,15 @@ namespace RotoMonsterUI
             if (formValues.ContainsKey($"postmessage_{id}"))
                 result.PostMessagePressed = true;
 
+            if (formValues.ContainsKey($"startchat_{id}"))
+                result.StartChatPressed = true;
+
+            if (formValues.ContainsKey($"endchat_{id}"))
+                result.EndChatPressed = true;
+
+            if (formValues.ContainsKey($"publishchat_{id}"))
+                result.PublishChatPressed = true;
+
             result.InsertTeamAnalysis = formValues.ContainsKey($"inserttA_{id}") && formValues[$"inserttA_{id}"] == "1";
 
             var editorFieldName = $"{id}-editor-value";
@@ -53,6 +65,16 @@ namespace RotoMonsterUI
                 catch
                 {
                     result.PostedMessageHtml = StripTrailingEmptyDivs(rawValue);
+                }
+            }
+
+            var selectPrefix = $"selectmsg_{id}_";
+            foreach (var key in formValues.Keys)
+            {
+                if (key.StartsWith(selectPrefix) && int.TryParse(key.Substring(selectPrefix.Length), out var selId))
+                {
+                    result.SelectedMessageId = selId;
+                    break;
                 }
             }
 

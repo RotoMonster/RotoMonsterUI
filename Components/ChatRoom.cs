@@ -12,6 +12,66 @@ namespace RotoMonsterUI
             _input = input;
         }
 
+        public string RenderAdminBar()
+        {
+            if (!_input.IsAdmin) return "";
+
+            var bar = new HtmlTag("div").AddClass("chat-room-admin");
+
+            string statusText;
+            string statusClass;
+            if (_input.IsPublished)
+            {
+                statusText = "Published";
+                statusClass = "chat-room-admin-status--published";
+            }
+            else if (_input.SessionStatus == ChatSessionStatus.Live)
+            {
+                statusText = "Live";
+                statusClass = "chat-room-admin-status--live";
+            }
+            else if (_input.SessionStatus == ChatSessionStatus.Ended)
+            {
+                statusText = "Ended";
+                statusClass = "chat-room-admin-status--ended";
+            }
+            else
+            {
+                statusText = "Not started";
+                statusClass = "chat-room-admin-status--idle";
+            }
+
+            bar.Append(new HtmlTag("span").AddClass("chat-room-admin-status").AddClass(statusClass).Text(statusText));
+
+            if (_input.SessionStatus != ChatSessionStatus.Live && !_input.IsPublished)
+            {
+                bar.AppendHtml(new Button("Start Chat")
+                    .WithStyle(ButtonStyle.Primary)
+                    .WithName($"startchat_{_input.Id}")
+                    .Render());
+            }
+
+            if (_input.SessionStatus == ChatSessionStatus.Live)
+            {
+                bar.AppendHtml(new Button("End Chat")
+                    .WithStyle(ButtonStyle.Secondary)
+                    .WithName($"endchat_{_input.Id}")
+                    .WithConfirm("End the chat?")
+                    .Render());
+            }
+
+            if (_input.SessionStatus == ChatSessionStatus.Ended && !_input.IsPublished)
+            {
+                bar.AppendHtml(new Button("Publish as Article")
+                    .WithStyle(ButtonStyle.Secondary)
+                    .WithName($"publishchat_{_input.Id}")
+                    .WithConfirm("Publish this chat as an article?")
+                    .Render());
+            }
+
+            return bar.ToString();
+        }
+
         public string RenderControls()
         {
             var container = new HtmlTag("div").AddClass("chat-room-controls");
@@ -68,7 +128,6 @@ namespace RotoMonsterUI
         {
             var container = new HtmlTag("div").AddClass("chat-room-log");
 
-            // Chatting Users / Watching line - pill badges with a small "active" dot
             var statusRow = new HtmlTag("div").AddClass("chat-room-status");
 
             foreach (var user in _input.ChattingUsers)
@@ -89,7 +148,6 @@ namespace RotoMonsterUI
 
             container.Append(statusRow);
 
-            // Message list
             var list = new HtmlTag("div").AddClass("chat-room-messages");
             foreach (var message in _input.Messages)
                 list.Append(RenderMessage(message));
@@ -102,31 +160,90 @@ namespace RotoMonsterUI
         public string Render()
         {
             var container = new HtmlTag("div").AddClass("chat-room");
+            container.AppendHtml(RenderAdminBar());
             container.AppendHtml(RenderControls());
             container.AppendHtml(RenderChatLog());
             return container.ToString();
         }
 
+        private static string RenderChatAvatar(DisplayUsernameInput input)
+        {
+            var displayText = !string.IsNullOrEmpty(input.Username)
+                ? input.Username
+                : input.UserId.HasValue ? $"#{input.UserId}" : "";
+            var initial = !string.IsNullOrEmpty(displayText) ? displayText.Substring(0, 1).ToUpper() : "?";
+
+            var fallback = new HtmlTag("span")
+                .AddClass("display-username-avatar display-username-avatar--fallback")
+                .Text(initial);
+
+            if (string.IsNullOrEmpty(input.AvatarUrl))
+                return fallback.ToString();
+
+            fallback.Style("display", "none");
+
+            var img = new HtmlTag("img")
+                .AddClass("display-username-avatar")
+                .Attr("src", input.AvatarUrl)
+                .Attr("alt", "")
+                .Attr("onerror", "this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='inline-flex';");
+
+            return img.ToString() + fallback.ToString();
+        }
+
         private HtmlTag RenderMessage(ChatMessageInput message)
         {
             var row = new HtmlTag("div").AddClass("chat-card");
+            if (message.IsSelected)
+                row.AddClass("chat-card--selected");
 
             var usernameInput = message.DisplayUsernameInput;
-            var avatarHtml = new DisplayUsername(usernameInput).RenderAvatar();
-            row.AppendHtml($"<span class=\"chat-card-avatar\">{avatarHtml}</span>");
+
+            if (usernameInput.ShowAvatar)
+                row.AppendHtml($"<span class=\"chat-card-avatar\">{RenderChatAvatar(usernameInput)}</span>");
 
             var body = new HtmlTag("div").AddClass("chat-card-body");
 
             var metaRow = new HtmlTag("div").AddClass("chat-card-meta");
 
-            usernameInput.ShowAvatar = false;
-            metaRow.AppendHtml(new DisplayUsername(usernameInput).Render());
+            var nameInput = new DisplayUsernameInput
+            {
+                Username = usernameInput.Username,
+                UserId = usernameInput.UserId,
+                CssClass = usernameInput.CssClass,
+                TotalPostCount = usernameInput.TotalPostCount,
+                LinkToProfile = usernameInput.LinkToProfile,
+                ProfileUrl = usernameInput.ProfileUrl,
+                ProfileTarget = usernameInput.ProfileTarget,
+                ShowAvatar = false
+            };
+            metaRow.AppendHtml(new DisplayUsername(nameInput).Render());
             metaRow.AppendHtml(new TimeSince(message.TimeSinceCreated).Render());
             body.Append(metaRow);
 
             var text = new HtmlTag("div").AddClass("chat-card-text");
             text.AppendHtml(message.MessageText);
             body.Append(text);
+
+            if (_input.IsAdmin && (message.IsSelected || message.CanSelect))
+            {
+                var adminRow = new HtmlTag("div").AddClass("chat-card-admin");
+
+                if (message.IsSelected)
+                {
+                    adminRow.Append(new HtmlTag("span").AddClass("chat-card-selected-badge").Text("Selected"));
+                }
+                else
+                {
+                    adminRow.Append(new HtmlTag("button")
+                        .AddClass("chat-card-select")
+                        .Attr("type", "submit")
+                        .Attr("name", $"selectmsg_{_input.Id}_{message.MessageId}")
+                        .Text("Select"));
+                }
+
+                body.Append(adminRow);
+            }
 
             row.Append(body);
 
