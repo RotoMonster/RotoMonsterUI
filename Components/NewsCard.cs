@@ -83,7 +83,7 @@ namespace RotoMonsterUI
             // ---- Header row ----
             var headerRow = new HtmlTag("div").AddClass("news-card-header");
 
-            headerRow.Append(RenderStatusBadge());
+            headerRow.Append(RenderStatusBadge("main", FirstLetter(_input.StatusTypeText), _input.StatusTypeColorCode, _input.StatusTypeTag, _input.StatusTypeText, _input.NewsTitle, _input.IsUnofficial));
 
             if (_input.DisplayPlayerInput != null)
             {
@@ -269,15 +269,20 @@ namespace RotoMonsterUI
             return card.ToString();
         }
 
-        private HtmlTag RenderStatusBadge(string context = "main")
+        private static string FirstLetter(string text)
+        {
+            return string.IsNullOrEmpty(text) ? "" : text.Substring(0, 1).ToUpper();
+        }
+
+        private HtmlTag RenderStatusBadge(string context, string label, string colorCode, string tag, string text, string newsTitle, bool isUnofficial)
         {
             var tooltipId = $"newsbadge-tooltip-{_input.NewsId}-{context}";
 
             var tooltipParts = new List<string>();
-            if (!string.IsNullOrEmpty(_input.StatusTypeText)) tooltipParts.Add(_input.StatusTypeText);
-            if (!string.IsNullOrEmpty(_input.StatusTypeTag)) tooltipParts.Add(_input.StatusTypeTag);
-            if (!string.IsNullOrEmpty(_input.NewsTitle)) tooltipParts.Add(_input.NewsTitle);
-            if (_input.IsUnofficial) tooltipParts.Add("Status is Unofficial");
+            if (!string.IsNullOrEmpty(text)) tooltipParts.Add(text);
+            if (!string.IsNullOrEmpty(tag)) tooltipParts.Add(tag);
+            if (!string.IsNullOrEmpty(newsTitle)) tooltipParts.Add(newsTitle);
+            if (isUnofficial) tooltipParts.Add("Status is Unofficial");
             var tooltipText = string.Join(" - ", tooltipParts);
 
             var wrap = new HtmlTag("span").AddClass("bm-tooltip-wrap");
@@ -285,15 +290,15 @@ namespace RotoMonsterUI
             var badge = new HtmlTag("span")
                 .AddClass("news-card-status-badge bm-tooltip-trigger")
                 .Attr("data-bm-tooltip", tooltipId)
-                .Attr("style", $"background:{NormalizeColor(_input.StatusTypeColorCode)}");
+                .Attr("style", $"background:{NormalizeColor(colorCode)}");
 
-            badge.Append(new HtmlTag("span").Text(_input.StatusTypeAbbreviation));
+            badge.Append(new HtmlTag("span").Text(label));
 
-            var tagIcon = StatusTagIcon(_input.StatusTypeTag);
+            var tagIcon = StatusTagIcon(tag);
             if (tagIcon.HasValue)
                 badge.AppendHtml(new Icon(new IconInput { Type = tagIcon.Value, Size = 14, Color = "white" }).Render());
 
-            if (_input.IsUnofficial)
+            if (isUnofficial)
                 badge.AppendHtml(new Icon(new IconInput { Type = IconType.UnofficialTag, Size = 16, Color = "white" }).Render());
 
             wrap.Append(badge);
@@ -306,7 +311,17 @@ namespace RotoMonsterUI
         {
             var currentStatusRow = new HtmlTag("div").AddClass("news-card-field-row");
             currentStatusRow.Append(new HtmlTag("span").AddClass("news-card-field-label").Text("Current Status"));
-            currentStatusRow.Append(RenderStatusBadge("edit"));
+            if (string.IsNullOrEmpty(_input.CurrentStatusTypeText) && string.IsNullOrEmpty(_input.CurrentStatusTypeAbbreviation))
+            {
+                currentStatusRow.Append(new HtmlTag("span").Attr("style", "color:#94a3b8;font-size:.85rem;").Text("None"));
+            }
+            else
+            {
+                var currentLabel = string.IsNullOrEmpty(_input.CurrentStatusTypeAbbreviation)
+                    ? FirstLetter(_input.CurrentStatusTypeText)
+                    : _input.CurrentStatusTypeAbbreviation;
+                currentStatusRow.Append(RenderStatusBadge("edit", currentLabel, _input.CurrentStatusTypeColorCode, _input.CurrentStatusTypeTag, _input.CurrentStatusTypeText, _input.CurrentStatusNewsTitle, false));
+            }
 
             return new NewsEditForm(new NewsEditFormInput
             {

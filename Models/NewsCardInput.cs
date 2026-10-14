@@ -34,12 +34,21 @@ namespace RotoMonsterUI
         public string StatusTypeText { get; set; }
 
 
-        public string StatusTypeAbbreviation { get; set; }
 
         public string StatusTypeColorCode { get; set; }
 
 
         public string StatusTypeTag { get; set; }
+
+        public string CurrentStatusTypeText { get; set; }
+
+        public string CurrentStatusTypeAbbreviation { get; set; }
+
+        public string CurrentStatusTypeColorCode { get; set; }
+
+        public string CurrentStatusTypeTag { get; set; }
+
+        public string CurrentStatusNewsTitle { get; set; }
 
         public bool UserCanDelete { get; set; }
         public bool UserCanEdit { get; set; }
