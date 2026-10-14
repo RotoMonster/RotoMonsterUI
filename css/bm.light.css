@@ -9071,3 +9071,25 @@ a.display-username-link:hover .display-username { text-decoration: underline; }
 .support-footer {
     margin: 0;
 }
+
+.news-card-player-status {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-width: 0;
+}
+
+.news-card-player-status > .display-player {
+    display: inline-flex;
+    align-items: baseline;
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+.news-card-current-status {
+    flex: 0 0 auto;
+    margin-left: 0.25rem;
+    position: relative;
+    z-index: 0;
+}

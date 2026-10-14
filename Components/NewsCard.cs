@@ -95,8 +95,7 @@ namespace RotoMonsterUI
                         : TeamColorHelper.GetTeamColorVar(_input.DisplayPlayerInput.TeamCode);
                 }
 
-                var displayPlayerInput = _input.DisplayPlayerInput;
-                headerRow.AppendHtml(new DisplayPlayer(displayPlayerInput).Render());
+                headerRow.AppendHtml(RenderPlayerWithCurrentStatus());
             }
             else if (_input.DisplayTeamInput != null)
             {
@@ -307,6 +306,30 @@ namespace RotoMonsterUI
             return wrap;
         }
 
+        private bool HasCurrentStatus()
+        {
+            return !string.IsNullOrEmpty(_input.CurrentStatusTypeText) || !string.IsNullOrEmpty(_input.CurrentStatusTypeAbbreviation);
+        }
+
+        private HtmlTag RenderCurrentStatusBadge(string context)
+        {
+            var label = string.IsNullOrEmpty(_input.CurrentStatusTypeAbbreviation)
+                ? FirstLetter(_input.CurrentStatusTypeText)
+                : _input.CurrentStatusTypeAbbreviation;
+            return RenderStatusBadge(context, label, _input.CurrentStatusTypeColorCode, _input.CurrentStatusTypeTag, _input.CurrentStatusTypeText, _input.CurrentStatusNewsTitle, false);
+        }
+
+        private string RenderPlayerWithCurrentStatus()
+        {
+            var playerHtml = new DisplayPlayer(_input.DisplayPlayerInput).Render();
+            if (!HasCurrentStatus()) return playerHtml;
+
+            var row = new HtmlTag("div").AddClass("news-card-player-status");
+            row.AppendHtml(playerHtml);
+            row.Append(RenderCurrentStatusBadge("player").AddClass("news-card-current-status"));
+            return row.ToString();
+        }
+
         private HtmlTag RenderEditForm()
         {
             var currentStatusRow = new HtmlTag("div").AddClass("news-card-field-row");
@@ -317,10 +340,7 @@ namespace RotoMonsterUI
             }
             else
             {
-                var currentLabel = string.IsNullOrEmpty(_input.CurrentStatusTypeAbbreviation)
-                    ? FirstLetter(_input.CurrentStatusTypeText)
-                    : _input.CurrentStatusTypeAbbreviation;
-                currentStatusRow.Append(RenderStatusBadge("edit", currentLabel, _input.CurrentStatusTypeColorCode, _input.CurrentStatusTypeTag, _input.CurrentStatusTypeText, _input.CurrentStatusNewsTitle, false));
+                currentStatusRow.Append(RenderCurrentStatusBadge("edit"));
             }
 
             return new NewsEditForm(new NewsEditFormInput
@@ -410,7 +430,7 @@ namespace RotoMonsterUI
                         ? TeamColorHelper.GetNbaTeamColorVar(_input.DisplayPlayerInput.TeamCode)
                         : TeamColorHelper.GetTeamColorVar(_input.DisplayPlayerInput.TeamCode);
                 }
-                card.AppendHtml(new DisplayPlayer(_input.DisplayPlayerInput).Render());
+                card.AppendHtml(RenderPlayerWithCurrentStatus());
             }
 
             var bodyParts = new List<string>();
