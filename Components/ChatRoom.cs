@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Text.RegularExpressions;
 using HtmlTags;
 
 namespace RotoMonsterUI
@@ -92,6 +93,9 @@ namespace RotoMonsterUI
                     .Render();
                 container.AppendHtml(switchBtn);
 
+                if (_input.IsAdmin && _input.SelectedMessages != null && _input.SelectedMessages.Count > 0)
+                    container.Append(RenderSelectedPanel());
+
                 var editor = new RichTextEditor(new RichTextEditorInput
                 {
                     Id = $"{_input.Id}-editor",
@@ -166,6 +170,50 @@ namespace RotoMonsterUI
             return container.ToString();
         }
 
+        private static readonly Regex Tags = new Regex("<[^>]+>", RegexOptions.Compiled);
+
+        private static string NameOf(DisplayUsernameInput input)
+        {
+            if (input == null) return "";
+            return !string.IsNullOrEmpty(input.Username)
+                ? input.Username
+                : input.UserId.HasValue ? $"#{input.UserId}" : "";
+        }
+
+        private static string Preview(string html, int max)
+        {
+            var text = System.Net.WebUtility.HtmlDecode(Tags.Replace(html ?? "", " "));
+            text = Regex.Replace(text, @"\s+", " ").Trim();
+            return text.Length > max ? text.Substring(0, max).TrimEnd() + "\u2026" : text;
+        }
+
+        private HtmlTag RenderSelectedPanel()
+        {
+            var panel = new HtmlTag("div").AddClass("chat-room-selected");
+            panel.Append(new HtmlTag("div").AddClass("chat-room-selected-title").Text("Selected messages"));
+
+            foreach (var m in _input.SelectedMessages)
+            {
+                var item = new HtmlTag("div").AddClass("chat-room-selected-item");
+
+                item.AppendHtml(new Checkbox()
+                    .WithName($"respondto_{_input.Id}_{m.MessageId}")
+                    .WithChecked(m.IsChecked)
+                    .WithLabel(NameOf(m.DisplayUsernameInput) + ": " + Preview(m.MessageText, 140))
+                    .Render());
+
+                item.Append(new HtmlTag("button")
+                    .AddClass("chat-room-selected-unselect")
+                    .Attr("type", "submit")
+                    .Attr("name", $"unselectmsg_{_input.Id}_{m.MessageId}")
+                    .Text("Unselect"));
+
+                panel.Append(item);
+            }
+
+            return panel;
+        }
+
         private static string RenderChatAvatar(DisplayUsernameInput input)
         {
             var displayText = !string.IsNullOrEmpty(input.Username)
@@ -220,6 +268,15 @@ namespace RotoMonsterUI
             metaRow.AppendHtml(new DisplayUsername(nameInput).Render());
             metaRow.AppendHtml(new TimeSince(message.TimeSinceCreated).Render());
             body.Append(metaRow);
+
+            if (message.RespondToMessageInput != null)
+            {
+                var reply = message.RespondToMessageInput;
+                var quote = new HtmlTag("div").AddClass("chat-card-reply");
+                quote.Append(new HtmlTag("div").AddClass("chat-card-reply-user").Text(NameOf(reply.DisplayUsernameInput)));
+                quote.Append(new HtmlTag("div").AddClass("chat-card-reply-text").AppendHtml(reply.MessageText));
+                body.Append(quote);
+            }
 
             var text = new HtmlTag("div").AddClass("chat-card-text");
             text.AppendHtml(message.MessageText);

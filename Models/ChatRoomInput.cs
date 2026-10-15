@@ -25,6 +25,8 @@ namespace RotoMonsterUI
         public bool UserCanDelete { get; set; } = false;
         public bool CanSelect { get; set; } = false;
         public bool IsSelected { get; set; } = false;
+        public bool IsChecked { get; set; } = false;
+        public ChatMessageInput RespondToMessageInput { get; set; }
     }
 
     public class ChatRoomInput
@@ -50,5 +52,7 @@ namespace RotoMonsterUI
         public ChatSessionStatus SessionStatus { get; set; } = ChatSessionStatus.NotStarted;
 
         public bool IsPublished { get; set; } = false;
+
+        public List<ChatMessageInput> SelectedMessages { get; set; } = new List<ChatMessageInput>();
     }
 }

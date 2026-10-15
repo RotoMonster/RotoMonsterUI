@@ -9167,3 +9167,78 @@ a.display-username-link:hover .display-username { text-decoration: underline; }
     letter-spacing: 0.04em;
     color: #15803d;
 }
+
+.chat-room-selected {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-left: 3px solid #22c55e;
+    border-radius: 10px;
+    background: var(--color-bg-secondary);
+}
+
+.chat-room-selected-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-secondary);
+}
+
+.chat-room-selected-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.chat-room-selected-item .bm-checkbox {
+    flex: 1;
+    min-width: 0;
+}
+
+.chat-room-selected-item .bm-checkbox label {
+    font-size: 0.82rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat-room-selected-unselect {
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.15rem 0.6rem;
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-card);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+}
+
+.chat-room-selected-unselect:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.chat-card-reply {
+    margin: 0.2rem 0 0.35rem;
+    padding: 0.35rem 0.6rem;
+    border-left: 3px solid var(--brand-primary);
+    border-radius: 0 6px 6px 0;
+    background: rgba(var(--brand-primary-rgb), 0.08);
+    font-size: 0.78rem;
+}
+
+.chat-card-reply-user {
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    margin-bottom: 0.1rem;
+}
+
+.chat-card-reply-text {
+    color: var(--color-text-secondary);
+    max-height: 4.5em;
+    overflow: hidden;
+}

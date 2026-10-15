@@ -16,6 +16,8 @@ namespace RotoMonsterUI
         public bool EndChatPressed { get; set; }
         public bool PublishChatPressed { get; set; }
         public int? SelectedMessageId { get; set; }
+        public int? UnselectMessageId { get; set; }
+        public int? RespondToMessageId { get; set; }
     }
 
     public class ChatRoomService
@@ -65,6 +67,26 @@ namespace RotoMonsterUI
                 catch
                 {
                     result.PostedMessageHtml = StripTrailingEmptyDivs(rawValue);
+                }
+            }
+
+            var unselectPrefix = $"unselectmsg_{id}_";
+            foreach (var key in formValues.Keys)
+            {
+                if (key.StartsWith(unselectPrefix) && int.TryParse(key.Substring(unselectPrefix.Length), out var unselId))
+                {
+                    result.UnselectMessageId = unselId;
+                    break;
+                }
+            }
+
+            var respondPrefix = $"respondto_{id}_";
+            foreach (var key in formValues.Keys)
+            {
+                if (key.StartsWith(respondPrefix) && formValues[key] == "1" && int.TryParse(key.Substring(respondPrefix.Length), out var respondId))
+                {
+                    result.RespondToMessageId = respondId;
+                    break;
                 }
             }
 
