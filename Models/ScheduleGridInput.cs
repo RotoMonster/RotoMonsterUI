@@ -96,5 +96,8 @@ namespace RotoMonsterUI
 
         /// <summary>Every period currently expanded. Any number of periods can be open at once.</summary>
         public List<int> ExpandedPeriodNumbers { get; set; } = new List<int>();
+
+        public bool ShowLegend { get; set; } = false;
+        public int QualityGamesLimit { get; set; } = 5;
     }
 }

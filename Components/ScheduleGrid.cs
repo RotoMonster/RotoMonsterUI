@@ -149,6 +149,9 @@ namespace RotoMonsterUI
 
             var wrapper = new HtmlTag("div").AddClass("schedule-grid-wrapper").Attr("id", _input.Id);
 
+            if (_input.ShowLegend)
+                wrapper.AppendHtml(RenderLegend());
+
             wrapper.Append(RenderControls());
 
             wrapper.Append(new HtmlTag("input")
@@ -201,6 +204,16 @@ namespace RotoMonsterUI
             wrapper.Append(tableWrapper);
 
             return wrapper.ToString();
+        }
+
+        private string RenderLegend()
+        {
+            var id = $"{_input.Id}-legend";
+            var key = "rmuiScheduleGridLegendHidden";
+            var quality = _input.UseQualityGames
+                ? $"<span class='schedule-grid-legend-ex'>4<sup>2</sup></span><span><b>4 games</b> that week, and <b>2</b> of them are <b>Quality Games</b>: games on nights with {_input.QualityGamesLimit} or fewer games, so they're easier to fit into your lineup.</span><span class='schedule-grid-legend-sep'></span>"
+                : "";
+            return $"<div class='schedule-grid-legend' id='{id}'>{quality}<span><span class='schedule-grid-legend-sw schedule-grid-legend-sw--easy'></span>Easier opponents</span><span><span class='schedule-grid-legend-sw schedule-grid-legend-sw--hard'></span>Tougher</span><button type='button' class='schedule-grid-legend-dismiss' onclick=\"document.getElementById('{id}').hidden=true;try{{localStorage.setItem('{key}','1')}}catch(e){{}}\">Dismiss</button></div><script>try{{if(localStorage.getItem('{key}')==='1'){{document.getElementById('{id}').hidden=true}}}}catch(e){{}}</script>";
         }
 
         private List<ScheduleGridTeam> SortTeams(List<ScheduleGridTeam> teams)

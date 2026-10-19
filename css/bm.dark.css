@@ -9369,3 +9369,23 @@ a.display-username-link:hover .display-username { text-decoration: underline; }
     max-height: 4.5em;
     overflow: hidden;
 }
+
+/* schedule-grid-legend */
+.schedule-grid-legend { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 14px; padding: 9px 14px; border: 1px solid rgba(var(--brand-primary-rgb), 0.35); border-radius: 10px; background: rgba(var(--brand-primary-rgb), 0.08); font-size: 0.85rem; color: var(--color-text-primary); }
+.schedule-grid-legend[hidden] { display: none; }
+.schedule-grid-legend-ex { display: inline-flex; align-items: baseline; padding: 1px 9px; border-radius: 6px; background: #fff; color: #111; font-size: 1.05rem; font-weight: 800; }
+.schedule-grid-legend-ex sup { margin-left: 1px; color: #0369a1; font-size: 0.68rem; }
+.schedule-grid-legend-sep { width: 1px; height: 22px; background: var(--color-border); }
+.schedule-grid-legend-sw { display: inline-block; width: 14px; height: 14px; margin-right: 5px; border-radius: 3px; vertical-align: -2px; }
+.schedule-grid-legend-sw--easy { background: #9be6b4; }
+.schedule-grid-legend-sw--hard { background: #f6a8a8; }
+.schedule-grid-legend-dismiss { flex-shrink: 0; margin-left: auto; padding: 0.2rem 0.7rem; font-size: 0.75rem; font-weight: 600; line-height: 1.5; background: none; cursor: pointer; border: 1px solid rgba(var(--brand-primary-rgb), 0.35); border-radius: 6px; color: var(--brand-primary); transition: background 0.15s ease, border-color 0.15s ease; }
+.schedule-grid-legend-dismiss:hover { background: rgba(var(--brand-primary-rgb), 0.1); border-color: rgba(var(--brand-primary-rgb), 0.6); }
+.schedule-grid-legend-dismiss:active { transform: scale(0.94); }
+.schedule-grid .schedule-grid-expanded-row td { padding: 1px 2px !important; line-height: 1.15; vertical-align: middle; }
+.schedule-grid .schedule-grid-expanded-date-cell { font-size: 0.68rem; padding-right: 0.6rem !important; }
+.schedule-grid .schedule-grid-day { justify-content: center; padding: 0; gap: 0; font-size: 0.64rem; border-bottom: none; }
+.schedule-grid .schedule-grid-day-opponent { padding: 0 3px; border-radius: 3px; letter-spacing: -0.01em; }
+.schedule-grid .schedule-grid-day-away { font-size: 0.58rem; margin-right: 0; }
+.schedule-grid .schedule-grid-day-star { margin-left: 1px; font-size: 0.5rem; vertical-align: super; line-height: 0; }
+/* end schedule-grid-legend */
