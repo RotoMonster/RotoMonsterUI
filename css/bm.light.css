@@ -9262,3 +9262,13 @@ a.display-username-link:hover .display-username { text-decoration: underline; }
 .schedule-grid .schedule-grid-day-away { font-size: 0.58rem; margin-right: 0; }
 .schedule-grid .schedule-grid-day-star { margin-left: 1px; font-size: 0.5rem; vertical-align: super; line-height: 0; }
 /* end schedule-grid-legend */
+
+.tweet-card-players-row { display: flex; align-items: center; gap: 0.5rem; }
+.tweet-card-pause {
+    margin-top: 0.5rem; padding: 0.15rem 0.6rem;
+    border: 1px solid var(--tweet-card-ai-border); border-radius: 999px;
+    background: none; font-size: 0.72rem; font-weight: 600; font-family: inherit;
+    color: var(--color-text-tertiary); cursor: pointer;
+}
+.tweet-card-pause:hover { color: var(--brand-primary); border-color: var(--brand-primary); }
+.tweet-card-pause[aria-pressed="true"] { color: #fff; background: var(--brand-primary); border-color: var(--brand-primary); }

@@ -1557,3 +1557,39 @@ document.addEventListener('input', function (e) {
     var submit = area ? area.querySelector('button[type="submit"]') : null;
     if (submit) submit.disabled = e.target.value.trim().length === 0;
 });
+
+(function () {
+    var KEY = 'rmuiRefreshPaused';
+
+    function isPaused() {
+        try { return sessionStorage.getItem(KEY) === '1'; } catch (e) { return false; }
+    }
+
+    function sync() {
+        var paused = isPaused();
+        document.querySelectorAll('.tweet-card-pause').forEach(function (btn) {
+            btn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+            btn.setAttribute('title', paused ? 'Resume auto-refresh' : 'Pause auto-refresh');
+            var label = btn.querySelector('.tweet-card-pause-label');
+            if (label) label.textContent = paused ? 'Resume' : 'Pause';
+        });
+    }
+
+    window.RotoMonsterUI = window.RotoMonsterUI || {};
+    window.RotoMonsterUI.isRefreshPaused = isPaused;
+
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest('.tweet-card-pause');
+        if (!btn) return;
+        e.preventDefault();
+        try { sessionStorage.setItem(KEY, isPaused() ? '0' : '1'); } catch (err) { }
+        sync();
+    });
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', sync);
+    else sync();
+
+    if (window.Sys && Sys.WebForms && Sys.WebForms.PageRequestManager) {
+        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(sync);
+    }
+})();

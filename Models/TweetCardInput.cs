@@ -88,6 +88,8 @@ namespace RotoMonsterUI
 
         public bool IsScrollTarget { get; set; }
 
+        public bool ShowPauseButton { get; set; }
+
 
         public List<TweetCardTeam> Teams { get; set; } = new List<TweetCardTeam>();
 

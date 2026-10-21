@@ -130,15 +130,17 @@ namespace RotoMonsterUI
                     && visibleCount > _input.CollapsePlayersAbove
                     && !_input.SelectedPlayerId.HasValue;
 
-                if (collapse)
+                if (collapse || _input.ShowPauseButton)
                 {
-                    card.Append(RenderPlayersToggle(visibleCount));
-                    card.Append(RenderPlayers().AddClass("tweet-card-players--collapsed"));
+                    var row = new HtmlTag("div").AddClass("tweet-card-players-row");
+                    if (collapse) row.Append(RenderPlayersToggle(visibleCount));
+                    if (_input.ShowPauseButton) row.Append(RenderPauseButton());
+                    card.Append(row);
                 }
-                else
-                {
-                    card.Append(RenderPlayers());
-                }
+
+                card.Append(collapse
+                    ? RenderPlayers().AddClass("tweet-card-players--collapsed")
+                    : RenderPlayers());
             }
 
             return card.ToString();
@@ -273,6 +275,17 @@ private HtmlTag RenderHeader()
             wrap.Append(new HtmlTag("span").Text(string.Join(", ", parts)));
 
             return wrap;
+        }
+
+        private HtmlTag RenderPauseButton()
+        {
+            var btn = new HtmlTag("button")
+                .AddClass("tweet-card-pause")
+                .Attr("type", "button")
+                .Attr("aria-pressed", "false")
+                .Attr("title", "Pause auto-refresh");
+            btn.Append(new HtmlTag("span").AddClass("tweet-card-pause-label").Text("Pause"));
+            return btn;
         }
 
         private HtmlTag RenderPlayersToggle(int count)
