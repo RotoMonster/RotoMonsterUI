@@ -110,7 +110,9 @@
         Question,
 
         // Megaphone. Marks a message from the site managers.
-        ManagerMessage
+        ManagerMessage,
+
+        MobileApp
 
     }
 
