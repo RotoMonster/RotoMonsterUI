@@ -187,25 +187,9 @@ namespace RotoMonsterUI
                 card.Append(detailsDiv);
             }
 
-            // ---- Applied news tags ----
-            if (_input.NewsTags != null && _input.NewsTags.Count > 0)
-            {
-                var tagList = new HtmlTag("div").AddClass("news-card-tag-list");
-                foreach (var tag in _input.NewsTags)
-                {
-                    var defaults = NewsTagDefaults(tag.Name);
-                    var icon = tag.Icon ?? defaults.icon;
-                    var color = tag.Color ?? defaults.color;
-
-                    var tagRow = new HtmlTag("div")
-                        .AddClass("news-card-tag")
-                        .Attr("style", $"color:{NormalizeColor(color)}; background:{TintBackground(color)};");
-                    tagRow.AppendHtml(new Icon(new IconInput { Type = icon, Size = 14, Color = "currentColor" }).Render());
-                    tagRow.Append(new HtmlTag("span").Text(tag.Name));
-                    tagList.Append(tagRow);
-                }
-                card.Append(tagList);
-            }
+            var appliedTags = RenderTagList();
+            if (appliedTags != null)
+                card.Append(appliedTags);
 
             // ---- Counts + edit/delete actions on one row ----
             bool hasCounts = _input.UserOwnCount.HasValue || _input.UserFreeAgentCount.HasValue;
@@ -463,6 +447,13 @@ namespace RotoMonsterUI
                 card.Append(bodyRow);
             }
 
+            if (!_input.IsEditing)
+            {
+                var testTags = RenderTagList();
+                if (testTags != null)
+                    card.Append(testTags);
+            }
+
             bool hasCounts = _input.UserOwnCount.HasValue || _input.UserFreeAgentCount.HasValue;
             bool hasActions = _input.UserCanEdit || _input.UserCanDelete;
 
@@ -520,6 +511,28 @@ namespace RotoMonsterUI
                 card.Append(RenderEditForm());
 
             return card.ToString();
+        }
+
+        private HtmlTag RenderTagList()
+        {
+            if (_input.NewsTags == null || _input.NewsTags.Count == 0)
+                return null;
+
+            var tagList = new HtmlTag("div").AddClass("news-card-tag-list");
+            foreach (var tag in _input.NewsTags)
+            {
+                var defaults = NewsTagDefaults(tag.Name);
+                var icon = tag.Icon ?? defaults.icon;
+                var color = tag.Color ?? defaults.color;
+
+                var tagRow = new HtmlTag("div")
+                    .AddClass("news-card-tag")
+                    .Attr("style", $"color:{NormalizeColor(color)}; background:{TintBackground(color)};");
+                tagRow.AppendHtml(new Icon(new IconInput { Type = icon, Size = 14, Color = "currentColor" }).Render());
+                tagRow.Append(new HtmlTag("span").Text(tag.Name));
+                tagList.Append(tagRow);
+            }
+            return tagList;
         }
 
         private HtmlTag RenderCornerStatusBadge()
