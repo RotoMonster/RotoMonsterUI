@@ -55,6 +55,8 @@ namespace RotoMonsterUI
             return (IconType.Note, "#94a3b8");
         }
 
+        private bool ShowLevelBadge => _input.ShowMediumLevel || _input.NewsLevel != NewsLevel.Medium;
+
         private static string LevelColor(NewsLevel level)
         {
             switch (level)
@@ -139,7 +141,7 @@ namespace RotoMonsterUI
                 var rosterNames = new HtmlTag("span").Text(string.Join(", ", _input.TeamPlayerNames));
                 rosterRow.Append(rosterNames);
 
-                var teamLevelColor = LevelColor(_input.NewsLevel);
+                var teamLevelColor = ShowLevelBadge ? LevelColor(_input.NewsLevel) : null;
                 if (teamLevelColor != null)
                 {
                     // Level badge keeps its own background/text color - already reads fine on its own.
@@ -164,7 +166,7 @@ namespace RotoMonsterUI
                     statusRow.Append(newsTitle);
                 }
 
-                var levelColor = LevelColor(_input.NewsLevel);
+                var levelColor = ShowLevelBadge ? LevelColor(_input.NewsLevel) : null;
                 if (levelColor != null)
                 {
                     // Level badge keeps its own background/text color - already reads fine on its own.
@@ -409,7 +411,7 @@ namespace RotoMonsterUI
                 headerLeft.Append(timeBadge);
             }
 
-            var levelColor = LevelColor(_input.NewsLevel);
+            var levelColor = ShowLevelBadge ? LevelColor(_input.NewsLevel) : null;
             if (levelColor != null)
             {
                 var levelBadge = new HtmlTag("span")

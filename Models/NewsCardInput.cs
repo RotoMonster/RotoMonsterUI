@@ -71,6 +71,7 @@ namespace RotoMonsterUI
         public string SourceURL { get; set; }
 
         public NewsLevel NewsLevel { get; set; } = NewsLevel.Low;
+        public bool ShowMediumLevel { get; set; }
 
         public List<NewsTagOption> NewsTags { get; set; } = new List<NewsTagOption>();
 
