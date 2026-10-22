@@ -519,8 +519,10 @@ namespace RotoMonsterUI
                 return null;
 
             var tagList = new HtmlTag("div").AddClass("news-card-tag-list");
-            foreach (var tag in _input.NewsTags)
+            foreach (var applied in _input.NewsTags)
             {
+                var tag = ResolveTag(applied);
+                if (string.IsNullOrWhiteSpace(tag.Name)) continue;
                 var defaults = NewsTagDefaults(tag.Name);
                 var icon = tag.Icon ?? defaults.icon;
                 var color = tag.Color ?? defaults.color;
@@ -532,7 +534,20 @@ namespace RotoMonsterUI
                 tagRow.Append(new HtmlTag("span").Text(tag.Name));
                 tagList.Append(tagRow);
             }
-            return tagList;
+            return tagList.Children.Count > 0 ? tagList : null;
+        }
+
+        private NewsTagOption ResolveTag(NewsTagOption tag)
+        {
+            var known = _input.AvailableNewsTags?.FirstOrDefault(t => t.Id == tag.Id);
+            if (known == null) return tag;
+            return new NewsTagOption
+            {
+                Id = tag.Id,
+                Name = string.IsNullOrWhiteSpace(tag.Name) ? known.Name : tag.Name,
+                Icon = tag.Icon ?? known.Icon,
+                Color = string.IsNullOrEmpty(tag.Color) ? known.Color : tag.Color
+            };
         }
 
         private HtmlTag RenderCornerStatusBadge()
