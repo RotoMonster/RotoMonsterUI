@@ -77,10 +77,7 @@ namespace RotoMonsterUI
             bool isShaded = ageShadeColor != null;
             // Only override while it's shaded - once it expires the card's normal border comes back.
             if (isShaded)
-            {
-                card.AddClass("card-age-shade");
-                card.Attr("style", $"border-color:{ageShadeColor};");
-            }
+                card.Attr("style", AgeRing(ageShadeColor));
 
             // ---- Header row ----
             var headerRow = new HtmlTag("div").AddClass("news-card-header");
@@ -364,7 +361,7 @@ namespace RotoMonsterUI
             // leave a gap in the corner. An inset shadow paints inside and moves nothing.
             var testAgeShadeColor = ColorHelper.GetAgeShadeHex(_input.TimeSinceCreated);
             if (testAgeShadeColor != null)
-                cardStyle += $"box-shadow:inset 0 0 0 var(--card-age-border-width) {testAgeShadeColor};";
+                cardStyle += AgeRing(testAgeShadeColor);
 
             card.Attr("style", cardStyle);
 
@@ -405,6 +402,14 @@ namespace RotoMonsterUI
                 headerLeft.Append(levelBadge);
             }
 
+            if (_input.OwnPercent.HasValue)
+            {
+                headerLeft.Append(new HtmlTag("span")
+                    .AddClass("news-card-test-own")
+                    .Attr("title", "Owned in tracked leagues")
+                    .Text($"{_input.OwnPercent.Value:0}% own"));
+            }
+
             headerRow.Append(headerLeft);
             card.Append(headerRow);
 
@@ -416,8 +421,24 @@ namespace RotoMonsterUI
                         ? TeamColorHelper.GetNbaTeamColorVar(_input.DisplayPlayerInput.TeamCode)
                         : TeamColorHelper.GetTeamColorVar(_input.DisplayPlayerInput.TeamCode);
                 }
-                card.AppendHtml(RenderPlayerWithCurrentStatus());
+                if (_input.IsMyPlayer)
+                {
+                    var mineRow = new HtmlTag("div").AddClass("news-card-test-player-row");
+                    mineRow.AppendHtml(RenderPlayerWithCurrentStatus());
+                    var mine = new HtmlTag("span").AddClass("news-card-test-mine").Attr("title", "On your team");
+                    mine.Append(new HtmlTag("span").Text("My player"));
+                    mineRow.Append(mine);
+                    card.Append(mineRow);
+                }
+                else
+                {
+                    card.AppendHtml(RenderPlayerWithCurrentStatus());
+                }
             }
+
+            var gameText = GameText();
+            if (gameText != null && !_input.ShowGameInCorner)
+                card.Append(new HtmlTag("div").AddClass("news-card-test-game").Text(gameText));
 
             var bodyParts = new List<string>();
             if (!string.IsNullOrEmpty(_input.NewsTitle)) bodyParts.Add(_input.NewsTitle);
@@ -454,7 +475,7 @@ namespace RotoMonsterUI
                     card.Append(testTags);
             }
 
-            bool hasCounts = _input.UserOwnCount.HasValue || _input.UserFreeAgentCount.HasValue;
+            bool hasCounts = _input.UserOwnCount.HasValue || (_input.UserFreeAgentCount.HasValue && _input.UserFreeAgentCount.Value != 0);
             bool hasActions = _input.UserCanEdit || _input.UserCanDelete;
 
             if (hasCounts || hasActions)
@@ -550,6 +571,39 @@ namespace RotoMonsterUI
             };
         }
 
+        private static string AgeRing(string color)
+        {
+            return $"box-shadow:inset 0 0 0 var(--card-age-border-width) {color}, inset 0 0 0 calc(var(--card-age-border-width) + 1px) var(--color-border-strong, var(--color-border));";
+        }
+
+        private string CornerText()
+        {
+            var text = _input.StatusTypeText ?? "";
+            var game = _input.ShowGameInCorner ? GameText() : null;
+            return game == null ? text : (text + " " + game).Trim();
+        }
+
+        private string GameText()
+        {
+            var g = _input.Game;
+            if (g == null) return null;
+
+            var home = g.HomeGameTeam?.TeamCode ?? "";
+            var away = g.AwayGameTeam?.TeamCode ?? "";
+            var zone = g.DisplayTimezone ?? System.TimeZoneInfo.Local;
+            var when = g.GameTimeUtc == default ? (System.DateTime?)null
+                : System.TimeZoneInfo.ConvertTimeFromUtc(System.DateTime.SpecifyKind(g.GameTimeUtc, System.DateTimeKind.Utc), zone);
+            var day = when.HasValue ? when.Value.ToString("ddd", System.Globalization.CultureInfo.InvariantCulture) + " " : "";
+
+            var team = _input.DisplayPlayerInput?.TeamCode ?? "";
+            if (team.Length > 0 && string.Equals(team, home, System.StringComparison.OrdinalIgnoreCase))
+                return (day + "vs " + away).Trim();
+            if (team.Length > 0 && string.Equals(team, away, System.StringComparison.OrdinalIgnoreCase))
+                return (day + "@ " + home).Trim();
+            if (home.Length == 0 && away.Length == 0) return day.Trim().Length > 0 ? day.Trim() : null;
+            return (day + away + " @ " + home).Trim();
+        }
+
         private HtmlTag RenderCornerStatusBadge()
         {
             var tooltipId = $"newsbadge-tooltip-{_input.NewsId}-corner";
@@ -566,7 +620,7 @@ namespace RotoMonsterUI
                 .AddClass("news-card-test-status-corner bm-tooltip-trigger")
                 .Attr("data-bm-tooltip", tooltipId)
                 .Attr("style", $"background:{NormalizeColor(_input.StatusTypeColorCode)}")
-                .Text((_input.StatusTypeText ?? "").ToUpper());
+                .Text(CornerText());
 
             if (_input.IsUnofficial)
                 badge.AppendHtml(new Icon(new IconInput { Type = IconType.UnofficialTag, Size = 16, Color = "white" }).Render());

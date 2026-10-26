@@ -72,6 +72,10 @@ namespace RotoMonsterUI
 
         public NewsLevel NewsLevel { get; set; } = NewsLevel.Low;
         public bool ShowMediumLevel { get; set; }
+        public GameInput Game { get; set; }
+        public bool ShowGameInCorner { get; set; }
+        public double? OwnPercent { get; set; }
+        public bool IsMyPlayer { get; set; }
 
         public List<NewsTagOption> NewsTags { get; set; } = new List<NewsTagOption>();
 
