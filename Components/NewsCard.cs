@@ -402,14 +402,6 @@ namespace RotoMonsterUI
                 headerLeft.Append(levelBadge);
             }
 
-            if (_input.OwnPercent.HasValue)
-            {
-                headerLeft.Append(new HtmlTag("span")
-                    .AddClass("news-card-test-own")
-                    .Attr("title", "Owned in tracked leagues")
-                    .Text($"{_input.OwnPercent.Value:0}% own"));
-            }
-
             headerRow.Append(headerLeft);
             card.Append(headerRow);
 
@@ -421,24 +413,17 @@ namespace RotoMonsterUI
                         ? TeamColorHelper.GetNbaTeamColorVar(_input.DisplayPlayerInput.TeamCode)
                         : TeamColorHelper.GetTeamColorVar(_input.DisplayPlayerInput.TeamCode);
                 }
-                if (_input.IsMyPlayer)
-                {
-                    var mineRow = new HtmlTag("div").AddClass("news-card-test-player-row");
-                    mineRow.AppendHtml(RenderPlayerWithCurrentStatus());
-                    var mine = new HtmlTag("span").AddClass("news-card-test-mine").Attr("title", "On your team");
-                    mine.Append(new HtmlTag("span").Text("My player"));
-                    mineRow.Append(mine);
-                    card.Append(mineRow);
-                }
-                else
-                {
-                    card.AppendHtml(RenderPlayerWithCurrentStatus());
-                }
+                var main = new HtmlTag("div").AddClass("news-card-test-main");
+                var left = new HtmlTag("div").AddClass("news-card-test-main-left");
+                left.AppendHtml(RenderPlayerWithCurrentStatus());
+                var gameText = GameText();
+                if (gameText != null && !_input.ShowGameInCorner)
+                    left.Append(new HtmlTag("div").AddClass("news-card-test-game").Text(gameText));
+                main.Append(left);
+                var pills = RenderUserPills();
+                if (pills != null) main.Append(pills);
+                card.Append(main);
             }
-
-            var gameText = GameText();
-            if (gameText != null && !_input.ShowGameInCorner)
-                card.Append(new HtmlTag("div").AddClass("news-card-test-game").Text(gameText));
 
             var bodyParts = new List<string>();
             if (!string.IsNullOrEmpty(_input.NewsTitle)) bodyParts.Add(_input.NewsTitle);
@@ -569,6 +554,18 @@ namespace RotoMonsterUI
                 Icon = tag.Icon ?? known.Icon,
                 Color = string.IsNullOrEmpty(tag.Color) ? known.Color : tag.Color
             };
+        }
+
+        private HtmlTag RenderUserPills()
+        {
+            if (!_input.IsMyPlayer && !_input.OwnPercent.HasValue) return null;
+
+            var pills = new HtmlTag("div").AddClass("news-card-test-pills");
+            if (_input.IsMyPlayer)
+                pills.Append(new HtmlTag("span").AddClass("news-card-test-mine").Attr("title", "On your team").Text("My player"));
+            if (_input.OwnPercent.HasValue)
+                pills.Append(new HtmlTag("span").AddClass("news-card-test-own-pill").Attr("title", "Owned in tracked leagues").Text($"{_input.OwnPercent.Value:0}% own"));
+            return pills;
         }
 
         private static string AgeRing(string color)

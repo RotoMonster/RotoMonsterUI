@@ -9407,17 +9407,30 @@ a.display-username-link:hover .display-username { text-decoration: underline; }
     margin-top: 2px;
 }
 
-.news-card-test-own {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--color-text-secondary, var(--color-text-primary));
+.news-card-test-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 8px;
 }
 
-.news-card-test-player-row {
+.news-card-test-main-left {
+    min-width: 0;
+}
+
+.news-card-test-pills {
     display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.news-card-test-own-pill {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    color: #67e8f9;
+    background: rgba(34, 211, 238, 0.15);
 }
 
 .news-card-test-mine {
