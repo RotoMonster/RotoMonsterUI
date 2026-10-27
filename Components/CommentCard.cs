@@ -33,8 +33,7 @@ namespace RotoMonsterUI
             bool isShaded = ageShadeColor != null;
             if (isShaded)
             {
-                card.AddClass("card-age-shade");
-                card.Attr("style", $"border-color:{ageShadeColor};");
+                card.Attr("style", ColorHelper.AgeRingStyle(ageShadeColor));
             }
 
             if (_input.ShowPlayerInfo && _input.DisplayPlayerInput != null)

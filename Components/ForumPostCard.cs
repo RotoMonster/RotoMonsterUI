@@ -21,8 +21,7 @@ namespace RotoMonsterUI
             // Only override while it's shaded - once it expires the card's normal border comes back.
             if (isShaded)
             {
-                card.AddClass("card-age-shade");
-                card.Attr("style", $"border-color:{ageShadeColor};");
+                card.Attr("style", ColorHelper.AgeRingStyle(ageShadeColor));
             }
 
             // Username row (with avatar + post count via DisplayUsername) + New badge + TimeSince

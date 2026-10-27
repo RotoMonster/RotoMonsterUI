@@ -78,6 +78,11 @@ namespace RotoMonsterUI
         // Configurable "freshness window" in seconds — 900 = 15 minutes
         public static int AgeShadeMaxSeconds = 900;
 
+        public static string AgeRingStyle(string color)
+        {
+            return $"box-shadow:inset 0 0 0 var(--card-age-border-width) {color}, inset 0 0 0 calc(var(--card-age-border-width) + 1px) var(--color-border-strong, var(--color-border));";
+        }
+
         public static string GetAgeShadeHex(TimeSpan? age, int? maxSecondsOverride = null)
         {
             if (!age.HasValue) return null;

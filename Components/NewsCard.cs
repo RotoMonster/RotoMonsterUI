@@ -570,7 +570,7 @@ namespace RotoMonsterUI
 
         private static string AgeRing(string color)
         {
-            return $"box-shadow:inset 0 0 0 var(--card-age-border-width) {color}, inset 0 0 0 calc(var(--card-age-border-width) + 1px) var(--color-border-strong, var(--color-border));";
+            return ColorHelper.AgeRingStyle(color);
         }
 
         private string CornerText()

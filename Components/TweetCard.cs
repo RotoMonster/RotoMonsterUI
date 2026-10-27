@@ -84,8 +84,7 @@ namespace RotoMonsterUI
             // Only override while it's shaded - once it expires the card's normal border comes back.
             if (ageShadeColor != null)
             {
-                card.AddClass("card-age-shade");
-                card.Attr("style", $"border-color:{ageShadeColor};");
+                card.Attr("style", ColorHelper.AgeRingStyle(ageShadeColor));
             }
 
             if (_input.SelectedPlayerId.HasValue)
