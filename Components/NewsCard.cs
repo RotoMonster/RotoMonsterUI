@@ -616,8 +616,12 @@ namespace RotoMonsterUI
             var badge = new HtmlTag("span")
                 .AddClass("news-card-test-status-corner bm-tooltip-trigger")
                 .Attr("data-bm-tooltip", tooltipId)
-                .Attr("style", $"background:{NormalizeColor(_input.StatusTypeColorCode)}")
-                .Text(CornerText());
+                .Attr("style", $"background:{NormalizeColor(_input.StatusTypeColorCode)}");
+
+            var cornerIcon = StatusTagIcon(_input.StatusTypeTag);
+            if (cornerIcon.HasValue)
+                badge.AppendHtml(new Icon(new IconInput { Type = cornerIcon.Value, Size = 14, Color = "white" }).Render());
+            badge.Append(new HtmlTag("span").Text(CornerText()));
 
             if (_input.IsUnofficial)
                 badge.AppendHtml(new Icon(new IconInput { Type = IconType.UnofficialTag, Size = 16, Color = "white" }).Render());
