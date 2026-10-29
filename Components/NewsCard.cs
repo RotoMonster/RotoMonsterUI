@@ -433,20 +433,6 @@ namespace RotoMonsterUI
             {
                 var bodyRow = new HtmlTag("div").AddClass("news-card-test-body-row");
 
-                var tagIcon = StatusTagIcon(_input.StatusTypeTag);
-                if (tagIcon.HasValue)
-                {
-                    var tagTooltipId = $"newsbadge-tooltip-{_input.NewsId}-tag";
-                    var tagIconWrap = new HtmlTag("span").AddClass("bm-tooltip-wrap");
-                    var tagIconTrigger = new HtmlTag("span")
-                        .AddClass("news-card-test-tag-icon bm-tooltip-trigger")
-                        .Attr("data-bm-tooltip", tagTooltipId);
-                    tagIconTrigger.AppendHtml(new Icon(new IconInput { Type = tagIcon.Value, Size = 16, Color = "currentColor" }).Render());
-                    tagIconWrap.Append(tagIconTrigger);
-                    tagIconWrap.Append(new HtmlTag("div").AddClass("bm-tooltip-content").Attr("id", tagTooltipId).Text(_input.StatusTypeTag));
-                    bodyRow.Append(tagIconWrap);
-                }
-
                 var bodyText = new HtmlTag("span").AddClass("news-card-test-body").Text(bodyContent);
                 bodyRow.Append(bodyText);
 
