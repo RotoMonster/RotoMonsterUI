@@ -171,7 +171,8 @@ namespace RotoMonsterUI
             var teams = SortTeams(_input.Teams);
 
             tbody.Append(RenderSummaryRow("Games", t => t.Summary.Games.ToString(), null));
-            tbody.Append(RenderSummaryRow("Max Weeks", t => t.Summary.MaxWeeks.ToString(), null));
+            if (_input.ShowMaxWeeks)
+                tbody.Append(RenderSummaryRow("Max Weeks", t => t.Summary.MaxWeeks.ToString(), null));
 
             if (ShowQuality)
                 tbody.Append(RenderSummaryRow("Quality Games", t => t.Summary.QualityGames.ToString(), null));
@@ -192,7 +193,8 @@ namespace RotoMonsterUI
 
             tbody.Append(RenderTeamHeaderRow(teams));
             tbody.Append(RenderSummaryRow("Games", t => t.Summary.Games.ToString(), null));
-            tbody.Append(RenderSummaryRow("Max Weeks", t => t.Summary.MaxWeeks.ToString(), null));
+            if (_input.ShowMaxWeeks)
+                tbody.Append(RenderSummaryRow("Max Weeks", t => t.Summary.MaxWeeks.ToString(), null));
 
             if (ShowQuality)
                 tbody.Append(RenderSummaryRow("Quality Games", t => t.Summary.QualityGames.ToString(), null));
@@ -242,9 +244,10 @@ namespace RotoMonsterUI
             coloringGroup.Append(new HtmlTag("span").AddClass("schedule-grid-control-label").Text("Coloring"));
             var coloringRadio = new RadioGroup($"{_input.Id}-colortype")
                 .WithPostBack()
-                .WithSegmented()
-                .AddOption("Max Weeks Coloring", ScheduleGridColorType.MaxWeeks.ToString(), _input.ColorType == ScheduleGridColorType.MaxWeeks)
-                .AddOption("Ease Coloring", ScheduleGridColorType.Ease.ToString(), _input.ColorType == ScheduleGridColorType.Ease);
+                .WithSegmented();
+            if (_input.ShowMaxWeeks)
+                coloringRadio.AddOption("Max Weeks Coloring", ScheduleGridColorType.MaxWeeks.ToString(), _input.ColorType == ScheduleGridColorType.MaxWeeks);
+            coloringRadio.AddOption("Ease Coloring", ScheduleGridColorType.Ease.ToString(), _input.ColorType == ScheduleGridColorType.Ease);
             if (_input.UseQualityGames)
                 coloringRadio.AddOption("Quality Games Coloring", ScheduleGridColorType.QualityGames.ToString(), _input.ColorType == ScheduleGridColorType.QualityGames);
             coloringGroup.AppendHtml(coloringRadio.Render());
@@ -257,6 +260,7 @@ namespace RotoMonsterUI
             foreach (ScheduleGridSortBy option in Enum.GetValues(typeof(ScheduleGridSortBy)))
             {
                 if (option == ScheduleGridSortBy.QualityGames && !_input.UseQualityGames) continue;
+                if (option == ScheduleGridSortBy.MaxWeeks && !_input.ShowMaxWeeks) continue;
                 sortRadio.AddOption(SortByLabel(option), option.ToString(), _input.SortBy == option);
             }
             sortGroup.AppendHtml(sortRadio.Render());

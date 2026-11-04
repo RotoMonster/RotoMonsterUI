@@ -98,6 +98,7 @@ namespace RotoMonsterUI
         public List<int> ExpandedPeriodNumbers { get; set; } = new List<int>();
 
         public bool ShowLegend { get; set; } = false;
+        public bool ShowMaxWeeks { get; set; } = true;
         public int QualityGamesLimit { get; set; } = 5;
     }
 }
