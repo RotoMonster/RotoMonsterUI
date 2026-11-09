@@ -36,13 +36,16 @@ namespace RotoMonsterUI
                     .Text(_input.PlayerName));
             }
 
-            var team = new HtmlTag("span")
-                .AddClass("ml-2 mr-1 ms-2 me-1")
-                .AddClass("display-player-team");
-            if (!string.IsNullOrEmpty(_input.TeamColor))
-                team.Attr("style", $"color:{NormalizeColor(_input.TeamColor)}");
-            team.Text(_input.TeamCode);
-            wrapper.Append(team);
+            if (!_input.HideTeam)
+            {
+                var team = new HtmlTag("span")
+                    .AddClass("ml-2 mr-1 ms-2 me-1")
+                    .AddClass("display-player-team");
+                if (!string.IsNullOrEmpty(_input.TeamColor))
+                    team.Attr("style", $"color:{NormalizeColor(_input.TeamColor)}");
+                team.Text(_input.TeamCode);
+                wrapper.Append(team);
+            }
 
             foreach (var pos in _input.Positions)
             {

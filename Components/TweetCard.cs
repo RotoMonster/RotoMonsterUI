@@ -465,11 +465,15 @@ private HtmlTag RenderHeader()
 
                 if (!string.IsNullOrEmpty(display.TeamCode))
                 {
-                    label.Append(new HtmlTag("span")
+                    var teamTag = new HtmlTag("span")
                         .AddClass("tweet-card-player-team")
-                        .Text(display.TeamCode));
+                        .Text(display.TeamCode);
+                    if (!string.IsNullOrEmpty(display.TeamColor))
+                        teamTag.Attr("style", "color:" + (display.TeamColor.StartsWith("var(") || display.TeamColor.StartsWith("#") ? display.TeamColor : "#" + display.TeamColor));
+                    label.Append(teamTag);
                 }
 
+                display.HideTeam = true;
                 label.AppendHtml(new DisplayPlayer(display).Render());
 
                 row.Append(label);
@@ -486,9 +490,17 @@ private HtmlTag RenderHeader()
 
                 if (!string.IsNullOrEmpty(player.PercentText))
                 {
-                    row.Append(new HtmlTag("span")
+                    var pctTag = new HtmlTag("span")
                         .AddClass("tweet-card-player-pct")
-                        .Text(player.PercentText));
+                        .Text(player.PercentText);
+                    double ownPct;
+                    if (display.OwnershipPercent.HasValue)
+                        ownPct = display.OwnershipPercent.Value;
+                    else if (!double.TryParse(player.PercentText.Replace("%", "").Trim(), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out ownPct))
+                        ownPct = -1;
+                    if (ownPct >= 0)
+                        pctTag.AddClass("tweet-card-player-pct--own").Attr("style", "background-color:" + OwnershipColor(ownPct));
+                    row.Append(pctTag);
                 }
 
                 list.Append(row);
@@ -498,6 +510,13 @@ private HtmlTag RenderHeader()
             }
 
             return list;
+        }
+
+        private static string OwnershipColor(double percent)
+        {
+            var p = Math.Min(100, Math.Max(0, percent));
+            var other = (int)Math.Round(255 - p);
+            return "#" + other.ToString("x2") + "ffff";
         }
 
         private HtmlTag RenderPostForm()

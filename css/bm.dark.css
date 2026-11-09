@@ -4703,6 +4703,15 @@ a.modern-filter-btn:hover {
     font-size: 0.7rem;
     margin-left: auto;
 }
+
+.tweet-card-player-pct--own {
+    color: #1c1f1d;
+    font-weight: 600;
+    min-width: 30px;
+    padding: 1px 5px;
+    border-radius: 4px;
+    text-align: center;
+}
  
 /* Match confidence, shown only when the consuming page passes one. */
 .tweet-card-player-confidence {
