@@ -21,6 +21,8 @@ namespace RotoMonsterUI
         public string Render()
         {
             var wrapper = new HtmlTag("span").AddClass("display-player");
+            if (_input.IsExactMatch)
+                wrapper.AddClass("display-player--exact");
 
             if (_input.DisableLink)
             {

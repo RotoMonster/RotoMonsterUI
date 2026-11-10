@@ -13,6 +13,7 @@ namespace RotoMonsterUI
 
         public bool DisableLink { get; set; }
         public bool HideTeam { get; set; }
+        public bool IsExactMatch { get; set; }
 
         public int? OwnershipPercent { get; set; }
 

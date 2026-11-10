@@ -446,6 +446,8 @@ private HtmlTag RenderHeader()
                 }
 
                 var row = new HtmlTag("div").AddClass("tweet-card-player-row");
+                if (display.IsExactMatch)
+                    row.AddClass("tweet-card-player-row--exact");
                 var inputId = groupName + "-" + display.PlayerId;
 
                 var check = new HtmlTag("input")

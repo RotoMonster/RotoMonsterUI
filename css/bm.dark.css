@@ -4649,6 +4649,19 @@ a.modern-filter-btn:hover {
 .tweet-card-player-row:hover {
     background: rgba(var(--brand-primary-rgb), 0.06);
 }
+
+.tweet-card-player-row--exact {
+    background: rgba(var(--brand-primary-rgb), 0.12);
+    box-shadow: inset 0 0 0 1.5px rgba(var(--brand-primary-rgb), 0.6);
+}
+
+.tweet-card-player-row--exact:hover {
+    background: rgba(var(--brand-primary-rgb), 0.18);
+}
+
+.display-player--exact .display-player-name {
+    font-weight: 700;
+}
  
 .tweet-card-player-row input[type="checkbox"] {
     appearance: none;
