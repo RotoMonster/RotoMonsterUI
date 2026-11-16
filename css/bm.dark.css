@@ -9466,3 +9466,6 @@ a.display-username-link:hover .display-username { text-decoration: underline; }
     color: #4ade80;
     background: rgba(74, 222, 128, 0.15);
 }
+
+.tracked-league-bar-status { margin-left: auto; padding-left: 12px; font-size: .8rem; font-weight: 600; letter-spacing: .04em; color: #64748b; white-space: nowrap; }
+.tracked-league-bar-section--empty { background: rgba(148, 163, 184, .22); align-self: stretch; border-radius: 0 7px 7px 0; }

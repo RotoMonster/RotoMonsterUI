@@ -45,21 +45,26 @@ namespace RotoMonsterUI
                 var leagueValue = new HtmlTag("span").AddClass("tracked-league-bar-value").Text(league.LeagueName ?? "");
                 leagueSection.Append(leagueLabel);
                 leagueSection.Append(leagueValue);
+                if (!string.IsNullOrEmpty(league.StatusText))
+                    leagueSection.Append(new HtmlTag("span").AddClass("tracked-league-bar-status").Text(league.StatusText));
                 row.Append(leagueSection);
 
-                if (!string.IsNullOrEmpty(league.OwnerName))
-                {
-                    var divider = new HtmlTag("div").AddClass("tracked-league-bar-divider");
-                    row.Append(divider);
+                var divider = new HtmlTag("div").AddClass("tracked-league-bar-divider");
+                row.Append(divider);
 
-                    var ownerSection = new HtmlTag("div").AddClass("tracked-league-bar-section");
+                var ownerSection = new HtmlTag("div").AddClass("tracked-league-bar-section");
+                if (string.IsNullOrEmpty(league.OwnerName))
+                {
+                    ownerSection.AddClass("tracked-league-bar-section--empty");
+                    ownerSection.Attr("aria-label", "Unowned");
+                }
+                else
+                {
                     if (league.IsOwner)
                         ownerSection.AddClass("tracked-league-bar-section--owner");
-
-                    var ownerValue = new HtmlTag("span").AddClass("tracked-league-bar-value").Text(league.OwnerName);
-                    ownerSection.Append(ownerValue);
-                    row.Append(ownerSection);
+                    ownerSection.Append(new HtmlTag("span").AddClass("tracked-league-bar-value").Text(league.OwnerName));
                 }
+                row.Append(ownerSection);
 
                 list.Append(row);
             }
