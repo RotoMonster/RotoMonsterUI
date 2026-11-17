@@ -65,6 +65,7 @@ namespace RotoMonsterUI
         public string TweetUrl { get; set; }
 
         public TimeSpan? TimeSinceCreated { get; set; }
+        public int? AgeShadeSeconds { get; set; }
 
         /// <summary>Profile picture shown upper-right.</summary>
         public string ProfileImageUrl { get; set; }

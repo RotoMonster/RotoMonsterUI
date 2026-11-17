@@ -20,6 +20,7 @@ namespace RotoMonsterUI
         public bool IsCommentExpanded { get; set; }
         public string CurrentCommentText { get; set; }
         public TimeSpan? TimeSinceCreated { get; set; }
+        public int? AgeShadeSeconds { get; set; }
         public bool ShowPlayerInfo { get; set; } = true;
         public bool ShowViewAll { get; set; } = false;
         public bool IsNew { get; set; } = false;

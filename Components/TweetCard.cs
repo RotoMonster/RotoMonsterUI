@@ -80,11 +80,11 @@ namespace RotoMonsterUI
             var card = new HtmlTag("div").AddClass("tweet-card");
             card.Attr("id", _input.IsScrollTarget ? "tweet-card-selected" : "tweet-card-" + _input.TweetId);
 
-            var ageShadeColor = ColorHelper.GetAgeShadeHex(_input.TimeSinceCreated);
-            // Only override while it's shaded - once it expires the card's normal border comes back.
-            if (ageShadeColor != null)
+            var ageBar = ColorHelper.AgeBar(_input.TimeSinceCreated, _input.AgeShadeSeconds);
+            if (ageBar != null)
             {
-                card.Attr("style", ColorHelper.AgeRingStyle(ageShadeColor));
+                card.AddClass("card-age-barred");
+                card.Append(ageBar);
             }
 
             if (_input.SelectedPlayerId.HasValue)

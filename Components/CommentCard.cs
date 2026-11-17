@@ -29,11 +29,11 @@ namespace RotoMonsterUI
 
             var card = new HtmlTag("div").AddClass("comment-card");
 
-            var ageShadeColor = ColorHelper.GetAgeShadeHex(_input.TimeSinceCreated);
-            bool isShaded = ageShadeColor != null;
-            if (isShaded)
+            var ageBar = ColorHelper.AgeBar(_input.TimeSinceCreated, _input.AgeShadeSeconds);
+            if (ageBar != null)
             {
-                card.Attr("style", ColorHelper.AgeRingStyle(ageShadeColor));
+                card.AddClass("card-age-barred");
+                card.Append(ageBar);
             }
 
             if (_input.ShowPlayerInfo && _input.DisplayPlayerInput != null)

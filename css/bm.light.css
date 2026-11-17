@@ -9342,3 +9342,6 @@ a.display-username-link:hover .display-username { text-decoration: underline; }
 
 .tracked-league-bar-status { margin-left: auto; padding-left: 12px; font-size: .8rem; font-weight: 600; letter-spacing: .04em; color: #9ca3af; white-space: nowrap; }
 .tracked-league-bar-section--empty { background: #c4c4c4; align-self: stretch; border-radius: 0 7px 7px 0; }
+
+.card-age-barred { position: relative; }
+.card-age-bar { position: absolute; left: 0; top: 0; height: 4px; background: var(--card-age-bar-color, #ffff00); border-top-left-radius: inherit; z-index: 3; pointer-events: none; }

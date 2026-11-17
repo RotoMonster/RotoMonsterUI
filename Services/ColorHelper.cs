@@ -83,6 +83,18 @@ namespace RotoMonsterUI
             return $"box-shadow:inset 0 0 0 var(--card-age-border-width) {color}, inset 0 0 0 calc(var(--card-age-border-width) + 1px) var(--color-border-strong, var(--color-border));";
         }
 
+        public static HtmlTags.HtmlTag AgeBar(TimeSpan? age, int? maxSecondsOverride = null)
+        {
+            if (!age.HasValue) return null;
+            int maxSeconds = maxSecondsOverride ?? AgeShadeMaxSeconds;
+            if (maxSeconds <= 0) return null;
+            double left = 1 - Math.Max(0, age.Value.TotalSeconds) / maxSeconds;
+            if (left <= 0) return null;
+            return new HtmlTags.HtmlTag("span").AddClass("card-age-bar")
+                .Attr("style", "width:" + (Math.Min(1, left) * 100).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) + "%")
+                .Attr("aria-hidden", "true");
+        }
+
         public static string GetAgeShadeHex(TimeSpan? age, int? maxSecondsOverride = null)
         {
             if (!age.HasValue) return null;

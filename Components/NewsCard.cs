@@ -73,11 +73,12 @@ namespace RotoMonsterUI
             {
                 var card = new HtmlTag("div").AddClass("news-card");
 
-            var ageShadeColor = ColorHelper.GetAgeShadeHex(_input.TimeSinceCreated);
-            bool isShaded = ageShadeColor != null;
-            // Only override while it's shaded - once it expires the card's normal border comes back.
-            if (isShaded)
-                card.Attr("style", AgeRing(ageShadeColor));
+            var ageBar = ColorHelper.AgeBar(_input.TimeSinceCreated, _input.AgeShadeSeconds);
+            if (ageBar != null)
+            {
+                card.AddClass("card-age-barred");
+                card.Append(ageBar);
+            }
 
             // ---- Header row ----
             var headerRow = new HtmlTag("div").AddClass("news-card-header");
@@ -359,11 +360,14 @@ namespace RotoMonsterUI
             // Inset ring rather than a border here. The corner status badge is absolutely
             // positioned against the padding box, so a real border would push it inward and
             // leave a gap in the corner. An inset shadow paints inside and moves nothing.
-            var testAgeShadeColor = ColorHelper.GetAgeShadeHex(_input.TimeSinceCreated);
-            if (testAgeShadeColor != null)
-                cardStyle += AgeRing(testAgeShadeColor);
-
             card.Attr("style", cardStyle);
+
+            var ageBar = ColorHelper.AgeBar(_input.TimeSinceCreated, _input.AgeShadeSeconds);
+            if (ageBar != null)
+            {
+                card.AddClass("card-age-barred");
+                card.Append(ageBar);
+            }
 
             // Status ribbon is absolutely positioned flush in the top-right corner.
             var cornerGroup = new HtmlTag("div").AddClass("news-card-test-corner-group");

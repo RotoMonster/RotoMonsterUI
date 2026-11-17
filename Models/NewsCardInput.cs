@@ -53,6 +53,7 @@ namespace RotoMonsterUI
         public bool UserCanDelete { get; set; }
         public bool UserCanEdit { get; set; }
         public TimeSpan? TimeSinceCreated { get; set; }
+        public int? AgeShadeSeconds { get; set; }
 
 
         public string NewsTitle { get; set; }
