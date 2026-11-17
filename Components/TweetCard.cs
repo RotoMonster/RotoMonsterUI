@@ -538,7 +538,7 @@ private HtmlTag RenderHeader()
                 StatusTypeText = _input.StatusTypeText,
                 StatusTypeTag = _input.StatusTypeTag,
                 NewsTitle = _input.NewsTitle,
-                SourceURL = string.IsNullOrEmpty(_input.SourceURL) ? _input.TweetUrl : _input.SourceURL,
+                SourceURL = !string.IsNullOrEmpty(_input.SourceURL) ? _input.SourceURL : _input.CantBeSource ? "" : _input.TweetUrl,
                 NewsDetails = _input.NewsDetails,
                 IsUnofficial = _input.IsUnofficial,
                 NewsLevel = _input.NewsLevel,

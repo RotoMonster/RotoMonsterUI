@@ -70,6 +70,7 @@ namespace RotoMonsterUI
         public string ProfileImageUrl { get; set; }
 
         public bool IsVerified { get; set; }
+        public bool CantBeSource { get; set; }
 
         public int? HeaderCount { get; set; }
 
