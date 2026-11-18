@@ -25,7 +25,10 @@ namespace RotoMonsterUI
             else if (_timeSpan.TotalDays <= 30)
                 display = $"{Math.Round(_timeSpan.TotalDays, 1)}d";
             else
-                display = new DisplayDate(new DisplayDateInput { Date = DateTime.Now.Subtract(_timeSpan) }).Render();
+            {
+                var when = DateTime.Now.Subtract(_timeSpan);
+                display = new DisplayDate(new DisplayDateInput { Date = when, Format = when.Year == DateTime.Now.Year ? "M/d" : "M/d/yy" }).Render();
+            }
 
             var tag = new HtmlTag("span")
                 .AddClass("time-since")
